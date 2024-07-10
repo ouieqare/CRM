@@ -36,21 +36,24 @@ const NouveauClient = () => {
   });
 
   const saveClient = async (clientData) => {
+    console.log(clientData); 
     try {
-      const response = await fetch('/api/clients', {
+      const response = await fetch('http://localhost:5100/api/clients/add', { // Assurez-vous que l'URL est correcte
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(clientData),
+        body: JSON.stringify(clientData)
       });
-      const data = await response.json();
-      if (data.success) {
-        console.log('Client ajouté avec succès');
-        history.push('/admin/clients'); // Redirige l'utilisateur après l'enregistrement réussi
-      } else {
-        console.error('Erreur lors de l\'ajout du client');
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP status ${response.status}: ${errorText}`);
       }
+      
+      const data = await response.json();
+      console.log('Client ajouté avec succès', data);
+      history.push('/admin/clients');
     } catch (error) {
       console.error('Erreur lors de la connexion au serveur', error);
     }
@@ -66,8 +69,9 @@ const NouveauClient = () => {
     e.preventDefault();
     console.log(client);
     saveClient(client);
-    history.push('/admin/clients'); // Rediriger l'utilisateur après l'envoi
+    // Ne pas rediriger ici, laissez saveClient gérer la redirection après la confirmation de succès
   };
+  
   
 
   return (

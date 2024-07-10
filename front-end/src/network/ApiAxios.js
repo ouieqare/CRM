@@ -44,9 +44,13 @@ export const login = async (email, password) => {
     return await instance.post('/users/login', { email, password });
 };
 
-export const logout = async token => (
-    await instance.post('users/logout', {token})
-);
+// export const logout = async token => (
+//     await instance.post('users/logout', {token})
+// );
+export const logout = async token => {
+    console.log("Sending logout request with token:", token);
+    return await instance.post('users/logout', {token});
+};
 
 export const edit = async (userID, name, email) => (
     await instance.post('/users/edit', {userID, name, email})

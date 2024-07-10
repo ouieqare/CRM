@@ -16,6 +16,6 @@ const activeSessionSchema = new mongoose.Schema({
   },
 });
 
-const activeSeesion = mongoose.model('ActiveSession', activeSessionSchema);
+const activeSession = mongoose.model('ActiveSession', activeSessionSchema);
 
-module.exports = activeSeesion;
+module.exports = activeSession;

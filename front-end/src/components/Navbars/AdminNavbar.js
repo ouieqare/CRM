@@ -23,18 +23,58 @@ const AdminNavbar = props => {
 
     let username = JSON.parse(localStorage.getItem("user")).name;
 
+    // const logOut = async () => {
+    //     const token = localStorage.getItem("token");
+    //     if (token) {
+    //         const response = await logout(token);
+    //         const { data } = response;
+    //         if (data.success) {
+    //             localStorage.removeItem("token");
+    //             localStorage.removeItem("user");
+    //             props.history.push("/auth/login");
+    //         }else {
+    //             console.error("Échec de la déconnexion");
+    //         }
+    //     }
+    // }
+
+    // const logOut = async (e) => {
+    //     e.preventDefault();
+    //     console.log("Logout clicked");  // Ajoutez ceci pour tester si le clic fonctionne
+    //     const token = localStorage.getItem("token");
+    //     if (token) {
+    //         const response = await logout(token);
+    //         const { data } = response;
+    //         if (data.success) {
+    //             localStorage.removeItem("token");
+    //             localStorage.removeItem("user");
+    //             props.history.push("/auth/login");
+    //         } else {
+    //             console.error("Échec de la déconnexion");
+    //         }
+    //     }
+    // }
     const logOut = async () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            const response = await logout(token);
-            const { data } = response;
-            if (data.success) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
-                props.history.push("/auth/login");
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const response = await logout(token);
+                const { data } = response;
+                if (data.success) {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    props.history.push("/auth/login");
+                } else {
+                    console.error("Échec de la déconnexion:", data.message);
+                }
             }
+        } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error.response ? error.response.data : error);
         }
     }
+    
+    
+    
 
     return (
         <>
@@ -96,7 +136,7 @@ const AdminNavbar = props => {
                                     <span>Support</span>
                                 </DropdownItem>
                                 <DropdownItem divider/>
-                                <DropdownItem href="/register" onClick={logOut}>
+                                <DropdownItem href="#!" onClick={logOut}>
                                     <i className="ni ni-user-run"/>
                                     <span>Deconnexion</span>
                                 </DropdownItem>

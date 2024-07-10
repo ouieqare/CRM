@@ -33,10 +33,14 @@ mongoose
 
 app.use(cors());
 
+
 // Express body parser
 app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+
 
 // REACT BUILD for production
 if (process.env.NODE_ENV === 'PROD') {
@@ -48,6 +52,7 @@ if (process.env.NODE_ENV === 'PROD') {
 
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));
+app.use('/api/clients', require('./routes/clients'));
 
 // run at 3:10 AM -> delete old tokens
 const tokensCleanUp = new CronJob('10 3 * * *', function() {
@@ -78,6 +83,7 @@ http.createServer({}, app)
 //   }
 //   res.redirect('https://' + req.headers.host + req.url);
 // });
+
 
 /**
  * @param {int} req req.

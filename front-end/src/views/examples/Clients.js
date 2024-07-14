@@ -26,25 +26,49 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 //import ReactBSAlert from "react-bootstrap-sweetalert";
 import Header from "components/Headers/Header.js";
-import { dataTable } from "variables/general";
+//import { dataTable } from "variables/general";
+
+const fetchClients = (setClients) => { // Pass setClients as a parameter
+  const token = localStorage.getItem('token');
+  if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+  }
+
+  const cleanToken = token.trim();
+  const formattedToken = cleanToken.replace('JWT ', '');
+
+  console.log("Formatted Token from localStorage:", formattedToken);
+
+  fetch('http://localhost:5100/api/clients', {
+      headers: {
+          'Authorization': `Bearer ${formattedToken}`
+      }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Clients fetched:', data);
+      setClients(data); // Ensure this line is uncommented and correctly used
+  })
+  .catch(err => {
+      console.error('Error fetching clients:', err.message);
+  });
+};
+
 
 const Tables = () => {
   //const [modal, setModal] = useState(false);
   //const toggleModal = () => setModal(!modal);
   const history = useHistory();
-  const [clients, setClients] = useState(dataTable);
+  const [clients, setClients] = useState([]);
   const componentRef = useRef(null);
 
-  useEffect(() => {
-    fetch('http://localhost:5100/api/clients')
-      .then(response => response.json())
-      .then(data => setClients(data))
-      .catch(err => console.error('Error fetching clients:', err));
-  }, []);
-
-  // const addNewClient = (client) => {
-  //   setClients([...clients, { ...client, position: "01/01/2025", office: "RDV en cours", age: "N/A", start_date: "N/A", salary: "N/A" }]);
-  // };
+  
 const handleAddClient = () => {
   console.log('Redirection to /admin/nouveauClient');
     history.push('/admin/nouveauClient');
@@ -89,6 +113,10 @@ const handleAddClient = () => {
   });
 
   const { SearchBar } = Search;
+  useEffect(() => {
+    fetchClients(setClients); // Pass setClients here
+}, []); 
+
 
   return (
     <>
@@ -103,27 +131,26 @@ const handleAddClient = () => {
                 <Button color="primary" onClick={handleAddClient}>Ajouter Client</Button>
               </CardHeader>
               <ToolkitProvider
-                data={clients}
-                keyField="name"
-                columns={[
-                  { dataField: "nom", text: "Nom", sort: true },
-                  { dataField: "prenom", text: "Prénom", sort: true },
-                  { dataField: "email", text: "Email", sort: true },
-                  { dataField: "telephonePortable", text: "Téléphone Portable", sort: true },
-                  //{ dataField: "adresse", text: "Adresse", sort: true },
-                  { dataField: "ville", text: "Ville", sort: true },
-                  { dataField: "dateNaissance", text: "Date de Naissance", sort: true },
-                  //{ dataField: "mutuelle", text: "Mutuelle", sort: true },
-                  //{ dataField: "numeroSecu", text: "Numéro de Sécurité Sociale", sort: true }
-                ]}
-                search
-              >
+  data={clients}
+  keyField="id" // Assurez-vous que "id" est une clé unique dans vos données client
+  columns={[
+    { dataField: "id", text: "ID", sort: true, hidden: true },
+    { dataField: "nom", text: "Nom", sort: true },
+    { dataField: "prenom", text: "Prénom", sort: true },
+    { dataField: "email", text: "Email", sort: true },
+    { dataField: "telephonePortable", text: "Téléphone Portable", sort: true },
+    { dataField: "ville", text: "Ville", sort: true },
+    { dataField: "dateNaissance", text: "Date de Naissance", sort: true },
+  ]}
+  search
+>
+
                 {props => (
                   <div className="p-4">
                     <Row>
                       <Col xs={12} sm={6}>
                         <ButtonGroup>
-                          <Button
+                          {/* <Button
                             className="buttons-copy buttons-html5"
                             color="info"
                             size="sm"
@@ -131,7 +158,7 @@ const handleAddClient = () => {
                             onClick={() => navigator.clipboard.writeText(JSON.stringify(clients))}
                           >
                             Copier
-                          </Button>
+                          </Button> */}
                           <ReactToPrint
                             trigger={() => (
                               <Button

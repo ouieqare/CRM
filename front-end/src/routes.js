@@ -43,7 +43,7 @@ var routes = [
   {
     path: "/user-profile",
     name: "Profil Utilisateur",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "ni ni-circle-08 text-yellow",
     component: Profile,
     layout: "/admin",
     api: true
@@ -59,7 +59,7 @@ var routes = [
   {
     path: "/clients",
     name: "Clients",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni-single-02",
     component: Clients,
     layout: "/admin",
     api: false

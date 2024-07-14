@@ -17,7 +17,8 @@ const ClientSchema = new mongoose.Schema({
   dateRDV: { type: Date, required: false },
   heureRDV: { type: String, required: false },
   bilanAuditif: { type: String, required: false },
-  note: { type: String, required: false }
+  note: { type: String, required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Ajout de la référence à User
 });
 
 const Client = mongoose.model('Client', ClientSchema);

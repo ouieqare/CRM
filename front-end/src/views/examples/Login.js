@@ -29,6 +29,7 @@ const Login = props => {
         if (data.success) {
             setError("");
             localStorage.setItem("token", data.token);
+            console.log('Stored token:', localStorage.getItem('token'));
             localStorage.setItem("user", JSON.stringify(data.user));
             props.history.push("/");
         } else {

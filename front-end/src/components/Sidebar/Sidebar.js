@@ -80,13 +80,16 @@ class Sidebar extends React.Component {
             </NavLink>
           </NavItem>
       );
+    }else {
+      return null; // Ensure that a value is returned even when the condition is not met
     }
     });
   };
 
-  createApiLinks = routes => {
+  createApiLinks = (routes) => {
     return routes.map((prop, key) => {
-      return (prop.layout === '/admin' && prop.api) ? (
+      if (prop.layout === '/admin' && prop.api) {
+        return (
           <NavItem key={key}>
             <NavLink
                 to={prop.layout + prop.path}
@@ -98,9 +101,13 @@ class Sidebar extends React.Component {
               {prop.name}
             </NavLink>
           </NavItem>
-      ) : null;
+        );
+      } else {
+        return null; // Same as above, return null or some other value when the condition is not met
+      }
     });
   };
+  
 
   render() {
     const {routes, logo } = this.props;

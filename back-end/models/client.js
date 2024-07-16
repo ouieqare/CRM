@@ -16,7 +16,14 @@ const ClientSchema = new mongoose.Schema({
   statut: { type: String, required: false },
   dateRDV: { type: Date, required: false },
   heureRDV: { type: String, required: false },
-  bilanAuditif: { type: String, required: false },
+  audiogramme: { type: String, required: false },
+  bilanAuditif: {
+    audiogramme: { type: String, required: false },
+    typePerteAuditive: { type: String, required: false },
+    niveauPerte: { type: String, required: false },
+    observations: { type: String, required: false },
+    recommandations: { type: String, required: false }
+  },
   note: { type: String, required: false },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Ajout de la référence à User
 });

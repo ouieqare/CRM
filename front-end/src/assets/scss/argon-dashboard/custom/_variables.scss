@@ -374,7 +374,7 @@ $h5-font-size:                $font-size-base * .8125 !default;
 $h6-font-size:                $font-size-base * .625 !default;
 
 
-$headings-margin-bottom:      ($spacer / 2);
+$headings-margin-bottom:      calc($spacer / 2);
 $headings-font-family:        inherit !default;
 $headings-font-weight:        $font-weight-bold !default;
 $headings-line-height:        1.5 !default;
@@ -834,7 +834,7 @@ $close-font-size:                   $font-size-base * 1.5 !default;
 $close-font-weight:                 $font-weight-bold !default;
 $close-bg:                          transparent !default;
 $close-hover-bg:                    transparent !default;
-$close-color:                       rgba(0, 0, 0, .6) !default !default;
+$close-color:                       rgba(0, 0, 0, .6) !default;
 $close-hover-color:                 rgba(0, 0, 0, .9) !default;
 $close-text-shadow:                 none !default;
 

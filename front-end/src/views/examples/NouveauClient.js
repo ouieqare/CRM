@@ -1,11 +1,22 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import {
-  Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Container, Row, Col
+  Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Container, Row, Col, UncontrolledAlert,
+  Nav, NavItem, NavLink, TabContent, TabPane
 } from "reactstrap";
+import classnames from 'classnames';
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
 
 const NouveauClient = () => {
   const history = useHistory();
+  const location = useLocation();
   const [client, setClient] = useState({
     nom: "",
     prenom: "",
@@ -18,9 +29,38 @@ const NouveauClient = () => {
     adresse: "",
     codePostal: "",
     ville: "",
-    note: ""
+    note: "",
+    audiogramme: "" 
   });
+  const [activeTab, setActiveTab] = useState('1');
+  const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
+
+  useEffect(() => {
+    // Si un client est passé dans l'état, utilisez ses valeurs pour initialiser le formulaire
+    if (location.state && location.state.client) {
+      const formattedClient = {
+        ...location.state.client,
+        dateNaissance: formatDate(location.state.client.dateNaissance)
+      };
+      setClient(formattedClient);
+    }
+  }, [location.state]);
+
+  const toggleTab = tab => {
+    if(activeTab !== tab) setActiveTab(tab);
+  };
+
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const isMounted = useRef(false);
+
+useEffect(() => {
+  isMounted.current = true;
+  return () => {
+    isMounted.current = false;  // Nettoyage en démontant le composant
+  };
+}, []);
 
   const validateForm = () => {
     let tempErrors = {};
@@ -41,15 +81,20 @@ const NouveauClient = () => {
   };
 
   const saveClient = async (clientData) => {
-    try {
-      const response = await fetch('http://localhost:5100/api/clients/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-         'Authorization': localStorage.getItem('token')
-        },
-        body: JSON.stringify(clientData)
-      });
+    const isEditing = !!clientData._id;
+    const url = isEditing ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+    const method = isEditing ? 'PUT' : 'POST';
+    const successMsg = isEditing ? "Le client a été modifié avec succès !" : "Le client a été ajouté avec succès !";
+
+  try {
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+      body: JSON.stringify(clientData)
+    });
       
   
       if (!response.ok) {
@@ -58,12 +103,23 @@ const NouveauClient = () => {
       }
   
       const data = await response.json();
-      console.log('Client ajouté avec succès', data);
-      history.push('/admin/clients');
-    } catch (error) {
-      console.error('Erreur lors de la connexion au serveur', error);
+    console.log('Opération réussie:', data);
+    if (isMounted.current) {
+      setSuccessMessage(successMsg);
+      setTimeout(() => {
+        if (isMounted.current) {
+          setSuccessMessage("");
+          history.push('/admin/clients'); // Rediriger après que le message ait disparu
+        }
+      }, 5000); // Affiche le message pendant 5 secondes puis redirige
     }
-  };
+  } catch (error) {
+    console.error('Erreur lors de la connexion au serveur', error);
+    if (isMounted.current) {
+      setErrors({ form: "Erreur lors de l'opération sur le client." });
+    }
+  }
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,15 +134,87 @@ const NouveauClient = () => {
       saveClient(client);
     }
   };
+  const handleSubmitAudiogramme = async (e) => {
+    e.preventDefault();
+    const audiogrammeData = {
+      ...client,
+      audiogramme: client.audiogramme
+    };
+  
+    const url = client._id ? `http://localhost:5100/api/clients/${client._id}` : 'http://localhost:5100/api/clients/add';
+    const method = client._id ? 'PUT' : 'POST';
+  
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify(audiogrammeData)
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP status ${response.status}: ${errorText}`);
+      }
+  
+      const data = await response.json();
+      console.log('Opération réussie:', data);
+      setAudiogrammeSuccessMessage("Le bilan auditif a été enregistré avec succès.");
+      setTimeout(() => {
+        setAudiogrammeSuccessMessage("");
+        history.push('/admin/clients'); // Redirection après l'affichage du message de succès
+      }, 3000); // Affichage du message pendant 3 secondes
+  
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement du bilan auditif:", error);
+      setErrors({ form: "Erreur lors de l'opération sur le bilan auditif." });
+    }
+  };
+  
 
   return (
     <div style={{ paddingTop: '50px' }}>
-      <Container className="mt-5">
-        <Card>
-          <CardHeader>Ajouter un Nouveau Client</CardHeader>
+    <Container className="mt-5">
+      <Card>
+      <CardHeader className="bg-white text-white">
+            <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
+          </CardHeader>
           <CardBody>
-            <Form onSubmit={handleSubmit}>
-              <Row form>
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: activeTab === '1' })}
+                  onClick={() => { toggleTab('1'); }}
+                >
+                  Informations Générales
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: activeTab === '2' })}
+                  onClick={() => { toggleTab('2'); }}
+                >
+                  Bilan Auditif
+                </NavLink>
+              </NavItem>
+            </Nav>
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1">
+              {/* Votre formulaire existant ici */}
+              {successMessage && (
+                <UncontrolledAlert color="success" className="fixed-alert" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1050 }} fade={false}>
+                  <span className="alert-inner--icon">
+                    <i className="ni ni-like-2" />
+                  </span>
+                  <span className="alert-inner--text">
+                    <strong>Succès!</strong> {successMessage}
+                  </span>
+                </UncontrolledAlert>
+              )}
+              <Form onSubmit={handleSubmit}>
+              <Row form style={{ paddingTop: '50px' }}>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="nom">Nom</Label>
@@ -103,9 +231,9 @@ const NouveauClient = () => {
               </Row>
               <Row form>
                 <Col md={4}>
-                  <FormGroup>
+                <FormGroup>
                     <Label for="dateNaissance">Date de Naissance</Label>
-                    <Input type="date" name="dateNaissance" id="dateNaissance" value={client.dateNaissance} onChange={handleInputChange} />
+                    <Input type="date" name="dateNaissance" id="dateNaissance" value={client.dateNaissance || ''} onChange={handleInputChange} />
                   </FormGroup>
                 </Col>
                 <Col md={4}>
@@ -162,14 +290,36 @@ const NouveauClient = () => {
                 <Label for="note">Note</Label>
                 <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} />
               </FormGroup>
-              <Button type="submit" color="primary">Enregistrer</Button>
-              <Button type="button" color="secondary" onClick={() => history.push('/admin/clients')}>Annuler</Button>
-            </Form>
-          </CardBody>
-        </Card>
-      </Container>
+                <Button type="submit" color="primary">Enregistrer</Button>
+                <Button type="button" color="secondary" onClick={() => history.push('/admin/clients')}>Annuler</Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="2">
+  {audiogrammeSuccessMessage && (
+    <UncontrolledAlert color="success" className="fixed-alert" fade={false}>
+      <span className="alert-inner--icon"><i className="ni ni-like-2" /></span>
+      <span className="alert-inner--text"><strong>Succès!</strong> {audiogrammeSuccessMessage}</span>
+    </UncontrolledAlert>
+  )}
+  <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
+    <FormGroup>
+      <Label for="audiogramme">Audiogramme</Label>
+      <Input type="text" name="audiogramme" id="audiogramme" value={client.audiogramme} onChange={handleInputChange} />
+    </FormGroup>
+    {/* Ajoutez plus de champs selon vos besoins ici */}
+    <Button type="submit" color="primary">Enregistrer Bilan</Button>
+  </Form>
+</TabPane>
+
+          </TabContent>
+        </CardBody>
+      </Card>
+      
+    </Container>
+    
     </div>
   );
-};
+}
+  
 
 export default NouveauClient;

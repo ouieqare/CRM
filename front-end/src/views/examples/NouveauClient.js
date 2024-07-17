@@ -81,45 +81,43 @@ useEffect(() => {
   };
 
   const saveClient = async (clientData) => {
-    const isEditing = !!clientData._id;
-    const url = isEditing ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
-    const method = isEditing ? 'PUT' : 'POST';
-    const successMsg = isEditing ? "Le client a été modifié avec succès !" : "Le client a été ajouté avec succès !";
+    const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+    const method = clientData._id ? 'PUT' : 'POST';
 
-  try {
-    const response = await fetch(url, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
-      },
-      body: JSON.stringify(clientData)
-    });
-      
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP status ${response.status}: ${errorText}`);
-      }
-  
-      const data = await response.json();
-    console.log('Opération réussie:', data);
-    if (isMounted.current) {
-      setSuccessMessage(successMsg);
-      setTimeout(() => {
-        if (isMounted.current) {
-          setSuccessMessage("");
-          history.push('/admin/clients'); // Rediriger après que le message ait disparu
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(clientData)
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            if (response.status === 409) {
+                alert(data.message); // Utiliser alert pour montrer le message d'erreur
+                // Vous pouvez également utiliser un autre type de notification selon votre UX
+            } else {
+                throw new Error(data.message);
+            }
+        } else {
+            const data = await response.json();
+            setSuccessMessage("Le client a été ajouté/modifié avec succès !");
+            setTimeout(() => {
+                history.push('/admin/clients');
+            }, 3000);
         }
-      }, 5000); // Affiche le message pendant 5 secondes puis redirige
+    } catch (error) {
+        console.error('Erreur lors de l\'opération sur le client:', error);
+        setErrors({ form: "Erreur lors de l'opération sur le client." });
     }
-  } catch (error) {
-    console.error('Erreur lors de la connexion au serveur', error);
-    if (isMounted.current) {
-      setErrors({ form: "Erreur lors de l'opération sur le client." });
-    }
-  }
 };
+
+
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

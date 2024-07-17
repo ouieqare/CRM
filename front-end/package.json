@@ -67,6 +67,7 @@
     "react-router-dom": "^5.3.4",
     "react-scripts": "^4.0.1",
     "react-to-print": "^2.15.1",
+    "react-toastify": "^7.0.4",
     "reactstrap": "8.4.1",
     "sass": "^1.77.6"
   },

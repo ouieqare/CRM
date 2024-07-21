@@ -65,26 +65,112 @@ class Sidebar extends React.Component {
   };
   // creates the links that appear in the left menu / Sidebar
   createLinks = (routes) => {
-    return routes.filter(route => !route.hidden).map((prop, key) => {
-      if (prop.layout === '/admin') {
+    return routes.map((prop, key) => {
+      if (prop.hidden) return null; // Continue à cacher les routes marquées comme cachées
+  
+      if (prop.children && prop.children.length > 0) {
         return (
-          <NavItem key={key}>
+          <NavItem key={key} className={this.activeRoute(prop.layout + prop.path)}>
             <NavLink
-                to={prop.layout + prop.path}
-                tag={NavLinkRRD}
-                onClick={this.closeCollapse}
-                activeClassName="active"
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                this.setState({ [prop.name]: !this.state[prop.name] });
+              }}
             >
-              <i className={prop.icon}/>
-              {prop.name}
+              <i className={prop.icon} />
+              {prop.name} <i className="ni ni-bold-down" />
             </NavLink>
+            <Collapse isOpen={this.state[prop.name]}>
+              <Nav className="nav-sm flex-column">
+                {prop.children.map((child, childKey) => (
+                  <NavItem key={`child-${childKey}`}>
+                    <NavLink
+                      to={child.layout + child.path}
+                      tag={NavLinkRRD}
+                      onClick={this.closeCollapse}
+                    >
+                      <span className="sidenav-normal"> {child.name} </span>
+                    </NavLink>
+                  </NavItem>
+                ))}
+              </Nav>
+            </Collapse>
           </NavItem>
+        );
+      }
+  
+      // Lien simple sans enfants
+      return (
+        <NavItem key={key} className={this.activeRoute(prop.layout + prop.path)}>
+          <NavLink
+            to={prop.layout + prop.path}
+            tag={NavLinkRRD}
+            onClick={this.closeCollapse}
+          >
+            <i className={prop.icon} />
+            {prop.name}
+          </NavLink>
+        </NavItem>
       );
-    }else {
-      return null; // Ensure that a value is returned even when the condition is not met
-    }
     });
   };
+  
+  
+
+  // createLinks = (routes) => {
+  //   return routes.map((prop, key) => {
+  //     if (prop.children && prop.children.length > 0) {
+  //       return (
+  //         <NavItem key={key}>
+            // <NavLink
+            //   href="#"
+            //   onClick={(e) => {
+            //     e.preventDefault();
+            //     this.setState({ [prop.name]: !this.state[prop.name] });
+            //   }}
+            //   activeClassName="active"
+            // >
+  //             <i className={prop.icon} />
+  //             {prop.name}
+  //             <i className="ni ni-bold-down float-right" />
+  //           </NavLink>
+            // <Collapse isOpen={this.state[prop.name]}>
+            //   <Nav className="nav-sm flex-column">
+            //     {prop.children.map((child, childKey) => (
+            //       <NavItem key={childKey}>
+            //         <NavLink
+            //           to={child.layout + child.path}
+            //           tag={NavLinkRRD}
+            //           onClick={this.closeCollapse}
+            //           activeClassName="active"
+            //         >
+            //           <span className="sidenav-normal"> {child.name} </span>
+            //         </NavLink>
+            //       </NavItem>
+            //     ))}
+            //   </Nav>
+            // </Collapse>
+  //         </NavItem>
+  //       );
+  //     } else {
+  //       return (
+  //         <NavItem key={key}>
+  //           <NavLink
+  //             to={prop.layout + prop.path}
+  //             tag={NavLinkRRD}
+  //             onClick={this.closeCollapse}
+  //             activeClassName="active"
+  //           >
+  //             <i className={prop.icon} />
+  //             {prop.name}
+  //           </NavLink>
+  //         </NavItem>
+  //       );
+  //     }
+  //   });
+  // };
+  
 
   createApiLinks = (routes) => {
     return routes.map((prop, key) => {

@@ -33,7 +33,7 @@ class Login extends React.Component {
                   © 2018{" "}
                   <a
                     className="font-weight-bold ml-1"
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    href="https://www.ouieqare.com?ref=adr-auth-footer"
                     target="_blank"
                   >
                     Ouieqare
@@ -44,7 +44,7 @@ class Login extends React.Component {
                 <Nav className="nav-footer justify-content-center justify-content-xl-end">
                   <NavItem>
                     <NavLink
-                      href="https://www.creative-tim.com?ref=adr-auth-footer"
+                      href="https://www.ouieqare.com?ref=adr-auth-footer"
                       target="_blank"
                     >
                       Ouieqare
@@ -52,7 +52,7 @@ class Login extends React.Component {
                   </NavItem>
                   <NavItem>
                     <NavLink
-                      href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                      href="https://www.ouieqare.com/presentation?ref=adr-auth-footer"
                       target="_blank"
                     >
                       A propos
@@ -60,7 +60,7 @@ class Login extends React.Component {
                   </NavItem>
                   <NavItem>
                     <NavLink
-                      href="http://blog.creative-tim.com?ref=adr-auth-footer"
+                      href="http://blog.ouieqare.com?ref=adr-auth-footer"
                       target="_blank"
                     >
                       Blog

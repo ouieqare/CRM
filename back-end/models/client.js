@@ -7,12 +7,15 @@ const ClientSchema = new mongoose.Schema({
   dateNaissance: { type: Date, required: false },
   mutuelle: { type: String, required: false },
   numeroSecu: { type: String, required: false },
-  email: { type: String, required: false },
-  telephoneFixe: { type: String, required: false },
-  telephonePortable: { type: String, required: false },
+  email: { type: String, required: false, unique:true },
+  telephoneFixe: { type: String, required: false, unique:true },
+  telephonePortable: { type: String, required: false, unique:true },
   adresse: { type: String, required: false },
   codePostal: { type: String, required: false },
   ville: { type: String, required: false },
+  note: { type: String, required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  isDeleted: { type: Boolean, default: false }, // Nouveau champ pour la suppression logique
   statut: { type: String, required: false },
   dateRDV: { type: Date, required: false },
   heureRDV: { type: String, required: false },
@@ -23,10 +26,9 @@ const ClientSchema = new mongoose.Schema({
     niveauPerte: { type: String, required: false },
     observations: { type: String, required: false },
     recommandations: { type: String, required: false }
-  },
-  note: { type: String, required: false },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Ajout de la référence à User
+  }
 });
 
+//clientSchema.index({ email: 1, telephoneFixe: 1, telephonePortable: 1 }, { unique: true });
 const Client = mongoose.model('Client', ClientSchema);
 module.exports = Client;

@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -47,29 +47,106 @@ const Tables = () => {
   };
 
   const handleOnSelect = (row, isSelect) => {
+    console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
     if (isSelect) {
-      setSelected([...selected, row.id]);
+      setSelected(prevSelected => {
+        const newSelected = [...prevSelected, row._id];
+        console.log('New selected after add:', newSelected);
+        return newSelected;
+      });
     } else {
-      setSelected(selected.filter(x => x !== row.id));
+      setSelected(prevSelected => {
+        const newSelected = prevSelected.filter(x => x !== row._id);
+        console.log('New selected after remove:', newSelected);
+        return newSelected;
+      });
     }
   };
-
+  
   const handleOnSelectAll = (isSelect, rows) => {
-    const ids = rows.map(r => r.id);
+    console.log(`Select all ${isSelect ? 'on' : 'off'}`);
     if (isSelect) {
-      setSelected(ids);
+      const idsToSelect = rows.map(r => r._id);
+      console.log('Selecting all ids:', idsToSelect);
+      setSelected(idsToSelect);
     } else {
       setSelected([]);
     }
   };
-
+  
+  
+  const selectAllRenderer = ({ mode, checked, indeterminate }) => (
+    <input
+      type={mode}
+      checked={checked}
+      ref={input => {
+        if (input) input.indeterminate = indeterminate;
+      }}
+      // onChange={e => {
+      //   if (e.target.checked) {
+      //     const idsToSelect = clients.map(client => client._id);  // Assurez-vous que cette ligne utilise la bonne clé
+      //     setSelected(idsToSelect);
+      //   } else {
+      //     setSelected([]);
+      //   }
+      // }}
+      onChange={e => {
+        handleOnSelectAll(e.target.checked, clients);  // Appelez handleOnSelectAll avec le bon contexte
+      }}
+    />
+  );
+  
+  const handleDeleteSelected = async () => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer les clients sélectionnés ?")) {
+      for (const clientId of selected) {
+        await fetch(`http://localhost:5100/api/clients/${clientId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to delete client ${clientId}, status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data.success) {
+            throw new Error(data.message);
+          }
+          setTotalClients(prevTotal => prevTotal - 1);
+          toast.success(`Client supprimé avec succès!`);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          toast.error(`Error deleting client ${clientId}: ${error.message}`);
+        });
+      }
+      // Mise à jour de l'état après la suppression de tous les clients sélectionnés
+      const newClients = clients.filter(client => !selected.includes(client._id));
+      setClients(newClients);
+      setSelected([]);
+    }
+  };
+  
+  
+  const deleteButton = selected.length > 0 ? (
+    <Button color="danger" onClick={handleDeleteSelected} style={{ marginLeft: '10px' }}>
+      Supprimer la sélection
+    </Button>
+  ) : null;
+  
   const selectRow = {
     mode: 'checkbox',
     clickToSelect: true,
     selected: selected,
     onSelect: handleOnSelect,
-    onSelectAll: handleOnSelectAll
+    onSelectAll: handleOnSelectAll,
+    selectionHeaderRenderer: selectAllRenderer,
+    style: { backgroundColor: '#c8e6c9' }
   };
+  
 
   const fetchClients = (setClients) => {
     const token = localStorage.getItem('token');
@@ -85,24 +162,24 @@ const Tables = () => {
 
     fetch('http://localhost:5100/api/clients', {
       headers: {
-        'Authorization': `Bearer ${formattedToken}`
+         'Authorization': `Bearer ${formattedToken}`
       }
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP status ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Clients fetched:', data);
-        setClients(data);
-        setTotalClients(data.length);
-      })
-      .catch(err => {
-        console.error('Error fetching clients:', err.message);
-      });
-  };
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Clients fetched:', data);
+      setClients(data);
+      setTotalClients(data.length);
+    })
+    .catch(err => {
+      console.error('Error fetching clients:', err.message);
+    });
+};
 
   const handleAddClient = () => {
     console.log('Redirection to /admin/nouveauClient');
@@ -110,37 +187,35 @@ const Tables = () => {
   };
 
   const columns = [
-    { dataField: "id", text: "ID", hidden: true },
-    { dataField: "nom", text: "Nom" },
-    { dataField: "prenom", text: "Prénom" },
-    { dataField: "email", text: "Email" },
-    { dataField: "telephonePortable", text: "Téléphone Portable" },
-    { dataField: "ville", text: "Ville" },
+    { dataField: "_id", text: "ID", hidden: true },
+    { dataField: "nom", text: "Nom", sort: true },  // Permet le tri sur la colonne "Nom"
+    { dataField: "prenom", text: "Prénom", sort: true },  // Permet le tri sur la colonne "Prénom"
+    { dataField: "email", text: "Email", sort: true },  // Permet le tri sur la colonne "Email"
+    { dataField: "telephonePortable", text: "Téléphone Portable", sort: true },  // Permet le tri sur la colonne "Téléphone Portable"
+    { dataField: "ville", text: "Ville", sort: true },  // Permet le tri sur la colonne "Ville"
     {
       dataField: "dateNaissance",
       text: "Date de Naissance",
-      formatter: (cellContent, row) => {
-        return formatDate(row.dateNaissance);
-      }
+      formatter: (cellContent, row) => formatDate(row.dateNaissance),
+      sort: true  // Permet le tri sur la colonne "Date de Naissance"
     },
     {
       dataField: 'actions',
       text: 'Actions',
-      formatter: (cell, row) => {
-        return (
-          <div>
-            <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>
-              <i className="fas fa-pencil-alt" />
-            </Button>
-            {' '}
-            <Button color="danger" size="sm" onClick={() => handleDeleteClient(row._id)}>
-              <i className="fas fa-trash" />
-            </Button>
-          </div>
-        );
-      }
+      formatter: (cell, row) => (
+        <div>
+          <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>
+            <i className="fas fa-pencil-alt" />
+          </Button>
+          {' '}
+          <Button color="danger" size="sm" onClick={() => handleDeleteClient(row._id)}>
+            <i className="fas fa-trash" />
+          </Button>
+        </div>
+      )
     }
   ];
+  
 
   const handleEditClient = (client) => {
     history.push({
@@ -148,6 +223,7 @@ const Tables = () => {
       state: { client: client }
     });
   };
+
 
   const handleDeleteClient = (clientId) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce client ?")) {
@@ -157,28 +233,34 @@ const Tables = () => {
           'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
         }
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to delete client');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-            setClients(prevClients => prevClients.filter(client => client._id !== clientId));
-            setTotalClients(prevTotal => prevTotal - 1);
-            toast.success("Client deleted successfully!");
-          } else {
-            console.error('Failed to delete client:', data.message);
-            toast.error("Failed to delete client: " + data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          toast.error("Error: " + error.message);
-        });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete client, status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          // Mettre à jour l'état immédiatement pour refléter la suppression
+          const newClients = clients.filter(client => client._id !== clientId);
+          
+          setSelected(selected.filter(id => id !== clientId)); // Nettoyer aussi les sélections
+          setTotalClients(prevTotal => prevTotal - 1);
+          toast.success("Client supprimé avec succès!");
+          setClients(newClients);
+          console.log("Clients after deletion", newClients);
+        } else {
+          throw new Error(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.error(`Error: ${error.message}`);
+      });
     }
   };
+  
+  
 
   const handleFileUpload = () => {
     if (!selectedFile) {
@@ -210,7 +292,7 @@ const Tables = () => {
         setIsUploading(false);
         
         setSelectedFile(null);
-        toast.success("File imported successfully!");
+        toast.success("Fichier importé avec succès!");
         toggleModal(); // Ferme le modal après l'importation réussie
       })
       .catch(err => {
@@ -271,11 +353,13 @@ const Tables = () => {
 
   const handleSelectAllClick = () => {
     if (selected.length < clients.length) {
-      setSelected(clients.map(x => x.id));
+      setSelected(clients.map(x => x.id)); // Sélectionner tous les ID
     } else {
-      setSelected([]);
+      setSelected([]); // Désélectionner tous
     }
   };
+
+  
 
   return (
     <>
@@ -288,33 +372,45 @@ const Tables = () => {
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
                 <div>
                   <h3 className="mb-0" style={{ paddingBottom: '10px' }}>Clients (Total : {totalClients})</h3>
-                  {/* <Button color="info" onClick={handleSelectAllClick}>Sélectionner Tout</Button> */}
+                  {/* <Button color="info" onClick={handleSelectAllClick}>
+  {selected.length === clients.length ? "Désélectionner Tout" : "Sélectionner Tout"}
+</Button> */}
                 </div>
                 <div>
                   <Button color="primary" onClick={handleAddClient} style={{ marginRight: '10px' }}>Ajouter Client</Button>
                   <Button color="info" onClick={toggleModal}>Importer Clients</Button>
-                  <Button color="info" onClick={sendEmailsToSelected}>Envoyer Mail</Button>
+                  {/* <Button color="info" onClick={sendEmailsToSelected}>Envoyer Mail</Button> */}
                 </div>
               </CardHeader>
               <CardBody>
-                <ToolkitProvider keyField="id" data={clients} columns={columns} search>
-                  {props => (
-                    <div>
-                      <SearchBar {...props.searchProps} style={{ border: '1px solid black' }} />
-                      <div style={{ overflowX: 'auto' }}>
-                        <BootstrapTable
-                          keyField="id"
-                          data={clients}
-                          columns={columns}
-                          selectRow={selectRow}
-                          bootstrap4
-                          pagination={pagination}
-                          bordered={false}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </ToolkitProvider>
+              <ToolkitProvider keyField="id" data={clients} columns={columns} search>
+  {props => (
+    <div>
+      <div className="row mb-2">
+        <div className="col-6">
+        {deleteButton}
+          {/* Ici, vous pouvez remettre les boutons ou autres éléments comme avant */}
+        </div>
+        <div className="col-6 text-right">
+          <SearchBar {...props.searchProps} className="form-control-sm" placeholder="Rechercher" style={{ border: '1px solid black', maxWidth: '250px' }} />
+        </div>
+      </div>
+      <div style={{ overflowX: 'auto' }}>
+        <BootstrapTable
+          {...props.baseProps}
+          keyField="_id"
+          bootstrap4
+          pagination={pagination}
+          data={clients}
+          columns={columns}
+          selectRow={selectRow}
+          bordered={false}
+        />
+      </div>
+    </div>
+  )}
+</ToolkitProvider>
+
               </CardBody>
             </Card>
           </div>

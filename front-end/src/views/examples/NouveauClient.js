@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Container, Row, Col, UncontrolledAlert,
   Nav, NavItem, NavLink, TabContent, TabPane
@@ -80,40 +83,74 @@ useEffect(() => {
     return formIsValid;
   };
 
-  const saveClient = async (clientData) => {
-    const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
-    const method = clientData._id ? 'PUT' : 'POST';
+//   const saveClient = async (clientData) => {
+//     const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+//     const method = clientData._id ? 'PUT' : 'POST';
 
-    try {
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-            },
-            body: JSON.stringify(clientData)
-        });
+//     try {
+//         const response = await fetch(url, {
+//             method: method,
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': localStorage.getItem('token')
+//             },
+//             body: JSON.stringify(clientData)
+//         });
 
-        if (!response.ok) {
-            const data = await response.json();
-            if (response.status === 409) {
-                alert(data.message); // Utiliser alert pour montrer le message d'erreur
-                // Vous pouvez également utiliser un autre type de notification selon votre UX
-            } else {
-                throw new Error(data.message);
-            }
-        } else {
-            const data = await response.json();
-            setSuccessMessage("Le client a été ajouté/modifié avec succès !");
-            setTimeout(() => {
-                history.push('/admin/clients');
-            }, 3000);
-        }
-    } catch (error) {
-        console.error('Erreur lors de l\'opération sur le client:', error);
-        setErrors({ form: "Erreur lors de l'opération sur le client." });
-    }
+//         if (!response.ok) {
+//           const data = await response.json();
+//           toast.error(`Erreur: ${data.message}`);
+//       } else {
+//           const data = await response.json();
+//           toast.success("Le client a été ajouté/modifié avec succès !");
+//           setTimeout(() => {
+//               history.push('/admin/clients');
+//           }, 3000);
+//       }
+//   } catch (error) {
+//       console.error('Erreur lors de l\'opération sur le client:', error);
+//       toast.error(`Erreur lors de l'opération sur le client: ${error.message}`);
+//   }
+// };
+
+const saveClient = async (clientData) => {
+  const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+  const method = clientData._id ? 'PUT' : 'POST';
+
+  console.log('Envoi des données du client:', clientData);  // Log des données envoyées
+
+  try {
+      const response = await fetch(url, {
+          method: method,
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': localStorage.getItem('token')
+          },
+          body: JSON.stringify(clientData)
+      });
+
+      console.log('Statut de la réponse:', response.status);  // Log du statut de réponse HTTP
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.log('Erreur lors de l\'enregistrement:', data);  // Log de l'erreur
+        toast.error(`Erreur: ${data.message}`);
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Réponse du serveur:', data);  // Log de la réponse
+      toast.success("Le client a été ajouté/modifié avec succès !");
+      setTimeout(() => {
+          history.push('/admin/clients');
+      }, 3000);
+  } catch (error) {
+      console.error('Erreur lors de l\'opération sur le client:', error);
+      toast.error(`Erreur lors de l'opération sur le client: ${error.message}`);
+  }
 };
+
+
 
 
 
@@ -173,9 +210,11 @@ useEffect(() => {
   
 
   return (
-    <div style={{ paddingTop: '50px' }}>
+    // <div style={{ paddingTop: '50px', backgroundColor: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important' }}>
+       <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)' }}>
     <Container className="mt-5">
       <Card>
+      <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <CardHeader className="bg-white text-white">
             <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
           </CardHeader>
@@ -185,6 +224,7 @@ useEffect(() => {
                 <NavLink
                   className={classnames({ active: activeTab === '1' })}
                   onClick={() => { toggleTab('1'); }}
+                  style={{ cursor: 'pointer' }}
                 >
                   Informations Générales
                 </NavLink>
@@ -193,6 +233,7 @@ useEffect(() => {
                 <NavLink
                   className={classnames({ active: activeTab === '2' })}
                   onClick={() => { toggleTab('2'); }}
+                  style={{ cursor: 'pointer' }}
                 >
                   Bilan Auditif
                 </NavLink>

@@ -83,6 +83,22 @@ var routes = [
     hidden: true // Ajouté pour cacher cette route dans le menu
   },
   {
+    path: "/login",
+    name: "Connexion",
+    icon: "ni ni-key-25 text-info",
+    component: Login,
+    layout: "/auth",
+    api: true
+  },
+  {
+    path: "/register",
+    name: "Inscription",
+    icon: "ni ni-circle-08 text-pink",
+    component: Register,
+    layout: "/auth",
+    api: true
+  },
+  {
     path: "/edit-profile",
     name: "Modifier Profil",
     icon: "ni ni-ruler-pencil text-info",

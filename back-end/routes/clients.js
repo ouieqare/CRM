@@ -206,6 +206,23 @@ router.post('/add', reqAuth, async (req, res) => {
   }
 });
 
+router.put('/:id/status', reqAuth, async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id);
+    if (!client) {
+      return res.status(404).json({ success: false, message: 'Client not found' });
+    }
+    
+    // Mise à jour du statut spécifique, assurez-vous que le corps de la requête contient le champ `statut`
+    client.statut = req.body.statut;
+    
+    await client.save();
+    res.json({ success: true, message: 'Statut updated successfully', client });
+  } catch (err) {
+    console.error("Error updating client's status:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 
 module.exports = router;

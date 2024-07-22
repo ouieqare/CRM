@@ -12,6 +12,7 @@ const {smtpConf} = require('../config/config');
 const Client = require('../models/client');
 // route /admin/users/
 
+
 router.post('/all', reqAuth, async (req, res) => {
   try {
     let users = await User.find({});

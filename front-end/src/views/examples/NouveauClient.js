@@ -33,7 +33,8 @@ const NouveauClient = () => {
     codePostal: "",
     ville: "",
     note: "",
-    audiogramme: "" 
+    audiogramme: "",
+    statut: "" 
   });
   const [activeTab, setActiveTab] = useState('1');
   const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
@@ -288,6 +289,21 @@ const saveClient = async (clientData) => {
                   </FormGroup>
                 </Col>
               </Row>
+              <Row form>
+              <Col md={4}>
+              <FormGroup>
+  <Label for="statut">Statut</Label>
+  <Input type="select" name="statut" id="statut" value={client.statut} onChange={handleInputChange}>
+    <option value="">Sélectionner un statut</option>
+    <option value="Rdv fixé">Rdv fixé</option>
+    <option value="Rdv Annulé">Rdv Annulé</option>
+    <option value="Appareillé">Appareillé</option>
+    <option value="Période d'essai">Période d'essai</option>
+    <option value="Facturé">Facturé</option>
+  </Input>
+</FormGroup>
+</Col>
+</Row>
               <Row form>
                 <Col md={6}>
                   <FormGroup>

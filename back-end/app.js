@@ -20,6 +20,17 @@ app.use(compression());
 
 // Passport Config
 require('./config/passport')(passport);
+// Route pour démarrer l'authentification Google
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Route pour gérer le callback après authentification
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Authentification réussie, rediriger vers la page d'accueil.
+    res.redirect('/');
+  });
 
 // DB Config
 

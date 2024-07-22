@@ -186,6 +186,38 @@ const Tables = () => {
     history.push('/admin/nouveauClient');
   };
 
+  const handleStatusChange = (clientId, newStatus) => {
+    // Mise à jour de l'état local
+    const updatedClients = clients.map(client =>
+      client._id === clientId ? { ...client, statut: newStatus } : client
+    );
+    setClients(updatedClients);
+  
+    // Envoie de la mise à jour au serveur
+    fetch(`http://localhost:5100/api/clients/${clientId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+      },
+      body: JSON.stringify({ statut: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        console.error('Failed to update status:', data.message);
+        toast.error(`Erreur lors de la mise à jour du statut: ${data.message}`);
+      } else {
+        toast.success('Statut mis à jour avec succès!');
+      }
+    })
+    .catch(error => {
+      console.error('Error updating status:', error);
+      toast.error(`Erreur: ${error.message}`);
+    });
+  };
+  
+
   const columns = [
     { dataField: "_id", text: "ID", hidden: true },
     { dataField: "nom", text: "Nom", sort: true },  // Permet le tri sur la colonne "Nom"
@@ -198,6 +230,36 @@ const Tables = () => {
       text: "Date de Naissance",
       formatter: (cellContent, row) => formatDate(row.dateNaissance),
       sort: true  // Permet le tri sur la colonne "Date de Naissance"
+    },
+    {
+      dataField: "statut",
+      text: "Statut",
+      formatter: (cell, row) => {
+        return (
+          <select
+            defaultValue={row.statut}
+            onClick={(e) => e.stopPropagation()} 
+            onChange={(e) => handleStatusChange(row._id, e.target.value)}
+            className="form-control"
+          >
+            <option value="Rdv fixé">Rdv fixé</option>
+            <option value="Rdv Annulé">Rdv Annulé</option>
+            <option value="Appareillé">Appareillé</option>
+            <option value="Période d'essai">Période d'essai</option>
+            <option value="Facturé">Facturé</option>
+          </select>
+        );
+      },
+      editor: {
+        type: 'select',
+        options: [
+          { value: 'Rdv fixé', label: 'Rdv fixé' },
+          { value: 'Rdv Annulé', label: 'Rdv Annulé' },
+          { value: 'Appareillé', label: 'Appareillé' },
+          { value: "Période d'essai", label: "Période d'essai" },
+          { value: 'Facturé', label: 'Facturé' }
+        ]
+      }
     },
     {
       dataField: 'actions',
@@ -363,7 +425,7 @@ const Tables = () => {
 
   return (
     <>
-      <Header />
+      <Header totalClients={totalClients} />
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <Container className="mt--7" fluid>
         <Row>

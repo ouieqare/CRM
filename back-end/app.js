@@ -80,21 +80,21 @@ http.createServer({}, app)
     });
 
 // FOR HTTPS ONLY
-https.createServer({
-  key: fs.readFileSync(process.env.SSLKEY),
-  cert: fs.readFileSync(process.env.SSLCERT),
-}, app)
-    .listen(PORT, function() {
-      console.log('App listening on port ' + PORT + '! Go to https://localhost:' + PORT + '/');
-    });
-app.use(requireHTTPS); //FOR HTTPS
-app.enable('trust proxy');
-app.use(function(req, res, next) {
-  if (req.secure) {
-    return next();
-  }
-  res.redirect('https://' + req.headers.host + req.url);
-});
+// https.createServer({
+//   key: fs.readFileSync(process.env.SSLKEY),
+//   cert: fs.readFileSync(process.env.SSLCERT),
+// }, app)
+//     .listen(PORT, function() {
+//       console.log('App listening on port ' + PORT + '! Go to https://localhost:' + PORT + '/');
+//     });
+// app.use(requireHTTPS); //FOR HTTPS
+// app.enable('trust proxy');
+// app.use(function(req, res, next) {
+//   if (req.secure) {
+//     return next();
+//   }
+//   res.redirect('https://' + req.headers.host + req.url);
+// });
 
 
 /**

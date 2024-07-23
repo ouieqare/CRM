@@ -9,26 +9,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 const csvtojson = require('csvtojson');
 const XLSX = require('xlsx');
 
-
-// router.post('/add', reqAuth, async (req, res) => {
-//   if (!req.user || !req.user.id) {
-//       return res.status(400).json({ success: false, message: 'User ID missing from token' });
-//   }
-
-//   const newClient = new Client({
-//       ...req.body,
-//       userId: req.user.id  // Assurez-vous que l'ID de l'utilisateur est correctement attaché
-//   });
-
-//   try {
-//       await newClient.save();
-//       res.status(201).json(newClient);
-//   } catch (err) {
-//       console.error(err);
-//       res.status(400).json({ error: err.message });
-//   }
-// });
-
 router.get('/', (req, res, next) => {
   console.log("Authorization Header:", req.headers.authorization);
   return next();

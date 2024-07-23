@@ -11,9 +11,9 @@ const path = require('path');
 const db = require('./config/keys').mongoURI;
 const CronJob = require('cron').CronJob;
 const crons = require('./config/crons');
-
+const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
-
+app.use('/', clientsRoutes);
 // Instantiate express
 const app = express();
 app.use(compression());

@@ -224,5 +224,16 @@ router.put('/:id/status', reqAuth, async (req, res) => {
   }
 });
 
+// Filtrer les clients par statut
+router.get('/by-status/:statut', reqAuth, async (req, res) => {
+  try {
+    const statut = req.params.statut; // Récupère le statut de l'URL
+    const clients = await Client.find({ userId: req.user.id, statut: statut, isDeleted: false });
+    res.json(clients);
+  } catch (err) {
+    console.error('Error fetching clients by status:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = router;

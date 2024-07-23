@@ -14,7 +14,7 @@ import ResetPasswordSuccess from "./views/examples/ResetPasswordSuccess";
 import Clients from "views/examples/Clients";
 import NouveauClient from "views/examples/NouveauClient";
 import Corbeille from "views/examples/Corbeille";
-
+import ClientStatusPage from "views/examples/ClientStatusPage";
 
 var routes = [
   {
@@ -54,6 +54,14 @@ var routes = [
     name: "Tables",
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
+    layout: "/admin",
+    api: false
+  },
+  {
+    path: "/statutClient/:status",
+    name: "ClientStatusPage",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: ClientStatusPage,
     layout: "/admin",
     api: false
   },

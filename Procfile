@@ -1,1 +1,2 @@
-web: cd back-end && node app.js
+web: cd back-end && npm install && node app.js
+

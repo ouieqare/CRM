@@ -45,19 +45,19 @@ const reqAuth = (req, res, next) => {
   console.log('Received authorization header:', authHeader);
 
   if (!authHeader) {
-    return res.redirect('/login');
+    return res.redirect('/auth/login');
   }
 
   const tokenParts = authHeader.split(' ');
   if (tokenParts.length !== 2 || (tokenParts[0] !== 'Bearer' && tokenParts[0] !== 'JWT')) {
-    return res.redirect('/login');
+    return res.redirect('/auth/login');
   }
 
   const token = tokenParts[1];
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       console.log('Token verification error:', err);
-      return res.redirect('/login');
+      return res.redirect('/auth/login');
     }
     req.user = decoded;
     next();

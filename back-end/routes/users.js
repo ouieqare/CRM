@@ -373,9 +373,9 @@ router.post('/logout', async (req, res) => {
 //     });
 // });
 
-router.get('/login', (req, res) => {
-  // Assurez-vous de servir ici le fichier HTML ou de rendre la vue de connexion.
-  res.render('login'); // Utilisez `res.render` si vous utilisez un moteur de templates comme ejs, pug, etc.
-});
+// router.get('/login', (req, res) => {
+//   // Assurez-vous de servir ici le fichier HTML ou de rendre la vue de connexion.
+//   res.render('login'); // Utilisez `res.render` si vous utilisez un moteur de templates comme ejs, pug, etc.
+// });
 
 module.exports = router;

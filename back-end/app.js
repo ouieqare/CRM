@@ -24,7 +24,11 @@ require('./config/passport')(passport);
 // Route pour démarrer l'authentification Google
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
-
+  
+  app.get('/auth/login', (req, res) => {
+    // Assurez-vous de servir ici le fichier HTML ou de rendre la vue de connexion.
+    res.render('login'); // Utilisez `res.render` si vous utilisez un moteur de templates comme ejs, pug, etc.
+  });
 // Route pour gérer le callback après authentification
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),

@@ -1,0 +1,15 @@
+{
+  "name": "argon-dashboard-react",
+  "homepage": "https://github.com/creativetimofficial/argon-dashboard-react",
+  "version": "1.2.4",
+  "_release": "1.2.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.2.4",
+    "commit": "1a9e4739fcd4ffb6563d52cabd8cc35373348ba5"
+  },
+  "_source": "https://github.com/creativetimofficial/argon-dashboard-react.git",
+  "_target": "^1.2.4",
+  "_originalSource": "argon-dashboard-react",
+  "_direct": true
+}

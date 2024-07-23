@@ -13,9 +13,10 @@ const CronJob = require('cron').CronJob;
 const crons = require('./config/crons');
 const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
-app.use('/', clientsRoutes);
+
 // Instantiate express
 const app = express();
+app.use('/', clientsRoutes);
 app.use(compression());
 
 // Passport Config

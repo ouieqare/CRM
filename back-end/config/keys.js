@@ -1,10 +1,11 @@
-dbPasswordDev ='mongodb://localhost/Ouieqare';
+// dbPasswordDev ='mongodb://localhost/Ouieqare';
 
-const dbPasswordProd = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/${MONGO_DB}?retryWrites=true&w=majority`;
-// // const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-const mongoURI = process.env.NODE_ENV === 'production' ? dbPasswordProd : dbPasswordDev;
+const dbPasswordProd = process.env.NODE_ENV === 'production' ? 
+  `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}/${process.env.MONGO_DB}?retryWrites=true&w=majority` : 
+  'mongodb://localhost/Ouieqare';
 
 module.exports = {
-  mongoURI: mongoURI,
+  mongoURI: dbPasswordProd,
   secret: 'yourSecretKey',
 };
+

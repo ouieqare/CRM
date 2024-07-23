@@ -9,15 +9,13 @@ const reqAuth = (req, res, next) => {
 
   // Vérifier que l'en-tête existe
   if (!authHeader) {
-    // return res.status(401).json({ success: false, msg: 'No authorization token provided' });
-    return res.redirect('/login');
+    return res.status(401).json({ success: false, msg: 'No authorization token provided' });
   }
 
   // Extraire le token
   const tokenParts = authHeader.split(' ');
 if (tokenParts.length !== 2 || (tokenParts[0] !== 'Bearer' && tokenParts[0] !== 'JWT')) {
-    // return res.status(401).json({ success: false, msg: 'Token format is invalid' });
-    return res.redirect('/login');
+    return res.status(401).json({ success: false, msg: 'Token format is invalid' });
 }
 
 

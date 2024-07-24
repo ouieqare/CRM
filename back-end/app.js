@@ -143,7 +143,7 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Failed to connect to MongoDB', err));
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Express body parser
 app.use(bodyParser.urlencoded({ extended: true }));

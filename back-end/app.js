@@ -132,13 +132,7 @@ const crons = require('./config/crons');
 const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
 
-const corsOptions = {
-  origin: "https://ouieqare-crm-336f65ca3acc.herokuapp.com",
-  optionsSuccessStatus: 200 // certains navigateurs (IE11, certains SmartTVs) chokent sur 204
-};
 
-app.use('/api/users', cors(corsOptions), require('./routes/users'));
-app.use('/api/clients', cors(corsOptions), require('./routes/clients'));
 
 
 // Instantiate express
@@ -152,7 +146,13 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Failed to connect to MongoDB', err));
 
-app.use(cors());
+    const corsOptions = {
+      origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com', // Mettez l'URL de votre frontend
+      optionsSuccessStatus: 200,
+      credentials: true
+    };
+    
+    app.use(cors(corsOptions));
 
 // Express body parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -162,8 +162,8 @@ app.use(bodyParser.json());
 app.use('/auth', express.static(path.join(__dirname, 'build')));
 
 // Initialize routes middleware
-// app.use('/api/users', require('./routes/users'));
-// app.use('/api/clients', require('./routes/clients'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/clients', require('./routes/clients'));
 
 // Catch all other routes and return the React app
 app.get('/auth/*', (req, res) => {

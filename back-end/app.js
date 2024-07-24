@@ -162,9 +162,8 @@ app.use(bodyParser.json());
 app.use('/auth', express.static(path.join(__dirname, 'build')));
 
 // Initialize routes middleware
-app.use('/api/users', require('./routes/users'));
-app.use('/api/clients', require('./routes/clients'));
-
+app.use('/api/users', cors(corsOptions), require('./routes/users'));
+app.use('/api/clients', cors(corsOptions), require('./routes/clients'));
 // Catch all other routes and return the React app
 app.get('/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

@@ -87,22 +87,8 @@
 //       console.log('App listening on port ' + PORT + '! Go to http://localhost:' + PORT + '/');
 //     });
 
-// // FOR HTTPS ONLY
-// // https.createServer({
-// //   key: fs.readFileSync(process.env.SSLKEY),
-// //   cert: fs.readFileSync(process.env.SSLCERT),
-// // }, app)
-// //     .listen(PORT, function() {
-// //       console.log('App listening on port ' + PORT + '! Go to https://localhost:' + PORT + '/');
-// //     });
-// // app.use(requireHTTPS); //FOR HTTPS
-// // app.enable('trust proxy');
-// // app.use(function(req, res, next) {
-// //   if (req.secure) {
-// //     return next();
-// //   }
-// //   res.redirect('https://' + req.headers.host + req.url);
-// // });
+// FOR HTTPS ONLY
+
 
 
 // /**
@@ -130,6 +116,8 @@ const db = require('./config/keys').mongoURI;
 const CronJob = require('cron').CronJob;
 const crons = require('./config/crons');
 require('dotenv').config();
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
 app.use(compression());
@@ -172,6 +160,22 @@ app.use('/api/clients', require('./routes/clients'));
 // Catch all other routes and return the React app
 app.get('/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+https.createServer({
+  key: fs.readFileSync(process.env.SSLKEY),
+  cert: fs.readFileSync(process.env.SSLCERT),
+}, app)
+    .listen(PORT, function() {
+      console.log('App listening on port ' + PORT + '! Go to https://localhost:' + PORT + '/');
+    });
+app.use(requireHTTPS); //FOR HTTPS
+app.enable('trust proxy');
+app.use(function(req, res, next) {
+  if (req.secure) {
+    return next();
+  }
+  res.redirect('https://' + req.headers.host + req.url);
 });
 
 // run at 3:10 AM -> delete old tokens

@@ -129,13 +129,8 @@ const path = require('path');
 const db = require('./config/keys').mongoURI;
 const CronJob = require('cron').CronJob;
 const crons = require('./config/crons');
-const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
 
-
-
-
-// Instantiate express
 const app = express();
 app.use(compression());
 
@@ -146,24 +141,34 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Failed to connect to MongoDB', err));
 
-    const corsOptions = {
-      origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com', // Mettez l'URL de votre frontend
-      optionsSuccessStatus: 200,
-      credentials: true
-    };
-    
-    app.use(cors(corsOptions));
+// CORS configuration
+const corsOptions = {
+  origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com', // URL de votre frontend
+  optionsSuccessStatus: 200,
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 // Express body parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Middleware CORS pour toutes les routes
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://ouieqare-crm-336f65ca3acc.herokuapp.com"); // Remplacez par l'URL de votre frontend
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
 // Serve static files from the React app
 app.use('/auth', express.static(path.join(__dirname, 'build')));
 
 // Initialize routes middleware
-app.use('/api/users', cors(corsOptions), require('./routes/users'));
-app.use('/api/clients', cors(corsOptions), require('./routes/clients'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/clients', require('./routes/clients'));
+
 // Catch all other routes and return the React app
 app.get('/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

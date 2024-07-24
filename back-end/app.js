@@ -150,14 +150,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
+app.use('/auth', express.static(path.join(__dirname, 'build')));
 
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));
 app.use('/api/clients', require('./routes/clients'));
 
 // Catch all other routes and return the React app
-app.get('*', (req, res) => {
+app.get('/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 

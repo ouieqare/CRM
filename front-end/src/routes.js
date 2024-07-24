@@ -15,6 +15,7 @@ import Clients from "views/examples/Clients";
 import NouveauClient from "views/examples/NouveauClient";
 import Corbeille from "views/examples/Corbeille";
 import ClientStatusPage from "views/examples/ClientStatusPage";
+import Agenda from "views/examples/Agenda";
 
 var routes = [
   {
@@ -63,7 +64,16 @@ var routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: ClientStatusPage,
     layout: "/admin",
-    api: false
+    api: false,
+    hidden: true
+  },
+  {
+    path: "/agenda",
+    name: "Agenda",
+    icon: "ni ni-calendar-grid-58",
+    component: Agenda,
+    layout: "/admin",
+    api: false,
   },
   {
     path: "/clients",
@@ -96,7 +106,8 @@ var routes = [
     icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
-    api: true
+    api: true,
+    hidden: true
   },
   {
     path: "/register",
@@ -104,7 +115,17 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
-    api: true
+    api: true,
+    hidden: true
+  },
+  {
+    path: "/confirm-email/:id",
+    name: "Confirmer Email",
+    icon: "ni ni-check-bold text-green",
+    component: ConfirmEmail,
+    layout: "/auth",
+    api: true,
+    hidden: true
   },
   {
     path: "/edit-profile",
@@ -112,7 +133,8 @@ var routes = [
     icon: "ni ni-ruler-pencil text-info",
     component: EditProfile,
     layout: "/admin",
-    api: true
+    api: true,
+    hidden: true
   },
   {
     path: "/users",
@@ -120,31 +142,35 @@ var routes = [
     icon: "ni ni-folder-17 text-pink",
     component: UsersTable,
     layout: "/admin",
-    api: true
+    api: true,
+    hidden: true
   },
-  // {
-  //   path: "/reset-password",
-  //   name: "Réinitialiser le mot de passe",
-  //   icon: "ni ni-folder-17 text-pink",
-  //   component: ResetPassword,
-  //   layout: "/auth",
-  //   api: true
-  // },
-  // {
-  //   path: "/confirm-password/:id",
-  //   name: "Confirmer le mot de passe",
-  //   icon: "ni ni-folder-17 text-pink",
-  //   component: ConfirmPassword,
-  //   layout: "/auth",
-  //   api: true
-  // },
-  // {
-  //   path: "/reset-success",
-  //   name: "Réinitialisation du mot de passe confirmée",
-  //   icon: "ni ni-folder-17 text-pink",
-  //   component: ResetPasswordSuccess,
-  //   layout: "/auth",
-  //   api: false
-  // }
+  {
+    path: "/reset-password",
+    name: "Réinitialiser le mot de passe",
+    icon: "ni ni-folder-17 text-pink",
+    component: ResetPassword,
+    layout: "/auth",
+    api: true,
+    hidden: true
+  },
+  {
+    path: "/confirm-password/:id",
+    name: "Confirmer le mot de passe",
+    icon: "ni ni-folder-17 text-pink",
+    component: ConfirmPassword,
+    layout: "/auth",
+    api: true,
+    hidden: true
+  },
+  {
+    path: "/reset-success",
+    name: "Réinitialisation du mot de passe confirmée",
+    icon: "ni ni-folder-17 text-pink",
+    component: ResetPasswordSuccess,
+    layout: "/auth",
+    api: false,
+    hidden: true
+  }
 ];
 export default routes;

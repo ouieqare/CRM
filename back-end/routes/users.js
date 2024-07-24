@@ -114,47 +114,6 @@ router.post('/forgotpassword', async (req, res) => {
   }
 });
 
-// router.post('/register', (req, res) => {
-//   const {name, email, password} = req.body;
-
-//   User.findOne({email: email}).then((user) => {
-//     if (user) {
-//       res.json({success: false, msg: 'Email already exists'});
-//     } else if (password.length < 6) {
-//       // eslint-disable-next-line max-len
-//       res.json({success: false, msg: 'Password must be at least 6 characters long'});
-//     } else {
-//       bcrypt.genSalt(10, (err, salt) => {
-//         bcrypt.hash(password, salt, null, (err, hash) => {
-//           if (err) throw err;
-//           const query = {name: name, email: email,
-//             password: hash};
-//           User.create(query, function(err, user) {
-//             if (err) throw err;
-
-//             const transporter = nodemailer.createTransport(smtpConf);
-
-//             // don't send emails if it is in demo mode
-//             if (process.env.DEMO != 'yes') {
-//             // send mail with defined transport object
-//               transporter.sendMail({
-//                 from: '"Creative Tim" <' + smtpConf.auth.user + '>',
-//                 to: email, // list of receivers
-//                 subject: 'Creative Tim Confirm Account', // Subject line
-//                 // eslint-disable-next-line max-len
-//                 html: '<h1>Hey,</h1><br><p>Confirm your new account </p><p><a href="' + 'http://localhost:3000/auth/confirm-email/' + user._id + '">"' + 'http://localhost:3000/auth/confirm-email/' + user._id + '"</a><br><br>If you did not ask for it, please let us know immediately at <a href="mailto:' + smtpConf.auth.user + '">' + smtpConf.auth.user + '</a></p>', // html body
-//               });
-//               // eslint-disable-next-line max-len
-//               res.json({success: true, msg: 'The user was succesfully registered'});
-//             }
-//             // eslint-disable-next-line max-len
-//             res.json({success: true, userID: user._id, msg: 'The user was succesfully registered'});
-//           });
-//         });
-//       });
-//     }
-//   });
-// });
 
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
@@ -328,16 +287,7 @@ router.post('/checkSession', reqAuth, function(req, res) {
   res.json({success: true});
 });
 
-// router.post('/logout', reqAuth, function(req, res) {
-//   const token = req.body.token;
-//   ActiveSession.deleteMany({token: token}, function(err, item) {
-//     if (err) {
-//       res.json({success: false});
-//     }
-//     res.json({success: true});
-//   });
-// });
-// Route pour la déconnexion
+
 router.post('/logout', async (req, res) => {
   const { token } = req.body;
   try {
@@ -349,33 +299,5 @@ router.post('/logout', async (req, res) => {
   }
 });
 
-// router.post('api/clients', reqAuth, (req, res) => {
-//   const { nom, details } = req.body;
-//   // Assurez-vous que l'utilisateur est authentifié avec le middleware `reqAuth`
-//   const user = req.user;
-
-//   // Création d'une nouvelle instance de Client en utilisant le modèle Mongoose
-//   const newClient = new Client({
-//     nom: req.body.nomClient,
-//     details: req.body.detailsClient,
-//     centreId: user._id
-// });
-
-
-//   // Sauvegarder le nouveau client dans la base de données
-//   newClient.save()
-//     .then(client => {
-//       res.status(201).send({ success: true, message: 'Client ajouté avec succès', client });
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       res.status(500).send({ success: false, message: "Erreur lors de l'ajout du client" });
-//     });
-// });
-
-// router.get('/login', (req, res) => {
-//   // Assurez-vous de servir ici le fichier HTML ou de rendre la vue de connexion.
-//   res.render('login'); // Utilisez `res.render` si vous utilisez un moteur de templates comme ejs, pug, etc.
-// });
 
 module.exports = router;

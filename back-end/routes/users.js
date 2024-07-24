@@ -9,7 +9,6 @@ const User = require('../models/user');
 const ActiveSession = require('../models/activeSession');
 const reqAuth = require('../config/safeRoutes').reqAuth;
 const {smtpConf} = require('../config/config');
-const Client = require('../models/client');
 // route /admin/users/
 
 

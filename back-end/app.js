@@ -18,6 +18,10 @@ require('dotenv').config();
 const app = express();
 app.use('/', clientsRoutes);
 app.use(compression());
+app.set('view engine', 'ejs');  // Remplacez 'ejs' par le moteur de template de votre choix
+
+// Définir le répertoire des vues
+app.set('views', path.join(__dirname, 'views'));
 
 // Passport Config
 require('./config/passport')(passport);
@@ -25,10 +29,10 @@ require('./config/passport')(passport);
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
   
-  app.get('/auth/login', (req, res) => {
-    // Assurez-vous de servir ici le fichier HTML ou de rendre la vue de connexion.
-    res.render('login'); // Utilisez `res.render` si vous utilisez un moteur de templates comme ejs, pug, etc.
-  });
+  // app.get('/auth/login', (req, res) => {
+  //   res.render('login');  // Assurez-vous que 'login' correspond au nom du fichier de vue sans extension
+  // });
+  
 // Route pour gérer le callback après authentification
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),

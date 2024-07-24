@@ -18,6 +18,7 @@
     "cron": "^1.8.2",
     "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.10",
     "express": "^4.15.3",
     "express-passport-logout": "^0.1.0",
     "fs": "0.0.1-security",

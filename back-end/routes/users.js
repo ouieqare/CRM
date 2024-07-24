@@ -114,12 +114,54 @@ router.post('/forgotpassword', async (req, res) => {
 });
 
 
+// router.post('/register', async (req, res) => {
+//   const { name, email, password } = req.body;
+
+//   try {
+//     // let user = await User.findOne({ email: email });
+//     let user = new User({ name, email, password });
+//     if (user) {
+//       return res.status(400).json({ success: false, msg: 'Email already exists' });
+//     }
+
+//     if (password.length < 6) {
+//       return res.status(400).json({ success: false, msg: 'Password must be at least 6 characters long' });
+//     }
+
+//     const salt = await bcrypt.genSalt(10);
+//     const hash = await bcrypt.hash(password, salt);
+
+//     user = new User({
+//       name: name,
+//       email: email,
+//       password: hash
+//     });
+
+//     await user.save();
+//     const userID = user._id; // Storing userID for use in the email link
+//     const confirmationLink = `http://${req.headers.host}/api/users/confirm-email/${user._id}`;
+
+//     // Envoi de l'email
+//     const html = `
+//         <h1>Email Confirmation</h1>
+//         <p>Please confirm your email by clicking on the following link: </p>
+//         <a href="${confirmationLink}">${confirmationLink}</a>
+//     `;
+//     sendEmail(email, 'Confirm your email', html);
+
+//     res.status(201).send({ success: true, message: 'User registered. Please check your email to confirm.' });
+// } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ success: false, message: 'Error registering new user.' });
+// }
+// });
+
+
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // let user = await User.findOne({ email: email });
-    let user = new User({ name, email, password });
+    let user = await User.findOne({ email: email });
     if (user) {
       return res.status(400).json({ success: false, msg: 'Email already exists' });
     }
@@ -139,7 +181,7 @@ router.post('/register', async (req, res) => {
 
     await user.save();
     const userID = user._id; // Storing userID for use in the email link
-    const confirmationLink = `http://${req.headers.host}/api/users/confirm-email/${user._id}`;
+    const confirmationLink = `https://${req.headers.host}/api/users/confirm-email/${user._id}`;
 
     // Envoi de l'email
     const html = `
@@ -155,6 +197,7 @@ router.post('/register', async (req, res) => {
     res.status(500).send({ success: false, message: 'Error registering new user.' });
 }
 });
+
     // Don't send emails if it is in demo mode
 //     if (process.env.DEMO !== 'yes') {
 //       const transporter = nodemailer.createTransport(smtpConf);

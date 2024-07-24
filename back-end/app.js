@@ -150,7 +150,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Serve static files from the React app
-app.use('/auth', express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));
@@ -172,4 +172,3 @@ http.createServer({}, app)
     .listen(PORT, function() {
       console.log('App listening on port ' + PORT + '! Go to http://localhost:' + PORT + '/');
     });
-

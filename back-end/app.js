@@ -143,7 +143,15 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Failed to connect to MongoDB', err));
 
-app.use(cors());
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(cors({
+      origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/'
+  }));
+} else {
+  app.use(cors());
+}
+
 
 // Express body parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -160,6 +168,13 @@ app.use('/api/clients', require('./routes/clients'));
 app.get('/auth/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+const helmet = require('helmet');
+app.use(helmet());
 
 // run at 3:10 AM -> delete old tokens
 const tokensCleanUp = new CronJob('10 3 * * *', function() {

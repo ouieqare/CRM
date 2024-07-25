@@ -203,7 +203,12 @@ router.post('/forgotpassword', async (req, res) => {
 //   }
 // });
 
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://ouieqare-crm-336f65ca3acc.herokuapp.com");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+}, async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
@@ -233,6 +238,7 @@ router.post('/register', async (req, res) => {
     res.status(500).send({ success: false, message: 'Error registering new user.' });
   }
 });
+
 
 
     // Don't send emails if it is in demo mode

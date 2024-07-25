@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/argon-dashboard-react/static/css/main.f8ab8ccf.chunk.css",
-    "main.js": "/argon-dashboard-react/static/js/main.9ef0a623.chunk.js",
-    "main.js.map": "/argon-dashboard-react/static/js/main.9ef0a623.chunk.js.map",
+    "main.js": "/argon-dashboard-react/static/js/main.73475538.chunk.js",
+    "main.js.map": "/argon-dashboard-react/static/js/main.73475538.chunk.js.map",
     "runtime-main.js": "/argon-dashboard-react/static/js/runtime-main.50fcc4e1.js",
     "runtime-main.js.map": "/argon-dashboard-react/static/js/runtime-main.50fcc4e1.js.map",
     "static/css/2.432e12d4.chunk.css": "/argon-dashboard-react/static/css/2.432e12d4.chunk.css",
@@ -28,6 +28,6 @@
     "static/css/2.432e12d4.chunk.css",
     "static/js/2.52bf14c5.chunk.js",
     "static/css/main.f8ab8ccf.chunk.css",
-    "static/js/main.9ef0a623.chunk.js"
+    "static/js/main.73475538.chunk.js"
   ]
 }

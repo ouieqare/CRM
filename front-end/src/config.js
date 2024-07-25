@@ -6,8 +6,8 @@
 
 // export default config;
 const config = {
-    WS_BASE_URL: 'https://ouieqare-crm.herokuapp.com/api/',  // Remplacez par l'URL de votre application Heroku
-    DOMAIN_NAME: 'https://ouieqare-crm.herokuapp.com',  // Remplacez par l'URL de votre application Heroku
+    WS_BASE_URL: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/',  // Remplacez par l'URL de votre application Heroku
+    DOMAIN_NAME: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com',  // Remplacez par l'URL de votre application Heroku
     DEMO: true
 };
 

@@ -129,8 +129,10 @@ const path = require('path');
 const db = require('./config/keys').mongoURI;
 const CronJob = require('cron').CronJob;
 const crons = require('./config/crons');
+const clientsRoutes = require('./routes/clients');
 require('dotenv').config();
 
+// Instantiate express
 const app = express();
 app.use(compression());
 
@@ -141,28 +143,11 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Failed to connect to MongoDB', err));
 
-// CORS configuration
-// const corsOptions = {
-//   origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com', // URL de votre frontend
-//   optionsSuccessStatus: 200,
-//   credentials: true
-// };
-
-// app.use(cors(corsOptions));
+app.use(cors());
 
 // Express body parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// Middleware CORS pour toutes les routes
-app.use(cors({
-  origin: 'https://ouieqare-crm-336f65ca3acc.herokuapp.com',
-  methods: "GET,HEAD,OPTIONS,POST,PUT",
-  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-  credentials: true,
-  optionsSuccessStatus: 200 // certains navigateurs (IE11, certains SmartTVs) chokent sur 204
-}));
-
 
 // Serve static files from the React app
 app.use('/auth', express.static(path.join(__dirname, 'build')));

@@ -85,7 +85,7 @@ useEffect(() => {
   };
 
 //   const saveClient = async (clientData) => {
-//     const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+//     const url = clientData._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientData._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/add';
 //     const method = clientData._id ? 'PUT' : 'POST';
 
 //     try {
@@ -115,7 +115,7 @@ useEffect(() => {
 // };
 
 const saveClient = async (clientData) => {
-  const url = clientData._id ? `http://localhost:5100/api/clients/${clientData._id}` : 'http://localhost:5100/api/clients/add';
+  const url = clientData._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientData._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/add';
   const method = clientData._id ? 'PUT' : 'POST';
 
   console.log('Envoi des données du client:', clientData);  // Log des données envoyées
@@ -177,7 +177,7 @@ const saveClient = async (clientData) => {
       audiogramme: client.audiogramme
     };
   
-    const url = client._id ? `http://localhost:5100/api/clients/${client._id}` : 'http://localhost:5100/api/clients/add';
+    const url = client._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${client._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/add';
     const method = client._id ? 'PUT' : 'POST';
   
     try {

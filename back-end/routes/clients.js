@@ -14,6 +14,7 @@ router.get('/', (req, res, next) => {
   return next();
 }, reqAuth, async (req, res) => {
   try {
+    console.log('Fetching clients for user:', req.user.id);
     const clients = await Client.find({ userId: req.user.id, isDeleted: false });
     res.json(clients);
   } catch (err) {

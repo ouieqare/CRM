@@ -99,7 +99,7 @@ const Tables = () => {
   const handleDeleteSelected = async () => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer les clients sélectionnés ?")) {
       for (const clientId of selected) {
-        await fetch(`http://localhost:5100/api/clients/${clientId}`, {
+        await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
@@ -160,7 +160,7 @@ const Tables = () => {
 
     console.log("Formatted Token from localStorage:", formattedToken);
 
-    fetch('http://localhost:5100/api/clients', {
+    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
       headers: {
          'Authorization': `Bearer ${formattedToken}`
       }
@@ -194,7 +194,7 @@ const Tables = () => {
     setClients(updatedClients);
   
     // Envoie de la mise à jour au serveur
-    fetch(`http://localhost:5100/api/clients/${clientId}/status`, {
+    fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientId}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -289,7 +289,7 @@ const Tables = () => {
 
   const handleDeleteClient = (clientId) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce client ?")) {
-      fetch(`http://localhost:5100/api/clients/${clientId}`, {
+      fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
@@ -334,7 +334,7 @@ const Tables = () => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    fetch('http://localhost:5100/api/clients/import', {
+    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/import', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`

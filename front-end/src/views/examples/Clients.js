@@ -223,7 +223,7 @@ const Tables = () => {
     { dataField: "nom", text: "Nom", sort: true },  // Permet le tri sur la colonne "Nom"
     { dataField: "prenom", text: "Prénom", sort: true },  // Permet le tri sur la colonne "Prénom"
     { dataField: "email", text: "Email", sort: true },  // Permet le tri sur la colonne "Email"
-    { dataField: "telephonePortable", text: "Téléphone Portable", sort: true },  // Permet le tri sur la colonne "Téléphone Portable"
+    { dataField: "telephonePortable", text: "Tel", sort: true },  // Permet le tri sur la colonne "Téléphone Portable"
     { dataField: "ville", text: "Ville", sort: true },  // Permet le tri sur la colonne "Ville"
     {
       dataField: "dateNaissance",

@@ -161,6 +161,14 @@ app.use(bodyParser.json());
 app.use('/api/users', require('./routes/users'));
 app.use('/api/clients', require('./routes/clients'));
 
+
+// Configuration des types MIME pour les fichiers de police
+express.static.mime.define({'font/woff2': ['woff2']});
+express.static.mime.define({'application/font-woff': ['woff']});
+express.static.mime.define({'application/vnd.ms-fontobject': ['eot']});
+express.static.mime.define({'application/x-font-ttf': ['ttf']});
+express.static.mime.define({'image/svg+xml': ['svg']});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../front-end/build')));
 

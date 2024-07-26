@@ -242,6 +242,7 @@ const Tables = () => {
             onChange={(e) => handleStatusChange(row._id, e.target.value)}
             className="form-control"
           >
+            <option value="none"></option>
             <option value="Rdv fixé">Rdv fixé</option>
             <option value="Rdv Annulé">Rdv Annulé</option>
             <option value="Appareillé">Appareillé</option>

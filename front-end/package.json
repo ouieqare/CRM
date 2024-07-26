@@ -1,11 +1,11 @@
 {
-  "name": "argon-dashboard-react",
+  "name": "vtalys",
   "version": "1.1.0",
   "description": "React version of Argon Dashboard by Creative Tim",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
+    "url": "git+https://github.com/creativetimofficial/Vtalys.git"
   },
   "keywords": [
     "react",
@@ -15,23 +15,23 @@
     "dashboard",
     "dashboard-react",
     "argon-dashboard",
-    "argon-dashboard-react"
+    "Vtalys"
   ],
   "author": "Creative Tim",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
+    "url": "https://github.com/creativetimofficial/Vtalys/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
-    "compile-sass": "node-sass src/assets/scss/argon-dashboard-react.scss src/assets/css/argon-dashboard-react.css",
-    "minify-sass": "node-sass src/assets/scss/argon-dashboard-react.scss src/assets/css/argon-dashboard-react.min.css --output-style compressed",
-    "map-sass": "node-sass src/assets/scss/argon-dashboard-react.scss src/assets/css/argon-dashboard-react.css --source-map true"
+    "compile-sass": "node-sass src/assets/scss/Vtalys.scss src/assets/css/Vtalys.css",
+    "minify-sass": "node-sass src/assets/scss/Vtalys.scss src/assets/css/Vtalys.min.css --output-style compressed",
+    "map-sass": "node-sass src/assets/scss/Vtalys.scss src/assets/css/Vtalys.css --source-map true"
   },
   "eslintConfig": {
     "extends": "react-app"

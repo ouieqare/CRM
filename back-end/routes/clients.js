@@ -10,6 +10,7 @@ const csvtojson = require('csvtojson');
 const XLSX = require('xlsx');
 
 router.get('/', (req, res, next) => {
+  console.log('API /api/clients called');
   console.log("Authorization Header:", req.headers.authorization);
   return next();
 }, reqAuth, async (req, res) => {

@@ -65,7 +65,7 @@ const ResetPassword = props => {
                     borderRadius: 10
                 }} onClose={() => setShowToast(false)} show={showToast} delay={5000} autohide={!config.DEMO}>
                     <Toast.Header>
-                        <img style={{height: "30px", width: "100px"}} src={require("assets/img/brand/logobrm.png").default}  alt="..."/>
+                        <img style={{height: "30px", width: "100px"}} src={require("assets/img/brand/logo.png").default}  alt="..."/>
                     </Toast.Header>
                     <Toast.Body>
                         {toastMessage}

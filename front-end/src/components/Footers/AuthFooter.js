@@ -36,7 +36,7 @@ class Login extends React.Component {
                     href="https://www.ouieqare.com?ref=adr-auth-footer"
                     target="_blank"
                   >
-                    Ouieqare
+                    Vtalys
                   </a>
                 </div>
               </Col>
@@ -47,7 +47,7 @@ class Login extends React.Component {
                       href="https://www.ouieqare.com?ref=adr-auth-footer"
                       target="_blank"
                     >
-                      Ouieqare
+                     Vtalys
                     </NavLink>
                   </NavItem>
                   <NavItem>

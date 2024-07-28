@@ -118,54 +118,35 @@ router.put('/:id', reqAuth, async (req, res) => {
 //     });
 // });
 
-// router.post('/import', reqAuth, upload.single('file'), async (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ success: false, message: 'No file uploaded' });
-//     }
-
-//     const file = req.file;
-//     let jsonData = [];
-
-//     if (file.mimetype === 'text/csv') {
-//         jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
-//     } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
-//         const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-//         const sheetName = workbook.SheetNames[0];
-//         const worksheet = workbook.Sheets[sheetName];
-//         jsonData = XLSX.utils.sheet_to_json(worksheet);
-//     } else {
-//         return res.status(400).json({ success: false, message: 'Unsupported file type' });
-//     }
-
-//     try {
-//         const results = await Client.insertMany(jsonData.map(item => ({
-//             ...item,
-//             userId: req.user.id
-//         })));
-//         res.status(201).json({ success: true, count: results.length });
-//     } catch (err) {
-//         console.error("Error importing data:", err);
-//         res.status(500).json({ success: false, error: err.message });
-//     }
-// });
-
 router.post('/import', reqAuth, upload.single('file'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
-  }
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
 
-  try {
-    let jsonData = parseFile(req.file); // Assume parseFile is a function you define to handle CSV/Excel parsing
+    const file = req.file;
+    let jsonData = [];
 
-    // You can filter out duplicates or handle them accordingly before inserting
-    let filteredData = await filterOutDuplicates(jsonData);
+    if (file.mimetype === 'text/csv') {
+        jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
+    } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
+        const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        jsonData = XLSX.utils.sheet_to_json(worksheet);
+    } else {
+        return res.status(400).json({ success: false, message: 'Unsupported file type' });
+    }
 
-    const results = await Client.insertMany(filteredData);
-    res.status(201).json({ success: true, count: results.length });
-  } catch (err) {
-    console.error("Error importing data:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+    try {
+        const results = await Client.insertMany(jsonData.map(item => ({
+            ...item,
+            userId: req.user.id
+        })));
+        res.status(201).json({ success: true, count: results.length });
+    } catch (err) {
+        console.error("Error importing data:", err);
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 

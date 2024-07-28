@@ -335,36 +335,6 @@ const Tables = () => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    // fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/import', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
-    //   },
-    //   body: formData
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw new Error('Failed to upload file');
-    //     }
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     setUploadSuccess(true);
-    //     console.log("Import success:", data);
-    //     fetchClients(setClients);
-    //     setIsUploading(false);
-        
-    //     setSelectedFile(null);
-    //     toast.success("Fichier importé avec succès!");
-    //     toggleModal(); // Ferme le modal après l'importation réussie
-    //   })
-    //   .catch(err => {
-    //     console.error("Import error:", err);
-    //     setIsUploading(false);
-    //     setUploadError("Error during import: " + err.message);
-    //     toast.error("Error during import: " + err.message);
-    //   });
-    //   setUploadSuccess(false);
     fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/import', {
       method: 'POST',
       headers: {
@@ -372,28 +342,29 @@ const Tables = () => {
       },
       body: formData
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to upload file, status: ' + response.status);
-      }
-      return response.json();
-    })
-    .then(data => {
-      setUploadSuccess(true);
-      console.log("Import success:", data);
-      fetchClients(setClients);
-      setIsUploading(false);
-      setSelectedFile(null);
-      toast.success("Fichier importé avec succès!");
-      toggleModal(); // Close the modal after successful import
-    })
-    .catch(err => {
-      console.error("Import error:", err);
-      setIsUploading(false);
-      setUploadError("Error during import: " + err.message);
-      toast.error("Error during import: " + err.message);
-    });
-    
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to upload file');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setUploadSuccess(true);
+        console.log("Import success:", data);
+        fetchClients(setClients);
+        setIsUploading(false);
+        
+        setSelectedFile(null);
+        toast.success("Fichier importé avec succès!");
+        toggleModal(); // Ferme le modal après l'importation réussie
+      })
+      .catch(err => {
+        console.error("Import error:", err);
+        setIsUploading(false);
+        setUploadError("Error during import: " + err.message);
+        toast.error("Error during import: " + err.message);
+      });
+      setUploadSuccess(false);
   };
 
   const pagination = paginationFactory({

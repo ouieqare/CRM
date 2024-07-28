@@ -21,7 +21,7 @@ const ClientStatusPage = () => {
   useEffect(() => {
     const fetchClientsByStatus = async () => {
       try {
-        const response = await axios.get(`http://localhost:5100/api/clients/by-status/${status}`, {
+        const response = await axios.get(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/by-status/${status}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
           }

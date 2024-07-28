@@ -396,7 +396,7 @@ const Tables = () => {
   const { SearchBar } = Search;
   useEffect(() => {
     fetchClients(setClients);
-  }, []);
+  }, [totalClients]);
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: acceptedFiles => {

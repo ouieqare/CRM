@@ -139,6 +139,11 @@ router.post('/import', reqAuth, upload.single('file'), async (req, res) => {
       return res.status(400).json({ success: false, message: 'Unsupported file type' });
     }
 
+    jsonData = jsonData.map(client => ({
+      ...client,
+      userId: req.user.id
+    }));
+
     // Insérer les données tout en gérant les doublons
     const results = await Client.insertMany(jsonData, { ordered: false });
     res.status(201).json({ success: true, count: results.length });

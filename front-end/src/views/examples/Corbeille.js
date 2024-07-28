@@ -143,7 +143,7 @@ const Corbeille = () => {
   
     console.log("Formatted Token from localStorage:", formattedToken);
   
-    fetch('http://localhost:5100/api/clients/deleted', {
+    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/deleted', {
       headers: {
          'Authorization': `Bearer ${formattedToken}`
       }
@@ -201,7 +201,7 @@ const Corbeille = () => {
     const cleanToken = token.trim();
     const formattedToken = cleanToken.replace('JWT ', '');
   
-    fetch(`http://localhost:5100/api/clients/restore/${clientId}`, {
+    fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/restore/${clientId}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${formattedToken}`,
@@ -241,7 +241,7 @@ const Corbeille = () => {
     const formattedToken = cleanToken.replace('JWT ', '');
   
     try {
-      const response = await fetch(`http://localhost:5100/api/clients/deletedef/${clientId}`, {
+      const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/deletedef/${clientId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${formattedToken}`,

@@ -119,34 +119,37 @@ router.put('/:id', reqAuth, async (req, res) => {
 // });
 
 router.post('/import', reqAuth, upload.single('file'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ success: false, message: 'No file uploaded' });
-    }
+  if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+  }
 
-    const file = req.file;
-    let jsonData = [];
+  const file = req.file;
+  let jsonData = [];
 
-    if (file.mimetype === 'text/csv') {
-        jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
-    } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
-        const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        jsonData = XLSX.utils.sheet_to_json(worksheet);
-    } else {
-        return res.status(400).json({ success: false, message: 'Unsupported file type' });
-    }
+  try {
+      // Détecter le type de fichier et parser en conséquence
+      if (file.mimetype === 'text/csv') {
+          jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
+      } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
+          const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          jsonData = XLSX.utils.sheet_to_json(worksheet);
+      } else {
+          return res.status(400).json({ success: false, message: 'Unsupported file type' });
+      }
 
-    try {
-        const results = await Client.insertMany(jsonData.map(item => ({
-            ...item,
-            userId: req.user.id
-        })));
-        res.status(201).json({ success: true, count: results.length });
-    } catch (err) {
-        console.error("Error importing data:", err);
-        res.status(500).json({ success: false, error: err.message });
-    }
+      // Insérer les données tout en gérant les doublons
+      const results = await Client.insertMany(jsonData, { ordered: false });
+      res.status(201).json({ success: true, count: results.length });
+  } catch (err) {
+      if (err.code === 11000) {  // Erreur de doublon
+          res.status(409).json({ success: false, message: 'Duplicate email error', details: err.message });
+      } else {
+          console.error("Error importing data:", err);
+          res.status(500).json({ success: false, error: 'Internal Server Error' });
+      }
+  }
 });
 
 

@@ -120,39 +120,43 @@ router.put('/:id', reqAuth, async (req, res) => {
 
 router.post('/import', reqAuth, upload.single('file'), async (req, res) => {
   if (!req.file) {
-      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    return res.status(400).json({ success: false, message: 'No file uploaded' });
   }
 
   const file = req.file;
   let jsonData = [];
 
   try {
-      // Détecter le type de fichier et parser en conséquence
-      if (file.mimetype === 'text/csv') {
-          jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
-      } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
-          const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          jsonData = XLSX.utils.sheet_to_json(worksheet);
-      } else {
-          return res.status(400).json({ success: false, message: 'Unsupported file type' });
-      }
+    // Détecter le type de fichier et parser en conséquence
+    if (file.mimetype === 'text/csv') {
+      jsonData = await csvtojson().fromString(file.buffer.toString('utf8'));
+    } else if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
+      const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      jsonData = XLSX.utils.sheet_to_json(worksheet);
+    } else {
+      return res.status(400).json({ success: false, message: 'Unsupported file type' });
+    }
 
-      // Insérer les données tout en gérant les doublons
-      const results = await Client.insertMany(jsonData, { ordered: false });
-      res.status(201).json({ success: true, count: results.length });
+    // Insérer les données tout en gérant les doublons
+    const results = await Client.insertMany(jsonData, { ordered: false });
+    res.status(201).json({ success: true, count: results.length });
   } catch (err) {
-      if (err.code === 11000) {  // Erreur de doublon
-          res.status(409).json({ success: false, message: 'Duplicate email error', details: err.message });
-      } else {
-          console.error("Error importing data:", err);
-          res.status(500).json({ success: false, error: 'Internal Server Error' });
-      }
+    if (err.code === 11000) {  // Erreur de doublon
+      // Capture et renvoie des informations détaillées sur les erreurs de duplicata
+      const errors = err.writeErrors.map(error => ({
+        index: error.index,
+        field: error.err.op,
+        error: error.errmsg,
+      }));
+      res.status(409).json({ success: false, message: 'Duplicate key error', errors: errors });
+    } else {
+      console.error("Error importing data:", err);
+      res.status(500).json({ success: false, error: 'Internal Server Error', details: err.message });
+    }
   }
 });
-
-
 
 
 router.post('/add', reqAuth, async (req, res) => {

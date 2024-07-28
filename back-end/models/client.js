@@ -29,6 +29,10 @@ const ClientSchema = new mongoose.Schema({
   }
 });
 
-//clientSchema.index({ email: 1, telephoneFixe: 1, telephonePortable: 1 }, { unique: true });
+ClientSchema.index(
+  { email: 1, telephoneFixe: 1, telephonePortable: 1 },
+  { unique: true, sparse: true }
+);
+
 const Client = mongoose.model('Client', ClientSchema);
 module.exports = Client;

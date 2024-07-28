@@ -163,12 +163,12 @@ router.post('/add', reqAuth, async (req, res) => {
     return res.status(400).json({ success: false, message: 'User ID missing from token' });
   }
 
-  const { email, telephoneFixe, telephonePortable } = req.body;
+  const { email, telephonePortable } = req.body;
   let query = { userId: req.user.id };
 
   // Ajouter seulement les champs non vides à la requête
   if (email) query['email'] = email;
-  if (telephoneFixe) query['telephoneFixe'] = telephoneFixe;
+  // if (telephoneFixe) query['telephoneFixe'] = telephoneFixe;
   if (telephonePortable) query['telephonePortable'] = telephonePortable;
 
   try {

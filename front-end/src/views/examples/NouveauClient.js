@@ -114,9 +114,9 @@ const saveClient = async (clientData) => {
       const data = await response.json();
       console.log('Réponse du serveur:', data);  // Log de la réponse
       toast.success("Le client a été ajouté/modifié avec succès !");
-      setTimeout(() => {
-          history.push('/admin/clients');
-      }, 3000);
+      // setTimeout(() => {
+      //     history.push('/admin/clients');
+      // }, 3000);
   } catch (error) {
       console.error('Erreur lors de l\'opération sur le client:', error);
       toast.error(`Erreur lors de l'opération sur le client: ${error.message}`);

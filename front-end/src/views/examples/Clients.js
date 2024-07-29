@@ -234,15 +234,16 @@ const Tables = () => {
     });
   };
   
-  const handleEditClient = (client) => {
+  const handleEditClient = (e, client) => {
+    e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
     history.push({
       pathname: '/admin/nouveauClient',
       state: { client: client }
     });
   };
-
-
-  const handleDeleteClient = (clientId) => {
+  
+  const handleDeleteClient = (e, clientId) => {
+    e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce client ?")) {
       fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientId}`, {
         method: 'DELETE',
@@ -258,14 +259,11 @@ const Tables = () => {
       })
       .then(data => {
         if (data.success) {
-          // Mettre à jour l'état immédiatement pour refléter la suppression
           const newClients = clients.filter(client => client._id !== clientId);
-          
           setSelected(selected.filter(id => id !== clientId)); // Nettoyer aussi les sélections
           setTotalClients(prevTotal => prevTotal - 1);
           toast.success("Client supprimé avec succès!");
           setClients(newClients);
-          console.log("Clients after deletion", newClients);
         } else {
           throw new Error(data.message);
         }
@@ -277,13 +275,14 @@ const Tables = () => {
     }
   };
   
+  
   const columns = [
     { dataField: "_id", text: "ID", hidden: true },
   { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
   { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
   { dataField: "email", text: "Email", sort: true, classes: 'col-md-3 col-lg-3', headerClasses: 'col-md-3 col-lg-3' }, // Colonne Email
   { dataField: "telephonePortable", text: "Tel", sort: true, classes: 'd-none d-md-table-cell col-md-2 col-lg-2', headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2' }, // Colonne Tel
-  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-1', headerClasses: 'd-none d-lg-table-cell col-lg-1' }, // Colonne Ville
+  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-2', headerClasses: 'd-none d-lg-table-cell col-lg-2' }, // Colonne Ville
   {
     dataField: "dateNaissance",
     text: "Date de Naissance",
@@ -334,13 +333,13 @@ const Tables = () => {
     headerClasses: 'col-md-2 col-lg-2',
       formatter: (cell, row) => (
         <div>
-          <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>
-            <i className="fas fa-pencil-alt" />
-          </Button>
-          {' '}
-          <Button color="danger" size="sm" onClick={() => handleDeleteClient(row._id)}>
-            <i className="fas fa-trash" />
-          </Button>
+          <Button color="primary" size="sm" onClick={(e) => handleEditClient(e, row)}>
+  <i className="fas fa-pencil-alt" />
+</Button>
+<Button color="danger" size="sm" onClick={(e) => handleDeleteClient(e, row._id)}>
+  <i className="fas fa-trash" />
+</Button>
+
         </div>
       )
     }
@@ -445,11 +444,12 @@ const Tables = () => {
   };
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      if (e.target.type !== 'checkbox') {
+      if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && e.target.type !== 'checkbox') {
         handleRowClick(row);
       }
     },
   };
+  
   
   
 

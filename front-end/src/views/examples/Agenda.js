@@ -147,7 +147,7 @@ class Fullcalendar extends React.Component {
           onCancel={() => this.deleteEvent()}
           confirmBtnCssClass="btn-secondary"
           cancelBtnBsStyle="danger"
-          confirmBtnText="Cancel"
+          confirmBtnText="Modifiersssssssssssssss"
           cancelBtnText="Yes, delete it"
           showCancel
           btnSize=""

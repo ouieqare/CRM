@@ -36,6 +36,7 @@ const NouveauClient = () => {
     audiogramme: "",
     statut: "" 
   });
+  const [isEditable, setIsEditable] = useState(false);
   const [activeTab, setActiveTab] = useState('1');
   const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
 
@@ -84,35 +85,6 @@ useEffect(() => {
     return formIsValid;
   };
 
-//   const saveClient = async (clientData) => {
-//     const url = clientData._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientData._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/add';
-//     const method = clientData._id ? 'PUT' : 'POST';
-
-//     try {
-//         const response = await fetch(url, {
-//             method: method,
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': localStorage.getItem('token')
-//             },
-//             body: JSON.stringify(clientData)
-//         });
-
-//         if (!response.ok) {
-//           const data = await response.json();
-//           toast.error(`Erreur: ${data.message}`);
-//       } else {
-//           const data = await response.json();
-//           toast.success("Le client a été ajouté/modifié avec succès !");
-//           setTimeout(() => {
-//               history.push('/admin/clients');
-//           }, 3000);
-//       }
-//   } catch (error) {
-//       console.error('Erreur lors de l\'opération sur le client:', error);
-//       toast.error(`Erreur lors de l'opération sur le client: ${error.message}`);
-//   }
-// };
 
 const saveClient = async (clientData) => {
   const url = clientData._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/${clientData._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/add';
@@ -218,6 +190,7 @@ const saveClient = async (clientData) => {
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <CardHeader className="bg-white text-white">
             <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
+            {client._id && <Button color="info" style={{ float: 'right' }} onClick={() => setIsEditable(true)}>Modifier</Button>}
           </CardHeader>
           <CardBody>
             <Nav tabs>
@@ -345,7 +318,7 @@ const saveClient = async (clientData) => {
                 <Label for="note">Note</Label>
                 <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} />
               </FormGroup>
-                <Button type="submit" color="primary">Enregistrer</Button>
+                <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
                 <Button type="button" color="secondary" onClick={() => history.push('/admin/clients')}>Annuler</Button>
               </Form>
             </TabPane>

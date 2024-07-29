@@ -22,7 +22,6 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/Vtalys/issues"
   },
-  
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
@@ -66,6 +65,7 @@
     "react-dom": "16.12.0",
     "react-dropzone": "^14.2.3",
     "react-google-maps": "9.4.5",
+    "react-icons": "^5.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^4.0.1",

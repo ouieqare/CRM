@@ -137,17 +137,34 @@ const Tables = () => {
     </Button>
   ) : null;
   
+  // const selectRow = {
+  //   mode: 'checkbox',
+  //   clickToSelect: true,
+  //   selected: selected,
+  //   onSelect: handleOnSelect,
+  //   onSelectAll: handleOnSelectAll,
+  //   selectionHeaderRenderer: selectAllRenderer,
+  //   style: { backgroundColor: '#c8e6c9' }
+  // };
   const selectRow = {
     mode: 'checkbox',
-    clickToSelect: true,
+    clickToSelect: false, // Désactive la sélection automatique lors du clic sur la ligne
     selected: selected,
     onSelect: handleOnSelect,
     onSelectAll: handleOnSelectAll,
     selectionHeaderRenderer: selectAllRenderer,
-    style: { backgroundColor: '#c8e6c9' }
+    style: { backgroundColor: '#c8e6c9' },
+    hideSelectColumn: false, // Garde la colonne de case à cocher visible
   };
   
-
+  const handleRowClick = (client) => {
+    console.log(`Navigation to client details for ID: ${client._id}`);
+    history.push({
+      pathname: `/admin/clientDetails/${client._id}`, // Assurez-vous que le chemin est correct
+      state: { client: client }
+    });
+  };
+  
   const fetchClients = (setClients) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -258,6 +275,8 @@ const Tables = () => {
       },
       editor: {
         type: 'select',
+        classes: 'col-md-2 col-lg-2',
+    headerClasses: 'col-md-2 col-lg-2',
         options: [
           { value: 'Rdv fixé', label: 'Rdv fixé' },
           { value: 'Rdv Annulé', label: 'Rdv Annulé' },
@@ -428,7 +447,14 @@ const Tables = () => {
       setSelected([]); // Désélectionner tous
     }
   };
-
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      if (e.target.type !== 'checkbox') {
+        handleRowClick(row);
+      }
+    },
+  };
+  
   
 
   return (
@@ -466,16 +492,18 @@ const Tables = () => {
         </div>
       </div>
       <div style={{ overflowX: 'auto' }}>
-        <BootstrapTable
-          {...props.baseProps}
-          keyField="_id"
-          bootstrap4
-          pagination={pagination}
-          data={clients}
-          columns={columns}
-          selectRow={selectRow}
-          bordered={false}
-        />
+      <BootstrapTable
+  {...props.baseProps}
+  keyField="_id"
+  bootstrap4
+  pagination={pagination}
+  data={clients}
+  columns={columns}
+  selectRow={selectRow}
+  rowEvents={rowEvents}
+  bordered={false}
+/>
+
       </div>
     </div>
   )}

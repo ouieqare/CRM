@@ -16,6 +16,7 @@ import NouveauClient from "views/examples/NouveauClient";
 import Corbeille from "views/examples/Corbeille";
 import ClientStatusPage from "views/examples/ClientStatusPage";
 import Agenda from "views/examples/Agenda";
+import Factures from "views/examples/Factures";
 
 var routes = [
   {
@@ -51,14 +52,7 @@ var routes = [
     api: true,
     hidden: true
   },
-  {
-    path: "/tables",
-    name: "Statuts Clients",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
-    layout: "/admin",
-    api: false
-  },
+  
   {
     path: "/statutClient/:status",
     name: "ClientStatusPage",
@@ -91,6 +85,22 @@ var routes = [
         component: Corbeille,
         layout: "/admin",
         api: false,
+      },
+      {
+        path: "/tables",
+        name: "Statuts Clients",
+        icon: "ni ni-bullet-list-67 text-red",
+        component: Tables,
+        layout: "/admin",
+        api: false
+      },
+      {
+        path: "/factures",
+        name: "Factures",
+        icon: "ni ni-money-coins",
+        component: Factures,
+        layout: "/admin",
+        api: false
       },
   {
     path: "/nouveauClient",

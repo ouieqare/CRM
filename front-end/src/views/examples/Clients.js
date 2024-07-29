@@ -160,7 +160,7 @@ const Tables = () => {
   const handleRowClick = (client) => {
     console.log(`Navigation to client details for ID: ${client._id}`);
     history.push({
-      pathname: `/admin/clientDetails/${client._id}`, // Assurez-vous que le chemin est correct
+      pathname: `/admin/nouveauClient`, // Assurez-vous que le chemin est correct
       state: { client: client }
     });
   };

@@ -46,22 +46,41 @@ const Tables = () => {
     }
   };
 
+  // const handleOnSelect = (row, isSelect) => {
+  //   console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
+  //   if (isSelect) {
+  //     setSelected(prevSelected => {
+  //       const newSelected = [...prevSelected, row._id];
+  //       console.log('New selected after add:', newSelected);
+  //       return newSelected;
+  //     });
+  //   } else {
+  //     setSelected(prevSelected => {
+  //       const newSelected = prevSelected.filter(x => x !== row._id);
+  //       console.log('New selected after remove:', newSelected);
+  //       return newSelected;
+  //     });
+  //   }
+  // };
   const handleOnSelect = (row, isSelect) => {
-    console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
-    if (isSelect) {
-      setSelected(prevSelected => {
-        const newSelected = [...prevSelected, row._id];
-        console.log('New selected after add:', newSelected);
-        return newSelected;
-      });
-    } else {
-      setSelected(prevSelected => {
-        const newSelected = prevSelected.filter(x => x !== row._id);
-        console.log('New selected after remove:', newSelected);
-        return newSelected;
-      });
-    }
+    setTimeout(() => {
+      console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
+      if (isSelect) {
+        setSelected(prevSelected => {
+          const newSelected = [...prevSelected, row._id];
+          console.log('New selected after add:', newSelected);
+          return newSelected;
+        });
+      } else {
+        setSelected(prevSelected => {
+          const newSelected = prevSelected.filter(x => x !== row._id);
+          console.log('New selected after remove:', newSelected);
+          return newSelected;
+        });
+      }
+    }, 100);  // Délai de 100ms
   };
+  
   
   const handleOnSelectAll = (isSelect, rows) => {
     console.log(`Select all ${isSelect ? 'on' : 'off'}`);
@@ -451,7 +470,7 @@ const Tables = () => {
   };
   
   
-  
+  const rowStyle = { cursor: 'pointer' }; 
 
   return (
     <>
@@ -497,6 +516,7 @@ const Tables = () => {
   columns={columns}
   selectRow={selectRow}
   rowEvents={rowEvents}
+  rowStyle={rowStyle}
   bordered={false}
 />
 

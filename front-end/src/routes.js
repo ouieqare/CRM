@@ -26,14 +26,14 @@ var routes = [
     layout: "/admin",
     api: false
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin",
-    api: false
-  },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "ni ni-planet text-blue",
+  //   component: Icons,
+  //   layout: "/admin",
+  //   api: false
+  // },
   {
     path: "/maps",
     name: "Maps",
@@ -48,7 +48,8 @@ var routes = [
     icon: "ni ni-circle-08 text-yellow",
     component: Profile,
     layout: "/admin",
-    api: true
+    api: true,
+    hidden: true
   },
   {
     path: "/tables",

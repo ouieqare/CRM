@@ -220,20 +220,24 @@ const Tables = () => {
 
   const columns = [
     { dataField: "_id", text: "ID", hidden: true },
-    { dataField: "nom", text: "Nom", sort: true },  // Permet le tri sur la colonne "Nom"
-    { dataField: "prenom", text: "Prénom", sort: true },  // Permet le tri sur la colonne "Prénom"
-    { dataField: "email", text: "Email", sort: true },  // Permet le tri sur la colonne "Email"
-    { dataField: "telephonePortable", text: "Tel", sort: true },  // Permet le tri sur la colonne "Téléphone Portable"
-    { dataField: "ville", text: "Ville", sort: true },  // Permet le tri sur la colonne "Ville"
-    {
-      dataField: "dateNaissance",
-      text: "Date de Naissance",
-      formatter: (cellContent, row) => formatDate(row.dateNaissance),
-      sort: true  // Permet le tri sur la colonne "Date de Naissance"
-    },
+  { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
+  { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
+  { dataField: "email", text: "Email", sort: true, classes: 'col-md-3 col-lg-3', headerClasses: 'col-md-3 col-lg-3' }, // Colonne Email
+  { dataField: "telephonePortable", text: "Tel", sort: true, classes: 'd-none d-md-table-cell col-md-2 col-lg-2', headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2' }, // Colonne Tel
+  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-1', headerClasses: 'd-none d-lg-table-cell col-lg-1' }, // Colonne Ville
+  {
+    dataField: "dateNaissance",
+    text: "Date de Naissance",
+    formatter: (cellContent, row) => formatDate(row.dateNaissance),
+    sort: true,
+    classes: 'd-none d-lg-table-cell col-lg-2',
+    headerClasses: 'd-none d-lg-table-cell col-lg-2'
+  },
     {
       dataField: "statut",
       text: "Statut",
+       classes: 'col-md-2 col-lg-1',
+    headerClasses: 'col-md-2 col-lg-1',
       formatter: (cell, row) => {
         return (
           <select
@@ -250,6 +254,7 @@ const Tables = () => {
             <option value="Facturé">Facturé</option>
           </select>
         );
+        
       },
       editor: {
         type: 'select',
@@ -265,6 +270,8 @@ const Tables = () => {
     {
       dataField: 'actions',
       text: 'Actions',
+      classes: 'col-md-2 col-lg-2',
+    headerClasses: 'col-md-2 col-lg-2',
       formatter: (cell, row) => (
         <div>
           <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>

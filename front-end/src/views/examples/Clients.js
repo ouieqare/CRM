@@ -234,78 +234,6 @@ const Tables = () => {
     });
   };
   
-
-  const columns = [
-    { dataField: "_id", text: "ID", hidden: true },
-  { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
-  { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
-  { dataField: "email", text: "Email", sort: true, classes: 'col-md-3 col-lg-3', headerClasses: 'col-md-3 col-lg-3' }, // Colonne Email
-  { dataField: "telephonePortable", text: "Tel", sort: true, classes: 'd-none d-md-table-cell col-md-2 col-lg-2', headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2' }, // Colonne Tel
-  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-1', headerClasses: 'd-none d-lg-table-cell col-lg-1' }, // Colonne Ville
-  {
-    dataField: "dateNaissance",
-    text: "Date de Naissance",
-    formatter: (cellContent, row) => formatDate(row.dateNaissance),
-    sort: true,
-    classes: 'd-none d-lg-table-cell col-lg-2',
-    headerClasses: 'd-none d-lg-table-cell col-lg-2'
-  },
-    {
-      dataField: "statut",
-      text: "Statut",
-       classes: 'col-md-2 col-lg-1',
-    headerClasses: 'col-md-2 col-lg-1',
-      formatter: (cell, row) => {
-        return (
-          <select
-            defaultValue={row.statut}
-            onClick={(e) => e.stopPropagation()} 
-            onChange={(e) => handleStatusChange(row._id, e.target.value)}
-            className="form-control"
-          >
-            <option value="none"></option>
-            <option value="Rdv fixé">Rdv fixé</option>
-            <option value="Rdv Annulé">Rdv Annulé</option>
-            <option value="Appareillé">Appareillé</option>
-            <option value="Période d'essai">Période d'essai</option>
-            <option value="Facturé">Facturé</option>
-          </select>
-        );
-        
-      },
-      editor: {
-        type: 'select',
-        classes: 'col-md-2 col-lg-2',
-    headerClasses: 'col-md-2 col-lg-2',
-        options: [
-          { value: 'Rdv fixé', label: 'Rdv fixé' },
-          { value: 'Rdv Annulé', label: 'Rdv Annulé' },
-          { value: 'Appareillé', label: 'Appareillé' },
-          { value: "Période d'essai", label: "Période d'essai" },
-          { value: 'Facturé', label: 'Facturé' }
-        ]
-      }
-    },
-    {
-      dataField: 'actions',
-      text: 'Actions',
-      classes: 'col-md-2 col-lg-2',
-    headerClasses: 'col-md-2 col-lg-2',
-      formatter: (cell, row) => (
-        <div>
-          <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>
-            <i className="fas fa-pencil-alt" />
-          </Button>
-          {' '}
-          <Button color="danger" size="sm" onClick={() => handleDeleteClient(row._id)}>
-            <i className="fas fa-trash" />
-          </Button>
-        </div>
-      )
-    }
-  ];
-  
-
   const handleEditClient = (client) => {
     history.push({
       pathname: '/admin/nouveauClient',
@@ -349,6 +277,74 @@ const Tables = () => {
     }
   };
   
+  const columns = [
+    { dataField: "_id", text: "ID", hidden: true },
+  { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
+  { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
+  { dataField: "email", text: "Email", sort: true, classes: 'col-md-3 col-lg-3', headerClasses: 'col-md-3 col-lg-3' }, // Colonne Email
+  { dataField: "telephonePortable", text: "Tel", sort: true, classes: 'd-none d-md-table-cell col-md-2 col-lg-2', headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2' }, // Colonne Tel
+  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-1', headerClasses: 'd-none d-lg-table-cell col-lg-1' }, // Colonne Ville
+  {
+    dataField: "dateNaissance",
+    text: "Date de Naissance",
+    formatter: (cellContent, row) => formatDate(row.dateNaissance),
+    sort: true,
+    classes: 'd-none d-lg-table-cell col-lg-2',
+    headerClasses: 'd-none d-lg-table-cell col-lg-2'
+  },
+  {
+    dataField: "statut",
+    text: "Statut",
+    classes: 'col-md-4 col-lg-3', // Ajusté pour plus de largeur
+    headerClasses: 'col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
+    formatter: (cell, row) => {
+      return (
+        <select
+          defaultValue={row.statut}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => handleStatusChange(row._id, e.target.value)}
+          className="form-control"
+          style={{ minWidth: "150px" }} // Assure que le sélecteur est suffisamment large
+        >
+          <option value="none"></option>
+          <option value="Rdv fixé">Rdv fixé</option>
+          <option value="Rdv Annulé">Rdv Annulé</option>
+          <option value="Appareillé">Appareillé</option>
+          <option value="Période d'essai">Période d'essai</option>
+          <option value="Facturé">Facturé</option>
+        </select>
+      );
+    },
+    editor: {
+      type: 'select',
+      options: [
+        { value: 'Rdv fixé', label: 'Rdv fixé' },
+        { value: 'Rdv Annulé', label: 'Rdv Annulé' },
+        { value: 'Appareillé', label: 'Appareillé' },
+        { value: "Période d'essai", label: "Période d'essai" },
+        { value: 'Facturé', label: 'Facturé' }
+      ]
+    }
+  },
+  
+    {
+      dataField: 'actions',
+      text: 'Actions',
+      classes: 'col-md-2 col-lg-2',
+    headerClasses: 'col-md-2 col-lg-2',
+      formatter: (cell, row) => (
+        <div>
+          <Button color="primary" size="sm" onClick={() => handleEditClient(row)}>
+            <i className="fas fa-pencil-alt" />
+          </Button>
+          {' '}
+          <Button color="danger" size="sm" onClick={() => handleDeleteClient(row._id)}>
+            <i className="fas fa-trash" />
+          </Button>
+        </div>
+      )
+    }
+  ];
   
 
   const handleFileUpload = () => {

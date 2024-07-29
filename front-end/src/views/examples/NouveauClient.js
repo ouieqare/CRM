@@ -231,14 +231,14 @@ const saveClient = async (clientData) => {
                 <Col md={6}>
                   <FormGroup>
                     <Label for="nom">Nom</Label>
-                    <Input type="text" name="nom" id="nom" value={client.nom} onChange={handleInputChange} required />
+                    <Input type="text" name="nom" id="nom" value={client.nom} onChange={handleInputChange} required disabled={!isEditable}/>
                     {errors.nom && <p style={{ color: 'red' }}>{errors.nom}</p>}
                   </FormGroup>
                 </Col>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="prenom">Prénom</Label>
-                    <Input type="text" name="prenom" id="prenom" value={client.prenom} onChange={handleInputChange} />
+                    <Input type="text" name="prenom" id="prenom" value={client.prenom} onChange={handleInputChange} disabled={!isEditable}/>
                   </FormGroup>
                 </Col>
               </Row>
@@ -246,19 +246,19 @@ const saveClient = async (clientData) => {
                 <Col md={4}>
                 <FormGroup>
                     <Label for="dateNaissance">Date de Naissance</Label>
-                    <Input type="date" name="dateNaissance" id="dateNaissance" value={client.dateNaissance || ''} onChange={handleInputChange} />
+                    <Input type="date" name="dateNaissance" id="dateNaissance" value={client.dateNaissance || ''} onChange={handleInputChange} disabled={!isEditable} />
                   </FormGroup>
                 </Col>
                 <Col md={4}>
                   <FormGroup>
                     <Label for="mutuelle">Mutuelle</Label>
-                    <Input type="text" name="mutuelle" id="mutuelle" value={client.mutuelle} onChange={handleInputChange} />
+                    <Input type="text" name="mutuelle" id="mutuelle" value={client.mutuelle} onChange={handleInputChange} disabled={!isEditable}/>
                   </FormGroup>
                 </Col>
                 <Col md={4}>
                   <FormGroup>
                     <Label for="numeroSecu">Numéro de Sécurité Sociale</Label>
-                    <Input type="text" name="numeroSecu" id="numeroSecu" value={client.numeroSecu} onChange={handleInputChange} />
+                    <Input type="text" name="numeroSecu" id="numeroSecu" value={client.numeroSecu} onChange={handleInputChange} disabled={!isEditable} />
                   </FormGroup>
                 </Col>
               </Row>
@@ -266,7 +266,7 @@ const saveClient = async (clientData) => {
               <Col md={4}>
               <FormGroup>
   <Label for="statut">Statut</Label>
-  <Input type="select" name="statut" id="statut" value={client.statut} onChange={handleInputChange}>
+  <Input type="select" name="statut" id="statut" value={client.statut} onChange={handleInputChange} disabled={!isEditable}>
     <option value="">Sélectionner un statut</option>
     <option value="Rdv fixé">Rdv fixé</option>
     <option value="Rdv Annulé">Rdv Annulé</option>
@@ -281,42 +281,42 @@ const saveClient = async (clientData) => {
                 <Col md={6}>
                   <FormGroup>
                     <Label for="telephoneFixe">Téléphone Fixe</Label>
-                    <Input type="text" name="telephoneFixe" id="telephoneFixe" value={client.telephoneFixe} onChange={handleInputChange} />
+                    <Input type="text" name="telephoneFixe" id="telephoneFixe" value={client.telephoneFixe} onChange={handleInputChange} disabled={!isEditable}/>
                   </FormGroup>
                 </Col>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="telephonePortable">Téléphone Portable</Label>
-                    <Input type="text" name="telephonePortable" id="telephonePortable" value={client.telephonePortable} onChange={handleInputChange} />
+                    <Input type="text" name="telephonePortable" id="telephonePortable" value={client.telephonePortable} onChange={handleInputChange} disabled={!isEditable}/>
                   </FormGroup>
                 </Col>
               </Row>
               <FormGroup>
                 <Label for="adresse">Adresse</Label>
-                <Input type="text" name="adresse" id="adresse" value={client.adresse} onChange={handleInputChange} />
+                <Input type="text" name="adresse" id="adresse" value={client.adresse} onChange={handleInputChange} disabled={!isEditable} />
               </FormGroup>
               <Row form>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="codePostal">Code Postal</Label>
-                    <Input type="text" name="codePostal" id="codePostal" value={client.codePostal} onChange={handleInputChange} />
+                    <Input type="text" name="codePostal" id="codePostal" value={client.codePostal} onChange={handleInputChange} disabled={!isEditable} />
                   </FormGroup>
                 </Col>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="ville">Ville</Label>
-                    <Input type="text" name="ville" id="ville" value={client.ville} onChange={handleInputChange} />
+                    <Input type="text" name="ville" id="ville" value={client.ville} onChange={handleInputChange} disabled={!isEditable} />
                   </FormGroup>
                 </Col>
               </Row>
               <FormGroup>
                 <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" value={client.email} onChange={handleInputChange} required />
+                <Input type="email" name="email" id="email" value={client.email} onChange={handleInputChange} required disabled={!isEditable} />
                 {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
               </FormGroup>
               <FormGroup>
                 <Label for="note">Note</Label>
-                <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} />
+                <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} disabled={!isEditable} />
               </FormGroup>
                 <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
                 <Button type="button" color="secondary" onClick={() => history.push('/admin/clients')}>Annuler</Button>

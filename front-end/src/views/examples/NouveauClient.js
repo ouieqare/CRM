@@ -188,10 +188,27 @@ const saveClient = async (clientData) => {
     <Container className="mt-5">
       <Card>
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      <CardHeader className="bg-white text-white">
+      {/* <CardHeader className="bg-white text-white">
             <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
             {client._id && <Button color="info" style={{ float: 'right' }} onClick={() => setIsEditable(true)}>Modifier</Button>}
-          </CardHeader>
+          </CardHeader> */}
+          <CardHeader className="bg-white text-white">
+  <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
+  <div style={{ float: 'right' }}>
+    {client._id && (
+      <>
+        <Button color="info" onClick={() => setIsEditable(true)} disabled={isEditable}>Modifier</Button>
+        <Button color="primary" onClick={() => {
+          if (validateForm()) {
+            saveClient(client);
+            setIsEditable(false); // Désactiver les champs après la sauvegarde
+          }
+        }} disabled={!isEditable} style={{ marginLeft: '10px' }}>Enregistrer Modifications</Button>
+      </>
+    )}
+  </div>
+</CardHeader>
+
           <CardBody>
             <Nav tabs>
               <NavItem>

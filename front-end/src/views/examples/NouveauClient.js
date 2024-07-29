@@ -180,7 +180,9 @@ const saveClient = async (clientData) => {
       setErrors({ form: "Erreur lors de l'opération sur le bilan auditif." });
     }
   };
-  
+  const handleBack = () => {
+    history.goBack();
+  };
 
   return (
     // <div style={{ paddingTop: '50px', backgroundColor: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important' }}>
@@ -192,7 +194,11 @@ const saveClient = async (clientData) => {
             <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
             {client._id && <Button color="info" style={{ float: 'right' }} onClick={() => setIsEditable(true)}>Modifier</Button>}
           </CardHeader> */}
+          
           <CardHeader className="bg-white text-white">
+          <Button color="link" onClick={handleBack} style={{ marginRight: '20px', color: 'black' }}>
+              <FaArrowLeft /> {/* Using React Icons for the arrow */}
+            </Button>
   <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
   <div style={{ float: 'right' }}>
     {client._id && (

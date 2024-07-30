@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 
 // reactstrap components
 import {
@@ -29,37 +30,52 @@ import team1Img from '../../assets/img/theme/team-1-800x800.jpg'; // Et ainsi de
 
 
 const Tables = () => {
+  const [statuses, setStatuses] = useState([]);
   const history = useHistory();
+  
 
+  useEffect(() => {
+    const loadedStatuses = JSON.parse(localStorage.getItem('uniqueStatuses'));
+    setStatuses(loadedStatuses);
+  }, []);
+
+  const rows = statuses.map(status => ({
+    status: status,
+    budget: 'Définir une logique pour budget', // Vous pouvez ajouter une logique similaire pour le budget
+    completion: 'Définir une logique pour completion', // Et pour le pourcentage de complétion
+    projectImg: 'theme/bootstrap.jpg', // Définir si nécessaire
+    usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg'] // Définir si nécessaire
+  }));
   const handleRowClick = (status) => {
     history.push(`/admin/statutClient/${status}`);
   };
-  const rows = [
-    { 
-      status: 'Appareillé', 
-      budget: '$2,500 USD', 
-      completion: '60%', 
-      projectImg: 'theme/bootstrap.jpg', // Assurez-vous que ce chemin est correct
-      usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg'] // Ceux-ci doivent également être définis
-    },
-    { 
-      status: 'Période d\'essai', 
-      budget: '$1,800 USD', 
-      completion: '100%', 
-      projectImg: 'theme/angular.jpg', 
-      usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg']
-    },
-    ,
-    { 
-      status: 'Rdv fixé', 
-      budget: '$1,800 USD', 
-      completion: '100%', 
-      projectImg: 'theme/angular.jpg', 
-      usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg']
-    }
-    // Continuez à ajouter des lignes selon le même modèle
-  ];
+  // const rows = [
+  //   { 
+  //     status: 'Appareillé', 
+  //     budget: '$2,500 USD', 
+  //     completion: '60%', 
+  //     projectImg: 'theme/bootstrap.jpg', // Assurez-vous que ce chemin est correct
+  //     usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg'] // Ceux-ci doivent également être définis
+  //   },
+  //   { 
+  //     status: 'Période d\'essai', 
+  //     budget: '$1,800 USD', 
+  //     completion: '100%', 
+  //     projectImg: 'theme/angular.jpg', 
+  //     usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg']
+  //   },
+  //   ,
+  //   { 
+  //     status: 'Rdv fixé', 
+  //     budget: '$1,800 USD', 
+  //     completion: '100%', 
+  //     projectImg: 'theme/angular.jpg', 
+  //     usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg', 'team-4-800x800.jpg']
+  //   }
+  //   // Continuez à ajouter des lignes selon le même modèle
+  // ];
   
+ 
 
   return (
     <>

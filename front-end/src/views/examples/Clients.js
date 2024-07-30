@@ -364,6 +364,11 @@ const Tables = () => {
     }
   ];
   
+  useEffect(() => {
+    const uniqueStatuses = [...new Set(clients.map(client => client.statut))];
+    localStorage.setItem('uniqueStatuses', JSON.stringify(uniqueStatuses));
+  }, [clients]);
+  
 
   const handleFileUpload = () => {
     if (!selectedFile) {

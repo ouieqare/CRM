@@ -8,7 +8,7 @@ class Header extends React.Component {
     const { totalClients } = this.props;
     return (
       <>
-        <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
+        <div className="header pb-8 pt-5 pt-md-8" style={{ background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)'}}>
           <Container fluid>
             <div className="header-body">
               {/* Card stats */}

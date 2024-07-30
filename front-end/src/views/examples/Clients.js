@@ -299,8 +299,27 @@ const Tables = () => {
     { dataField: "_id", text: "ID", hidden: true },
   { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
   { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
-  { dataField: "email", text: "Email", sort: true, classes: 'col-md-3 col-lg-3', headerClasses: 'col-md-3 col-lg-3' }, // Colonne Email
-  { dataField: "telephonePortable", text: "Tel", sort: true, classes: 'd-none d-md-table-cell col-md-2 col-lg-2', headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2' }, // Colonne Tel
+  {
+    dataField: "email",
+    text: "Email",
+    sort: true,
+    classes: 'col-md-3 col-lg-3 text-truncate', // Utilisation de text-truncate pour ajouter ellipsis
+    headerClasses: 'col-md-3 col-lg-3',
+    formatter: (cellContent, row) => {
+      return (
+        <div className="text-truncate" style={{ maxWidth: '200px' }}>
+          {cellContent}
+        </div>
+      );
+    }
+  }, // Colonne Email
+  {
+    dataField: "telephonePortable",
+    text: "Tel",
+    sort: true,
+    classes: 'd-none d-md-table-cell col-md-2 col-lg-2 responsive-hide',
+    headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2 responsive-hide'
+  }, // Colonne Tel
   { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-2', headerClasses: 'd-none d-lg-table-cell col-lg-2' }, // Colonne Ville
   {
     dataField: "dateNaissance",

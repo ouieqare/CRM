@@ -3,14 +3,12 @@ import { useClients } from '../../views/examples/ClientsContext';
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-// class Header extends React.Component {
-//   render() {
-//     const { totalClients } = this.props;
-const Header = () => {
-  const { totalClients } = useClients(); 
+class Header extends React.Component {
+  render() {
+    const { totalClients } = this.props;
     return (
       <>
-        <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
+        <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
           <Container fluid>
             <div className="header-body">
               {/* Card stats */}
@@ -139,7 +137,7 @@ const Header = () => {
         </div>
       </>
     );
-  //}
+  }
 }
 
 export default Header;

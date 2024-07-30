@@ -37,7 +37,7 @@ const NouveauClient = () => {
     audiogramme: "",
     statut: "" 
   });
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(!location.state || !location.state.client);
   const [activeTab, setActiveTab] = useState('1');
   const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
 
@@ -186,8 +186,8 @@ const saveClient = async (clientData) => {
   };
 
   return (
-    // <div style={{ paddingTop: '50px', backgroundColor: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important' }}>
-       <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)' }}>
+      //  <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)' }}>
+      <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
     <Container className="mt-5">
       <Card>
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
@@ -198,11 +198,11 @@ const saveClient = async (clientData) => {
           
           <CardHeader className="bg-white text-white">
           <Button color="link" onClick={handleBack} style={{ marginRight: '20px', color: 'black' }}>
-              <FaArrowLeft /> {/* Using React Icons for the arrow */}
+              <FaArrowLeft />
             </Button>
   <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
   <div style={{ float: 'right' }}>
-    {client._id && (
+    {client._id && !isEditable && (
       <>
         <Button color="info" onClick={() => setIsEditable(true)} disabled={isEditable}>Modifier</Button>
         <Button color="primary" onClick={() => {

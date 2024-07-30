@@ -16,7 +16,6 @@ import {
     Col
 } from "reactstrap";
 import {login} from "../../network/ApiAxios";
-import logo from "../../assets/img/brand/white.png";
 
 const Login = props => {
 

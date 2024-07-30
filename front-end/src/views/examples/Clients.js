@@ -36,6 +36,7 @@ const Tables = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selected, setSelected] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(null);
+  const [hoveredClientId, setHoveredClientId] = useState(null);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -510,15 +511,25 @@ const Tables = () => {
         handleRowClick(row);
       }
     },
+    onMouseEnter: (e, row, rowIndex) => {
+      setHoveredClientId(row._id); // Met à jour l'état pour la ligne survolée
+    },
+    onMouseLeave: (e, row, rowIndex) => {
+      setHoveredClientId(null); // Réinitialise l'état lorsque la souris quitte la ligne
+    }
   };
   
   
   const rowStyle = (row, rowIndex) => {
     if (row._id === selectedClientId) {
-      return { backgroundColor: '#f8f9fe', cursor: 'pointer' }; // Style pour la ligne sélectionnée
+      return { backgroundColor: '#f8f9fe' }; // Style pour la ligne sélectionnée
+    } else if (row._id === hoveredClientId) {
+      return { backgroundColor: '#e9ecef' }; // Style pour la ligne survolée
     }
-    return { cursor: 'pointer' }; // Style par défaut pour les autres lignes
+    return {}; // Style par défaut
   };
+
+
   return (
     <>
       <Header totalClients={totalClients} />
@@ -562,10 +573,7 @@ const Tables = () => {
   data={clients}
   columns={columns}
   selectRow={selectRow}
-  // rowEvents={rowEvents}
-  rowEvents={{
-    onClick: (e, row, rowIndex) => handleRowClick(row)
-  }}
+  rowEvents={rowEvents}
   rowStyle={rowStyle}
   bordered={false}
 />

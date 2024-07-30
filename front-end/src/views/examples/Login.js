@@ -46,12 +46,7 @@ const Login = props => {
     return (
         <>
             <Col lg="5" md="7">
-            <Card className="bg-secondary shadow border-0" style={{
-                    backgroundImage: `url(${logo})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
-                }}>
+            <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-transparent pb-5">
                         <div className="text-muted text-center mt-2 mb-3">
                             <small>Se connecter avec</small>

@@ -14,6 +14,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  Container,
   FormGroup,
   Form,
   Input,
@@ -191,9 +192,11 @@ class Fullcalendar extends React.Component {
   render() {
     return (
       <>
+      <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
+      <Container className="mt-5" style={{ paddingBottom: '50px'}}>
         {this.state.alert}
-        <Card className="card-calendar">
-          <CardHeader className="bg-info" style={{ background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)'}}>
+        <Card className="card-calendar" >
+          <CardHeader style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
             <Row style={{ marginTop: '40px'}} className="align-items-center py-4">
               <Col lg="6"  >
                 <h6 className="fullcalendar-title h2 text-white d-inline-block mb-0 mr-1">
@@ -251,13 +254,14 @@ class Fullcalendar extends React.Component {
               </Col>
             </Row>
           </CardHeader>
-          <CardBody className="p-0">
-            <div
-              className="calendar"
-              ref="calendar"
-            />
-          </CardBody>
+          <CardBody className="p-0" style={{ marginLeft: '20px', marginRight: '20px', marginTop: '20px', marginBottom: '20px'  }}>
+  <div className="calendar" ref="calendar" />
+</CardBody>
+
         </Card>
+        </Container>
+    
+    </div>
         <Modal
           isOpen={this.state.modalAdd}
           toggle={() => this.setState({ modalAdd: false })}
@@ -452,7 +456,7 @@ class Fullcalendar extends React.Component {
                 <label className="form-control-label">Description</label>
                 <Input
                   className="form-control-alternative edit-event--description textarea-autosize"
-                  placeholder="Event Desctiption"
+                  placeholder="Description de l'evenement"
                   type="textarea"
                   defaultValue={this.state.eventDescription}
                   onChange={e =>

@@ -1,11 +1,13 @@
 import React from "react";
-
+import { useClients } from '../../views/examples/ClientsContext'; 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-class Header extends React.Component {
-  render() {
-    const { totalClients } = this.props; 
+// class Header extends React.Component {
+//   render() {
+//     const { totalClients } = this.props;
+const Header = () => {
+  const { totalClients } = useClients(); 
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -137,7 +139,7 @@ class Header extends React.Component {
         </div>
       </>
     );
-  }
+  //}
 }
 
 export default Header;

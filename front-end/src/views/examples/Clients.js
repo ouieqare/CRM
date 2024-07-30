@@ -35,6 +35,7 @@ const Tables = () => {
   const [uploadError, setUploadError] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [selected, setSelected] = useState([]);
+  const [selectedClientId, setSelectedClientId] = useState(null);
 
   const toggleModal = () => {
     setModal(!modal);
@@ -178,6 +179,7 @@ const Tables = () => {
   
   const handleRowClick = (client) => {
     console.log(`Navigation to client details for ID: ${client._id}`);
+    setSelectedClientId(client._id);
     history.push({
       pathname: `/admin/nouveauClient`, // Assurez-vous que le chemin est correct
       state: { client: client }
@@ -511,8 +513,12 @@ const Tables = () => {
   };
   
   
-  const rowStyle = { cursor: 'pointer' }; 
-
+  const rowStyle = (row, rowIndex) => {
+    if (row._id === selectedClientId) {
+      return { backgroundColor: '#f8f9fe', cursor: 'pointer' }; // Style pour la ligne sélectionnée
+    }
+    return { cursor: 'pointer' }; // Style par défaut pour les autres lignes
+  };
   return (
     <>
       <Header totalClients={totalClients} />
@@ -556,7 +562,10 @@ const Tables = () => {
   data={clients}
   columns={columns}
   selectRow={selectRow}
-  rowEvents={rowEvents}
+  // rowEvents={rowEvents}
+  rowEvents={{
+    onClick: (e, row, rowIndex) => handleRowClick(row)
+  }}
   rowStyle={rowStyle}
   bordered={false}
 />

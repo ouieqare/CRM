@@ -115,6 +115,7 @@ const saveClient = async (clientData) => {
       const data = await response.json();
       console.log('Réponse du serveur:', data);  // Log de la réponse
       toast.success("Le client a été ajouté/modifié avec succès !");
+      setIsEditable(false);
       // setTimeout(() => {
       //     history.push('/admin/clients');
       // }, 3000);
@@ -190,13 +191,8 @@ const saveClient = async (clientData) => {
       <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
     <Container className="mt-5">
       <Card>
-      <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      {/* <CardHeader className="bg-white text-white">
-            <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
-            {client._id && <Button color="info" style={{ float: 'right' }} onClick={() => setIsEditable(true)}>Modifier</Button>}
-          </CardHeader> */}
-          
-          <CardHeader className="bg-white text-white">
+      <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />          
+          {/* <CardHeader className="bg-white text-white">
           <Button color="link" onClick={handleBack} style={{ marginRight: '20px', color: 'black' }}>
               <FaArrowLeft />
             </Button>
@@ -214,7 +210,26 @@ const saveClient = async (clientData) => {
       </>
     )}
   </div>
+</CardHeader> */}
+<CardHeader className="bg-white text-white">
+  <Button color="link" onClick={handleBack} style={{ marginRight: '20px', color: 'black' }}>
+    <FaArrowLeft />
+  </Button>
+  <h4 className="mb-0">{client._id ? "Modifier Client" : "Ajouter Nouveau Client"}</h4>
+  <div style={{ float: 'right' }}>
+    {client._id && (
+      <>
+        <Button color="info" onClick={() => setIsEditable(true)} disabled={isEditable}>Modifier</Button>
+        <Button color="primary" onClick={() => {
+          if (validateForm()) {
+            saveClient(client);
+          }
+        }} disabled={!isEditable} style={{ marginLeft: '10px' }}>Enregistrer Modifications</Button>
+      </>
+    )}
+  </div>
 </CardHeader>
+
 
           <CardBody>
             <Nav tabs>

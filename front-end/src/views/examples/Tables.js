@@ -46,6 +46,7 @@ const Tables = () => {
     projectImg: 'theme/bootstrap.jpg', // Définir si nécessaire
     usersImg: ['team-1-800x800.jpg', 'team-2-800x800.jpg', 'team-3-800x800.jpg'] // Définir si nécessaire
   }));
+  
   const handleRowClick = (status) => {
     history.push(`/admin/statutClient/${status}`);
   };

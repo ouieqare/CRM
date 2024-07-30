@@ -355,7 +355,7 @@ const saveClient = async (clientData) => {
               </FormGroup>
               <FormGroup>
                 <Label for="note">Note</Label>
-                <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} disabled={!isEditable} />
+                <Input type="textarea" name="note" id="note" value={client.note} onChange={handleInputChange} disabled={!isEditable} style={{ minHeight: '100px', maxHeight: '300px' }}/>
               </FormGroup>
                 <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
                 <Button type="button" color="secondary" onClick={() => history.push('/admin/clients')}>Annuler</Button>

@@ -1,5 +1,6 @@
 import React from "react";
 import classnames from "classnames";
+import frLocale from '@fullcalendar/core/locales/fr';
 // JavaScript library that creates a callendar with events
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -37,6 +38,7 @@ class Fullcalendar extends React.Component {
     calendar = new Calendar(this.refs.calendar, {
       plugins: [interaction, dayGridPlugin],
       defaultView: "dayGridMonth",
+      locale: frLocale,
       selectable: true,
       selectHelper: true,
       editable: true,
@@ -134,7 +136,7 @@ class Fullcalendar extends React.Component {
         <ReactBSAlert
           warning
           style={{ display: "block", marginTop: "-100px" }}
-          title="Are you sure?"
+          title="Êtes-vous sûr?"
           onConfirm={() =>
             this.setState({
               alert: false,
@@ -152,7 +154,7 @@ class Fullcalendar extends React.Component {
           showCancel
           btnSize=""
         >
-          You won't be able to revert this!
+          Vous ne pourrez pas revenir en arrière!
         </ReactBSAlert>
       )
     });
@@ -226,7 +228,7 @@ class Fullcalendar extends React.Component {
                   onClick={() => this.changeView("dayGridMonth")}
                   size="sm"
                 >
-                  Month
+                  Mois
                 </Button>
                 <Button
                   className="btn-neutral"
@@ -235,7 +237,7 @@ class Fullcalendar extends React.Component {
                   onClick={() => this.changeView("dayGridWeek")}
                   size="sm"
                 >
-                  Week
+                  Semaine
                 </Button>
                 <Button
                   className="btn-neutral"
@@ -244,7 +246,7 @@ class Fullcalendar extends React.Component {
                   onClick={() => this.changeView("dayGridDay")}
                   size="sm"
                 >
-                  Day
+                  Jour
                 </Button>
               </Col>
             </Row>
@@ -264,10 +266,10 @@ class Fullcalendar extends React.Component {
           <div className="modal-body">
             <form className="new-event--form">
               <FormGroup>
-                <label className="form-control-label">Event title</label>
+              <label className="form-control-label">Titre de l'événement</label>
                 <Input
                   className="form-control-alternative new-event--title"
-                  placeholder="Event Title"
+                  placeholder="Titre de l'événement"
                   type="text"
                   onChange={e =>
                     this.setState({ eventTitle: e.target.value })
@@ -349,7 +351,7 @@ class Fullcalendar extends React.Component {
               type="button"
               onClick={this.addNewEvent}
             >
-              Add event
+              Ajouter un événement
             </Button>
             <Button
               className="ml-auto"
@@ -357,7 +359,7 @@ class Fullcalendar extends React.Component {
               type="button"
               onClick={() => this.setState({ modalAdd: false })}
             >
-              Close
+             Fermer
             </Button>
           </div>
         </Modal>
@@ -382,7 +384,7 @@ class Fullcalendar extends React.Component {
               </FormGroup>
               <FormGroup>
                 <label className="form-control-label d-block mb-3">
-                  Status color
+                Couleur du statut
                 </label>
                 <ButtonGroup
                   className="btn-group-toggle btn-group-colors event-tag mb-0"

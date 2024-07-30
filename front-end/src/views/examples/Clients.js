@@ -297,8 +297,34 @@ const Tables = () => {
   
   const columns = [
     { dataField: "_id", text: "ID", hidden: true },
-  { dataField: "nom", text: "Nom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Nom
-  { dataField: "prenom", text: "Prénom", sort: true, classes: 'col-lg-2', headerClasses: 'col-lg-2' }, // Colonne Prénom
+    {
+      dataField: "nom",
+      text: "Nom",
+      sort: true,
+      classes: 'col-lg-2 text-truncate', // Ajout de text-truncate pour ellipsis
+      headerClasses: 'col-lg-2',
+      formatter: (cellContent, row) => {
+        return (
+          <div className="text-truncate" style={{ maxWidth: '100px' }}> // Limite la largeur
+            {cellContent}
+          </div>
+        );
+      }
+    },
+    {
+      dataField: "prenom",
+      text: "Prénom",
+      sort: true,
+      classes: 'col-lg-2 text-truncate', // Ajout de text-truncate pour ellipsis
+      headerClasses: 'col-lg-2',
+      formatter: (cellContent, row) => {
+        return (
+          <div className="text-truncate" style={{ maxWidth: '100px' }}> // Limite la largeur
+            {cellContent}
+          </div>
+        );
+      }
+    }, // Colonne Prénom
   {
     dataField: "email",
     text: "Email",

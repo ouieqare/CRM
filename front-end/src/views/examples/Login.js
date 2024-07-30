@@ -16,6 +16,7 @@ import {
     Col
 } from "reactstrap";
 import {login} from "../../network/ApiAxios";
+import logo from "../../assets/img/brand/white.png";
 
 const Login = props => {
 
@@ -46,7 +47,7 @@ const Login = props => {
         <>
             <Col lg="5" md="7">
             <Card className="bg-secondary shadow border-0" style={{
-                    backgroundImage: 'url(assets/img/brand/white.png)',
+                    backgroundImage: `url(${logo})`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'

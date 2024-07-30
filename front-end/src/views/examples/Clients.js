@@ -301,30 +301,16 @@ const Tables = () => {
       dataField: "nom",
       text: "Nom",
       sort: true,
-      classes: 'col-lg-2 text-truncate', // Ajout de text-truncate pour ellipsis
-      headerClasses: 'col-lg-2',
-      formatter: (cellContent, row) => {
-        return (
-          <div className="text-truncate" style={{ maxWidth: '100px' }}> // Limite la largeur
-            {cellContent}
-          </div>
-        );
-      }
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
     },
     {
       dataField: "prenom",
       text: "Prénom",
       sort: true,
-      classes: 'col-lg-2 text-truncate', // Ajout de text-truncate pour ellipsis
-      headerClasses: 'col-lg-2',
-      formatter: (cellContent, row) => {
-        return (
-          <div className="text-truncate" style={{ maxWidth: '100px' }}> // Limite la largeur
-            {cellContent}
-          </div>
-        );
-      }
-    }, // Colonne Prénom
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
+    },
   {
     dataField: "email",
     text: "Email",
@@ -343,23 +329,29 @@ const Tables = () => {
     dataField: "telephonePortable",
     text: "Tel",
     sort: true,
-    classes: 'd-none d-md-table-cell col-md-2 col-lg-2 responsive-hide',
-    headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2 responsive-hide'
-  }, // Colonne Tel
-  { dataField: "ville", text: "Ville", sort: true, classes: 'd-none d-lg-table-cell col-lg-2', headerClasses: 'd-none d-lg-table-cell col-lg-2' }, // Colonne Ville
+    classes: 'd-none d-md-table-cell col-md-2 col-lg-2',
+    headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2'
+  },// Colonne Tel
   {
-    dataField: "dateNaissance",
-    text: "Date de Naissance",
-    formatter: (cellContent, row) => formatDate(row.dateNaissance),
+    dataField: "ville",
+    text: "Ville",
     sort: true,
     classes: 'd-none d-lg-table-cell col-lg-2',
     headerClasses: 'd-none d-lg-table-cell col-lg-2'
   },
   {
+    dataField: "dateNaissance",
+    text: "Date de Naissance",
+    formatter: (cellContent, row) => formatDate(row.dateNaissance),
+    sort: true,
+    classes: 'd-none d-lg-table-cell col-lg-2', // Cache cette colonne sur les écrans plus petits que 'lg'
+    headerClasses: 'd-none d-lg-table-cell col-lg-2'
+  },
+  {
     dataField: "statut",
     text: "Statut",
-    classes: 'col-md-4 col-lg-3', // Ajusté pour plus de largeur
-    headerClasses: 'col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
+    classes: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Cache cette colonne sur les écrans plus petits que 'lg'
+    headerClasses: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
     formatter: (cell, row) => {
       return (
         <select

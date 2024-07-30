@@ -149,8 +149,8 @@ class Fullcalendar extends React.Component {
           onCancel={() => this.deleteEvent()}
           confirmBtnCssClass="btn-secondary"
           cancelBtnBsStyle="danger"
-          confirmBtnText="Modifiersssssssssssssss"
-          cancelBtnText="Yes, delete it"
+          confirmBtnText="Modifier"
+          cancelBtnText="Oui, supprimer"
           showCancel
           btnSize=""
         >
@@ -193,7 +193,7 @@ class Fullcalendar extends React.Component {
       <>
         {this.state.alert}
         <Card className="card-calendar">
-          <CardHeader className="bg-info">
+          <CardHeader className="bg-info" style={{ background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)'}}>
             <Row style={{ marginTop: '40px'}} className="align-items-center py-4">
               <Col lg="6"  >
                 <h6 className="fullcalendar-title h2 text-white d-inline-block mb-0 mr-1">
@@ -466,7 +466,7 @@ class Fullcalendar extends React.Component {
           </div>
           <div className="modal-footer">
             <Button color="primary" onClick={this.changeEvent}>
-              Update
+              Mettre a jour
             </Button>
             <Button
               color="danger"
@@ -476,14 +476,14 @@ class Fullcalendar extends React.Component {
                 )
               }
             >
-              Delete
+              Supprimer
             </Button>
             <Button
               className="ml-auto"
               color="link"
               onClick={() => this.setState({ modalChange: false })}
             >
-              Close
+              Fermer
             </Button>
           </div>
         </Modal>

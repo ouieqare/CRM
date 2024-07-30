@@ -522,9 +522,9 @@ const Tables = () => {
   
   const rowStyle = (row, rowIndex) => {
     if (row._id === selectedClientId) {
-      return { backgroundColor: '#f8f9fe' }; // Style pour la ligne sélectionnée
+      return { backgroundColor: '#f8f9fe', cursor: 'pointer' }; // Style pour la ligne sélectionnée
     } else if (row._id === hoveredClientId) {
-      return { backgroundColor: '#e9ecef' }; // Style pour la ligne survolée
+      return { backgroundColor: '#e9ecef', cursor: 'pointer' }; // Style pour la ligne survolée
     }
     return {}; // Style par défaut
   };

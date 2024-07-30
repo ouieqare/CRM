@@ -12,14 +12,17 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import AuthRoutes from "./components/PrivateRoute/AuthRoutes";
+import { ClientsProvider } from './views/examples/ClientsContext';
 
 ReactDOM.render(
+  <ClientsProvider>
   <BrowserRouter>
     <Switch>
       <PrivateRoute path="/admin" component={AdminLayout} />
       <AuthRoutes path="/auth" component={AuthLayout} />
       <Redirect from="/" to="/admin/index" />
     </Switch>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </ClientsProvider>,
   document.getElementById("root")
 );

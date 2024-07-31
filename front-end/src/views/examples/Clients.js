@@ -547,7 +547,7 @@ const Tables = () => {
                 </div>
                 <div>
                   <Button color="primary" onClick={handleAddClient} style={{ marginRight: '10px' }}>Ajouter Client</Button>
-                  <Button color="info" onClick={toggleModal}>Importer Clients</Button>
+                  <Button onClick={toggleModal} style={{ background: 'linear-gradient(87deg, #003D33 0%, #007D70 100%)',  color: 'white' }}>Importer Clients</Button>
                   {/* <Button color="info" onClick={sendEmailsToSelected}>Envoyer Mail</Button> */}
                 </div>
               </CardHeader>

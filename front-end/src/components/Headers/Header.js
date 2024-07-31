@@ -3,9 +3,11 @@ import { useClients } from '../../views/examples/ClientsContext';
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-class Header extends React.Component {
-  render() {
-    const { totalClients } = this.props;
+// class Header extends React.Component {
+//   render() {
+//     const { totalClients } = this.props;
+const Header = () => {
+  const { totalClients } = useClients();
     return (
       <>
         <div className="header pb-8 pt-5 pt-md-8" style={{ background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)'}}>
@@ -137,7 +139,7 @@ class Header extends React.Component {
         </div>
       </>
     );
-  }
+  //}
 }
 
 export default Header;

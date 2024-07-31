@@ -1,10 +1,15 @@
 import React from "react";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
-import { useStatus } from "../../views/examples/StatusContext";
 
-const Header = () => {
-  const statusCounts = useStatus();
- 
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      totalClients: localStorage.getItem('totalClients') || 0
+    };
+  }
+
+  render() {
     return (
       <>
         <div className="header pb-8 pt-5 pt-md-8" style={{ background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)'}}>
@@ -24,7 +29,7 @@ const Header = () => {
                             Nombre Clients
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                          {/* {this.state.totalClients} */}
+                          {this.state.totalClients}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -113,7 +118,7 @@ const Header = () => {
                           >
                             Appareillés
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0"> {statusCounts['Appareillé'] || 0} </span>
+                          <span className="h2 font-weight-bold mb-0">924</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -195,7 +200,7 @@ const Header = () => {
         </div>
       </>
     );
-  
+  }
 }
 
 export default Header;

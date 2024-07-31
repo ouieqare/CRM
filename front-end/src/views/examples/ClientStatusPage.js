@@ -14,9 +14,10 @@ const formatDate = (isoString) => {
 const ClientStatusPage = () => {
   const { status } = useParams(); // Récupérer le statut de l'URL
   const [clients, setClients] = useState([]); // État pour stocker les clients
-  const history = useHistory();
-  const totalClients = clients.length; // Nombre total de clients affichés
   
+  const history = useHistory();
+  // const totalClients = clients.length; // Nombre total de clients affichés
+  const [totalClientsStatus, setTotalClients] = useState(0);
 
   useEffect(() => {
     const fetchClientsByStatus = async () => {
@@ -27,6 +28,7 @@ const ClientStatusPage = () => {
           }
         });
         setClients(response.data);
+        setTotalClients(response.data.length);
         console.log("Clients mis à jour avec le statut", status, ":", response.data);
       } catch (err) {
         console.error('Error fetching clients:', err);
@@ -35,6 +37,10 @@ const ClientStatusPage = () => {
 
     fetchClientsByStatus();
   }, [status]);
+
+  useEffect(() => {
+    localStorage.setItem('totalClientsStatus', totalClientsStatus);
+  }, [totalClientsStatus]);
 
  const columns = [
     { dataField: "_id", text: "ID", hidden: true },
@@ -86,13 +92,13 @@ const ClientStatusPage = () => {
 
   return (
     <>
-      <Header />
+      <Header totalClientsStatus={totalClientsStatus}/>
       <Container className="mt--7" fluid>
         <Row>
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Clients avec le statut: {status}</h3>
+                <h3 className="mb-0">Clients avec le statut: {status} - Clients (Total : {totalClientsStatus})</h3>
               </CardHeader>
               <CardBody>
                 <ToolkitProvider keyField="id" data={clients} columns={columns} search>

@@ -408,7 +408,10 @@ const Tables = () => {
     localStorage.setItem('uniqueStatuses', JSON.stringify(uniqueStatuses));
   }, [clients]);
   
-
+  useEffect(() => {
+    localStorage.setItem('totalClients', totalClients);
+  }, [totalClients]);
+  
   const handleFileUpload = () => {
     if (!selectedFile) {
       toast.warn("No file selected for upload.");

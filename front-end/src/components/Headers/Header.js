@@ -24,7 +24,7 @@ const Header = () => {
                             Nombre Clients
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                          {this.state.totalClients}
+                          {/* {this.state.totalClients} */}
                           </span>
                         </div>
                         <Col className="col-auto">

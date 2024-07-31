@@ -232,4 +232,26 @@ router.get('/by-status/:statut', reqAuth, async (req, res) => {
   }
 });
 
+// Route pour obtenir le nombre de clients par statut pour un utilisateur spécifique
+router.get('/count-by-status', reqAuth, async (req, res) => {
+  try {
+    const statusCounts = await Client.aggregate([
+      { $match: { userId: req.user.id, isDeleted: false } }, // Assurez-vous de filtrer les clients de l'utilisateur connecté et non supprimés
+      { $group: { _id: "$statut", count: { $sum: 1 } } }
+    ]);
+
+    // Transformer le résultat en un objet clé-valeur pour faciliter l'accès aux données
+    const counts = statusCounts.reduce((acc, curr) => {
+      acc[curr._id] = curr.count;
+      return acc;
+    }, {});
+
+    res.json(counts);
+  } catch (error) {
+    console.error('Failed to count clients by status:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
 module.exports = router;

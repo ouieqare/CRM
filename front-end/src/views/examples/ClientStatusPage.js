@@ -98,7 +98,7 @@ const ClientStatusPage = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Clients avec le statut: {status} - Clients (Total : {totalClientsStatus})</h3>
+                <h3 className="mb-0">Clients avec le statut: {status} - (Total : {totalClientsStatus})</h3>
               </CardHeader>
               <CardBody>
                 <ToolkitProvider keyField="id" data={clients} columns={columns} search>

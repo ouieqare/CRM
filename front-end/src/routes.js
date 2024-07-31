@@ -13,6 +13,7 @@ import ConfirmPassword from "./views/examples/ConfirmPassword";
 import ResetPasswordSuccess from "./views/examples/ResetPasswordSuccess";
 import Clients from "views/examples/Clients";
 import NouveauClient from "views/examples/NouveauClient";
+import NouvelleFacture from "views/examples/NouvelleFacture";
 import Corbeille from "views/examples/Corbeille";
 import ClientStatusPage from "views/examples/ClientStatusPage";
 import Agenda from "views/examples/Agenda";
@@ -107,6 +108,15 @@ var routes = [
     name: "Nouveau Client",
     icon: "ni ni-fat-add", // ou supprimez complètement l'icône
     component: NouveauClient,
+    layout: "/admin",
+    api: false,
+    hidden: true // Ajouté pour cacher cette route dans le menu
+  },
+  {
+    path: "/nouvelleFacture",
+    name: "Nouvelle Facture",
+    icon: "ni ni-fat-add", // ou supprimez complètement l'icône
+    component: NouvelleFacture,
     layout: "/admin",
     api: false,
     hidden: true // Ajouté pour cacher cette route dans le menu

@@ -23,17 +23,359 @@ const FacturesPDF = () => {
   const [totalFactures, setTotalFactures] = useState(0);
   const [modal, setModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selected, setSelected] = useState([]);
+  const [selectedFactureId, setSelectedFactureId] = useState(null);
+  const [hoveredFactureId, setHoveredFactureId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
-  const toggleModal = () => setModal(!modal);
 
-  const fetchFactures = () => {
-    // Fetching logic here, update the setFactures state with response data
-    console.log("Fetching factures...");
+  const toggleModal = () => {
+    setModal(!modal);
+    if (!modal) {
+      if (!isUploading && !uploadSuccess) {
+        setSelectedFile(null);
+        setUploadError("");
+      }
+    }
   };
+
+  const handleOnSelect = (row, isSelect) => {
+    setTimeout(() => {
+      console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
+      if (isSelect) {
+        setSelected(prevSelected => {
+          const newSelected = [...prevSelected, row._id];
+          console.log('New selected after add:', newSelected);
+          return newSelected;
+        });
+      } else {
+        setSelected(prevSelected => {
+          const newSelected = prevSelected.filter(x => x !== row._id);
+          console.log('New selected after remove:', newSelected);
+          return newSelected;
+        });
+      }
+    }, 100);  // Délai de 100ms
+  };
+
+  const handleOnSelectAll = (isSelect, rows) => {
+    console.log(`Select all ${isSelect ? 'on' : 'off'}`);
+    if (isSelect) {
+      const idsToSelect = rows.map(r => r._id);
+      console.log('Selecting all ids:', idsToSelect);
+      setSelected(idsToSelect);
+    } else {
+      setSelected([]);
+    }
+  };
+  
+  
+  const selectAllRenderer = ({ mode, checked, indeterminate }) => (
+    <input
+      type={mode}
+      checked={checked}
+      ref={input => {
+        if (input) input.indeterminate = indeterminate;
+      }}
+      // onChange={e => {
+      //   if (e.target.checked) {
+      //     const idsToSelect = factures.map(facture => facture._id);  // Assurez-vous que cette ligne utilise la bonne clé
+      //     setSelected(idsToSelect);
+      //   } else {
+      //     setSelected([]);
+      //   }
+      // }}
+      onChange={e => {
+        handleOnSelectAll(e.target.checked, factures);  // Appelez handleOnSelectAll avec le bon contexte
+      }}
+    />
+  );
+  
+  const handleDeleteSelected = async () => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer les factures sélectionnés ?")) {
+      for (const factureId of selected) {
+        await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to delete facture ${factureId}, status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data.success) {
+            throw new Error(data.message);
+          }
+          setTotalFactures(prevTotal => prevTotal - 1);
+          toast.success(`Facture supprimé avec succès!`);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          toast.error(`Error deleting facture ${factureId}: ${error.message}`);
+        });
+      }
+      // Mise à jour de l'état après la suppression de tous les factures sélectionnés
+      const newFactures = factures.filter(facture => !selected.includes(facture._id));
+      setFactures(newFactures);
+      setSelected([]);
+    }
+  };
+  
+  
+  const deleteButton = selected.length > 0 ? (
+    <Button color="danger" onClick={handleDeleteSelected} style={{ marginLeft: '10px' }}>
+      Supprimer la sélection
+    </Button>
+  ) : null;
+
+  const selectRow = {
+    mode: 'checkbox',
+    clickToSelect: false, // Désactive la sélection automatique lors du clic sur la ligne
+    selected: selected,
+    onSelect: handleOnSelect,
+    onSelectAll: handleOnSelectAll,
+    selectionHeaderRenderer: selectAllRenderer,
+    style: { backgroundColor: '#c8e6c9' },
+    hideSelectColumn: false, // Garde la colonne de case à cocher visible
+  };
+
+  const handleRowClick = (facture) => {
+    console.log(`Navigation to facture details for ID: ${facture._id}`);
+    setSelectedFactureId(facture._id);
+    history.push({
+      pathname: `/admin/nouveauFacture`, // Assurez-vous que le chemin est correct
+      state: { facture: facture }
+    });
+  };
+
+  const fetchFactures = (setFactures) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+
+    const cleanToken = token.trim();
+    const formattedToken = cleanToken.replace('JWT ', '');
+
+    console.log("Formatted Token from localStorage:", formattedToken);
+
+    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures', {
+      headers: {
+         'Authorization': `Bearer ${formattedToken}`
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Factures fetched:', data);
+      setFactures(data);
+      setTotalFactures(data.length);
+    })
+    .catch(err => {
+      console.error('Error fetching factures:', err.message);
+    });
+};
 
   useEffect(() => {
     fetchFactures();
   }, []);
+
+  const handleAddFacture = () => {
+    console.log('Redirection to /admin/nouvelleFacture');
+    history.push('/admin/nouvelleFacture');
+  };
+
+  const handleStatusChange = (factureId, newStatus) => {
+    // Mise à jour de l'état local
+    const updatedFactures = factures.map(facture =>
+      facture._id === factureId ? { ...facture, statut: newStatus } : facture
+    );
+    setFactures(updatedFactures);
+  
+    // Envoie de la mise à jour au serveur
+    fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+      },
+      body: JSON.stringify({ statut: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        console.error('Failed to update status:', data.message);
+        toast.error(`Erreur lors de la mise à jour du statut: ${data.message}`);
+      } else {
+        toast.success('Statut mis à jour avec succès!');
+      }
+    })
+    .catch(error => {
+      console.error('Error updating status:', error);
+      toast.error(`Erreur: ${error.message}`);
+    });
+  };
+  
+  const handleEditFacture = (e, facture) => {
+    e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
+    history.push({
+      pathname: '/admin/nouveauFacture',
+      state: { facture: facture }
+    });
+  };
+  
+  const handleDeleteFacture = (e, factureId) => {
+    e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce facture ?")) {
+      fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete facture, status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          const newFactures = factures.filter(facture => facture._id !== factureId);
+          setSelected(selected.filter(id => id !== factureId)); // Nettoyer aussi les sélections
+          setTotalFactures(prevTotal => prevTotal - 1);
+          toast.success("Facture supprimé avec succès!");
+          setFactures(newFactures);
+        } else {
+          throw new Error(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.error(`Error: ${error.message}`);
+      });
+    }
+  };
+  
+  
+  const columns = [
+    { dataField: "_id", text: "ID", hidden: true },
+    {
+      dataField: "nom",
+      text: "Nom",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
+    },
+    {
+      dataField: "prenom",
+      text: "Prénom",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
+    },
+  {
+    dataField: "email",
+    text: "Email",
+    sort: true,
+    classes: 'col-md-3 col-lg-3 text-truncate', // Utilisation de text-truncate pour ajouter ellipsis
+    headerClasses: 'col-md-3 col-lg-3',
+    formatter: (cellContent, row) => {
+      return (
+        <div className="text-truncate" style={{ maxWidth: '200px' }}>
+          {cellContent}
+        </div>
+      );
+    }
+  }, // Colonne Email
+  {
+    dataField: "telephonePortable",
+    text: "Tel",
+    sort: true,
+    classes: 'd-none d-md-table-cell col-md-2 col-lg-2',
+    headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2'
+  },// Colonne Tel
+  {
+    dataField: "ville",
+    text: "Ville",
+    sort: true,
+    classes: 'd-none d-lg-table-cell col-lg-2',
+    headerClasses: 'd-none d-lg-table-cell col-lg-2'
+  },
+  {
+    dataField: "statut",
+    text: "Statut",
+    classes: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Cache cette colonne sur les écrans plus petits que 'lg'
+    headerClasses: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
+    formatter: (cell, row) => {
+      return (
+        <select
+          defaultValue={row.statut}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => handleStatusChange(row._id, e.target.value)}
+          className="form-control"
+          style={{ minWidth: "150px" }} // Assure que le sélecteur est suffisamment large
+        >
+          <option value="none"></option>
+          <option value="Rdv fixé">Rdv fixé</option>
+          <option value="Rdv Annulé">Rdv Annulé</option>
+          <option value="Appareillé">Appareillé</option>
+          <option value="Appareillé">En Livraison</option>
+          <option value="Période d'essai">Période d'essai</option>
+          <option value="Facturé">Facturé</option>
+        </select>
+      );
+    },
+    editor: {
+      type: 'select',
+      options: [
+        { value: 'Rdv fixé', label: 'Rdv fixé' },
+        { value: 'Rdv Annulé', label: 'Rdv Annulé' },
+        { value: 'Appareillé', label: 'Appareillé' },
+        { value: "Période d'essai", label: "Période d'essai" },
+        { value: 'Facturé', label: 'Facturé' }
+      ]
+    }
+  },
+  
+  {
+    dataField: 'actions',
+    text: 'Actions',
+    classes: 'col-md-2 col-lg-2 text-center',
+    headerClasses: 'col-md-2 col-lg-2 text-center',
+    formatter: (cell, row) => (
+      <div>
+        <Button color="primary" size="sm" onClick={(e) => handleEditFacture(e, row)}>
+          <i className="fas fa-pencil-alt"></i>
+        </Button>
+        <Button color="danger" size="sm" onClick={(e) => handleDeleteFacture(e, row._id)}>
+          <i className="fas fa-trash"></i>
+        </Button>
+      </div>
+    )
+  }
+  ];
+  
+  useEffect(() => {
+    const uniqueStatuses = [...new Set(factures.map(facture => facture.statut))];
+    localStorage.setItem('uniqueStatuses', JSON.stringify(uniqueStatuses));
+  }, [factures]);
+  
+  useEffect(() => {
+    localStorage.setItem('totalFactures', totalFactures);
+  }, [totalFactures]);
+  
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -67,23 +409,76 @@ const FacturesPDF = () => {
     }
   };
 
-  const columns = [
-    { dataField: "_id", text: "ID", hidden: true },
-    { dataField: "nomClient", text: "Nom du Client", sort: true },
-    { dataField: "date", text: "Date", sort: true },
-    { dataField: "montant", text: "Montant", sort: true },
-    {
-      dataField: "pdf",
-      text: "PDF",
-      formatter: (cellContent, row) => (
-        <a href={row.pdf} target="_blank" rel="noopener noreferrer">
-          Voir PDF
-        </a>
-      )
-    }
-  ];
+  // const columns = [
+  //   { dataField: "_id", text: "ID", hidden: true },
+  //   { dataField: "nomFacture", text: "Nom du Facture", sort: true },
+  //   { dataField: "date", text: "Date", sort: true },
+  //   { dataField: "montant", text: "Montant", sort: true },
+  //   {
+  //     dataField: "pdf",
+  //     text: "PDF",
+  //     formatter: (cellContent, row) => (
+  //       <a href={row.pdf} target="_blank" rel="noopener noreferrer">
+  //         Voir PDF
+  //       </a>
+  //     )
+  //   }
+  // ];
+
+  const pagination = paginationFactory({
+    page: 1,
+    alwaysShowAllBtns: true,
+    withFirstAndLast: false,
+    sizePerPageRenderer: ({ options, currSizePerPage, onSizePerPageChange }) => (
+      <div className="dataTables_length" id="datatable-basic_length">
+        <label>
+          {" "}
+          {
+            <select
+              name="datatable-basic_length"
+              aria-controls="datatable-basic"
+              className="form-control form-control-sm"
+              onChange={e => onSizePerPageChange(e.target.value)}
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          }{" "}
+        </label>
+      </div>
+    )
+  });
 
   const { SearchBar } = Search;
+  useEffect(() => {
+    fetchFactures(setFactures);
+  }, [totalFactures]);
+
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && e.target.type !== 'checkbox') {
+        handleRowClick(row);
+      }
+    },
+    onMouseEnter: (e, row, rowIndex) => {
+      setHoveredFactureId(row._id); // Met à jour l'état pour la ligne survolée
+    },
+    onMouseLeave: (e, row, rowIndex) => {
+      setHoveredFactureId(null); // Réinitialise l'état lorsque la souris quitte la ligne
+    }
+  };
+  
+  
+  const rowStyle = (row, rowIndex) => {
+    if (row._id === selectedFactureId) {
+      return { backgroundColor: '#f8f9fe', cursor: 'pointer' }; // Style pour la ligne sélectionnée
+    } else if (row._id === hoveredFactureId) {
+      return { backgroundColor: '#e9ecef', cursor: 'pointer' }; // Style pour la ligne survolée
+    }
+    return {}; // Style par défaut
+  };
 
   return (
     <>
@@ -95,7 +490,8 @@ const FacturesPDF = () => {
             <Card className="shadow">
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
                 <h3 className="mb-0">Factures PDF</h3>
-                <Button color="info" onClick={toggleModal}>Importer Factures</Button>
+                <Button color="primary" onClick={handleAddFacture} style={{ marginRight: '10px' }}>Ajouter Facture</Button>
+                <Button onClick={toggleModal} style={{ background: 'linear-gradient(87deg, #003D33 0%, #007D70 100%)',  color: 'white' }}>Importer Factures</Button>
               </CardHeader>
               <CardBody>
                 <ToolkitProvider keyField="id" data={factures} columns={columns} search>
@@ -110,11 +506,17 @@ const FacturesPDF = () => {
                         </div>
                       </div>
                       <BootstrapTable
-                        {...props.baseProps}
-                        bootstrap4
-                        pagination={paginationFactory()}
-                        bordered={false}
-                      />
+  {...props.baseProps}
+  keyField="_id"
+  bootstrap4
+  pagination={pagination}
+  data={factures}
+  columns={columns}
+  selectRow={selectRow}
+  rowEvents={rowEvents}
+  rowStyle={rowStyle}
+  bordered={false}
+/>
                     </div>
                   )}
                 </ToolkitProvider>

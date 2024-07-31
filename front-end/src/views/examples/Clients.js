@@ -48,22 +48,7 @@ const Tables = () => {
     }
   };
 
-  // const handleOnSelect = (row, isSelect) => {
-  //   console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
-  //   if (isSelect) {
-  //     setSelected(prevSelected => {
-  //       const newSelected = [...prevSelected, row._id];
-  //       console.log('New selected after add:', newSelected);
-  //       return newSelected;
-  //     });
-  //   } else {
-  //     setSelected(prevSelected => {
-  //       const newSelected = prevSelected.filter(x => x !== row._id);
-  //       console.log('New selected after remove:', newSelected);
-  //       return newSelected;
-  //     });
-  //   }
-  // };
+
   const handleOnSelect = (row, isSelect) => {
     setTimeout(() => {
       console.log(`Select ${isSelect ? 'on' : 'off'} for row id ${row._id}`);
@@ -157,16 +142,7 @@ const Tables = () => {
       Supprimer la sélection
     </Button>
   ) : null;
-  
-  // const selectRow = {
-  //   mode: 'checkbox',
-  //   clickToSelect: true,
-  //   selected: selected,
-  //   onSelect: handleOnSelect,
-  //   onSelectAll: handleOnSelectAll,
-  //   selectionHeaderRenderer: selectAllRenderer,
-  //   style: { backgroundColor: '#c8e6c9' }
-  // };
+
   const selectRow = {
     mode: 'checkbox',
     clickToSelect: false, // Désactive la sélection automatique lors du clic sur la ligne
@@ -368,6 +344,7 @@ const Tables = () => {
           <option value="Rdv fixé">Rdv fixé</option>
           <option value="Rdv Annulé">Rdv Annulé</option>
           <option value="Appareillé">Appareillé</option>
+          <option value="Appareillé">En Livraison</option>
           <option value="Période d'essai">Période d'essai</option>
           <option value="Facturé">Facturé</option>
         </select>

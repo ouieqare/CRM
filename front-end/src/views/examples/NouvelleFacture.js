@@ -31,7 +31,7 @@ const NouvelleFacture = () => {
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.facture);
   const [activeTab, setActiveTab] = useState('1');
-  const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
+  //const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
 
   useEffect(() => {
     // Si un facture est passé dans l'état, utilisez ses valeurs pour initialiser le formulaire
@@ -163,9 +163,9 @@ const saveFactures = async (factureData) => {
   
       const data = await response.json();
       console.log('Opération réussie:', data);
-      setAudiogrammeSuccessMessage("Le bilan auditif a été enregistré avec succès.");
+      // setAudiogrammeSuccessMessage("Le bilan auditif a été enregistré avec succès.");
       setTimeout(() => {
-        setAudiogrammeSuccessMessage("");
+        //setAudiogrammeSuccessMessage("");
         history.push('/admin/factures'); // Redirection après l'affichage du message de succès
       }, 3000); // Affichage du message pendant 3 secondes
   
@@ -371,12 +371,12 @@ const saveFactures = async (factureData) => {
               </Form>
             </TabPane>
             <TabPane tabId="2">
-  {audiogrammeSuccessMessage && (
+  {/* {audiogrammeSuccessMessage && (
     <UncontrolledAlert color="success" className="fixed-alert" fade={false}>
       <span className="alert-inner--icon"><i className="ni ni-like-2" /></span>
       <span className="alert-inner--text"><strong>Succès!</strong> {audiogrammeSuccessMessage}</span>
     </UncontrolledAlert>
-  )}
+  )} */}
   <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
     <FormGroup>
       <Label for="audiogramme">Audiogramme</Label>

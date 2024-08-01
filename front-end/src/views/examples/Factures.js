@@ -291,7 +291,14 @@ const FacturesPDF = () => {
       sort: true,
       classes: 'col-lg-2',
       headerClasses: 'col-lg-2',
-      formatter: (cellContent) => cellContent ? cellContent.toLocaleDateString("fr-FR") : 'Non spécifiée' // Afficher la date dans un format lisible
+      formatter: (cellContent, row) => {
+        if (cellContent) {
+          const date = new Date(cellContent);
+          return date.toLocaleDateString("fr-FR");
+        } else {
+          return 'Non spécifiée';
+        }
+      }
     },
     {
       dataField: "nomClient",

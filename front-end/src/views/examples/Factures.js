@@ -354,8 +354,8 @@ const FacturesPDF = () => {
   
   
   useEffect(() => {
-    const uniqueStatuses = [...new Set(factures.map(facture => facture.statut))];
-    localStorage.setItem('uniqueStatuses', JSON.stringify(uniqueStatuses));
+    const uniqueFacturesStatuses = [...new Set(factures.map(facture => facture.statut))];
+    localStorage.setItem('uniqueFacturesStatuses', JSON.stringify(uniqueFacturesStatuses));
   }, [factures]);
   
   useEffect(() => {

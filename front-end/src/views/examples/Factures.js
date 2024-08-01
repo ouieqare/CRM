@@ -353,10 +353,10 @@ const FacturesPDF = () => {
   ];
   
   
-  useEffect(() => {
-    const uniqueFacturesStatuses = [...new Set(factures.map(facture => facture.statut))];
-    localStorage.setItem('uniqueFacturesStatuses', JSON.stringify(uniqueFacturesStatuses));
-  }, [factures]);
+  // useEffect(() => {
+  //   const uniqueFacturesStatuses = [...new Set(factures.map(facture => facture.statut))];
+  //   localStorage.setItem('uniqueFacturesStatuses', JSON.stringify(uniqueFacturesStatuses));
+  // }, [factures]);
   
   useEffect(() => {
     localStorage.setItem('totalFactures', totalFactures);

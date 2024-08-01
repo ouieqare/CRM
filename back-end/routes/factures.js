@@ -221,46 +221,46 @@ router.put('/:id/status', reqAuth, async (req, res) => {
 });
 
 // Filtrer les factures par statut
-router.get('/by-status/:statut', reqAuth, async (req, res) => {
-  try {
-    const statut = req.params.statut; // Récupère le statut de l'URL
-    const factures = await Facture.find({ userId: req.user.id, statut: statut, isDeleted: false });
-    res.json(factures);
-  } catch (err) {
-    console.error('Error fetching factures by status:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+// router.get('/by-status/:statut', reqAuth, async (req, res) => {
+//   try {
+//     const statut = req.params.statut; // Récupère le statut de l'URL
+//     const factures = await Facture.find({ userId: req.user.id, statut: statut, isDeleted: false });
+//     res.json(factures);
+//   } catch (err) {
+//     console.error('Error fetching factures by status:', err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
-// Route pour obtenir le nombre de factures par statut pour un utilisateur spécifique
-router.get('/count-by-status', reqAuth, async (req, res) => {
-  try {
-    const statusCounts = await Facture.aggregate([
-      { $match: { userId: req.user.id, isDeleted: false } }, // Assurez-vous de filtrer les factures de l'utilisateur connecté et non supprimés
-      { $group: { _id: "$statut", count: { $sum: 1 } } }
-    ]);
+// // Route pour obtenir le nombre de factures par statut pour un utilisateur spécifique
+// router.get('/count-by-status', reqAuth, async (req, res) => {
+//   try {
+//     const statusCounts = await Facture.aggregate([
+//       { $match: { userId: req.user.id, isDeleted: false } }, // Assurez-vous de filtrer les factures de l'utilisateur connecté et non supprimés
+//       { $group: { _id: "$statut", count: { $sum: 1 } } }
+//     ]);
 
-    // Transformer le résultat en un objet clé-valeur pour faciliter l'accès aux données
-    const counts = statusCounts.reduce((acc, curr) => {
-      acc[curr._id] = curr.count;
-      return acc;
-    }, {});
+//     // Transformer le résultat en un objet clé-valeur pour faciliter l'accès aux données
+//     const counts = statusCounts.reduce((acc, curr) => {
+//       acc[curr._id] = curr.count;
+//       return acc;
+//     }, {});
 
-    res.json(counts);
-  } catch (error) {
-    console.error('Failed to count factures by status:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
+//     res.json(counts);
+//   } catch (error) {
+//     console.error('Failed to count factures by status:', error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// });
 
-router.get('/counts', reqAuth, async (req, res) => {
-  try {
-    const totalFactures = await Facture.countDocuments({ userId: req.user.id });
-    res.json({ totalFactures, totalAppareilles, totalFactures });
-  } catch (err) {
-    console.error('Error fetching counts:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+// router.get('/counts', reqAuth, async (req, res) => {
+//   try {
+//     const totalFactures = await Facture.countDocuments({ userId: req.user.id });
+//     res.json({ totalFactures, totalAppareilles, totalFactures });
+//   } catch (err) {
+//     console.error('Error fetching counts:', err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 module.exports = router;

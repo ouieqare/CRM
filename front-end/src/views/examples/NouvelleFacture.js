@@ -21,7 +21,7 @@ function formatDate(dateString) {
 const NouvelleFacture = () => {
   const history = useHistory();
   const location = useLocation();
-  const [facture, setFactures] = useState({
+  const [facture, setFacture] = useState({
     objet: "",
     dateFacture: "",
     heureCreation: "",
@@ -40,7 +40,7 @@ const NouvelleFacture = () => {
         ...location.state.facture,
         dateNaissance: formatDate(location.state.facture.dateNaissance)
       };
-      setFactures(formattedFactures);
+      setFacture(formattedFactures);
     }
   }, [location.state]);
 
@@ -64,9 +64,9 @@ useEffect(() => {
     let tempErrors = {};
     let formIsValid = true;
 
-    if (!facture.nom.trim()) {
+    if (!facture.objet.trim()) {
       formIsValid = false;
-      tempErrors["nom"] = "Le nom est requis.";
+      tempErrors["objet"] = "L'objet est requis.";
     }
 
     if (!facture.email.trim()) {
@@ -125,7 +125,7 @@ const saveFactures = async (factureData) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFactures({ ...facture, [name]: value });
+    setFacture({ ...facture, [name]: value });
     // Clear errors
     if (!!errors[name]) setErrors({ ...errors, [name]: null });
   };

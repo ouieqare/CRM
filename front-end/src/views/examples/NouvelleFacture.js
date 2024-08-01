@@ -22,19 +22,11 @@ const NouvelleFacture = () => {
   const history = useHistory();
   const location = useLocation();
   const [facture, setFactures] = useState({
-    nom: "",
-    prenom: "",
-    dateNaissance: "",
-    mutuelle: "",
-    numeroSecu: "",
-    email: "",
-    telephoneFixe: "",
-    telephonePortable: "",
-    adresse: "",
-    codePostal: "",
-    ville: "",
-    note: "",
-    audiogramme: "",
+    objet: "",
+    dateFacture: "",
+    heureCreation: "",
+    nomClient: "",
+    totalGeneral: "",
     statut: "" 
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.facture);
@@ -223,7 +215,7 @@ const saveFactures = async (factureData) => {
                   Informations Générales
                 </NavLink>
               </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   className={classnames({ active: activeTab === '2' })}
                   onClick={() => { toggleTab('2'); }}
@@ -231,7 +223,7 @@ const saveFactures = async (factureData) => {
                 >
                   Bilan Auditif
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
@@ -248,55 +240,91 @@ const saveFactures = async (factureData) => {
               )}
               <Form onSubmit={handleSubmit}>
               <Row form style={{ paddingTop: '50px' }}>
-                <Col md={6}>
-                  <FormGroup>
-                    <Label for="nom">Nom</Label>
-                    <Input type="text" name="nom" id="nom" value={facture.nom} onChange={handleInputChange} required disabled={!isEditable}/>
-                    {errors.nom && <p style={{ color: 'red' }}>{errors.nom}</p>}
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <FormGroup>
-                    <Label for="prenom">Prénom</Label>
-                    <Input type="text" name="prenom" id="prenom" value={facture.prenom} onChange={handleInputChange} disabled={!isEditable}/>
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row form>
-                <Col md={4}>
+              <Col md={6}>
                 <FormGroup>
-                    <Label for="dateNaissance">Date de Naissance</Label>
-                    <Input type="date" name="dateNaissance" id="dateNaissance" value={facture.dateNaissance || ''} onChange={handleInputChange} disabled={!isEditable} />
-                  </FormGroup>
-                </Col>
-                <Col md={4}>
-                  <FormGroup>
-                    <Label for="mutuelle">Mutuelle</Label>
-                    <Input type="text" name="mutuelle" id="mutuelle" value={facture.mutuelle} onChange={handleInputChange} disabled={!isEditable}/>
-                  </FormGroup>
-                </Col>
-                <Col md={4}>
-                  <FormGroup>
-                    <Label for="numeroSecu">Numéro de Sécurité Sociale</Label>
-                    <Input type="text" name="numeroSecu" id="numeroSecu" value={facture.numeroSecu} onChange={handleInputChange} disabled={!isEditable} />
-                  </FormGroup>
-                </Col>
+                  <Label for="objet">Objet</Label>
+                  <Input
+                    type="text"
+                    name="objet"
+                    id="objet"
+                    value={facture.objet}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="nomClient">Nom du Client</Label>
+                  <Input
+                    type="text"
+                    name="nomClient"
+                    id="nomClient"
+                    value={facture.nomClient}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
               </Row>
               <Row form>
               <Col md={4}>
-              <FormGroup>
-  <Label for="statut">Statut</Label>
-  <Input type="select" name="statut" id="statut" value={facture.statut} onChange={handleInputChange} disabled={!isEditable}>
-    <option value="">Sélectionner un statut</option>
-    <option value="Rdv fixé">Rdv fixé</option>
-    <option value="Rdv Annulé">Rdv Annulé</option>
-    <option value="Appareillé">Appareillé</option>
-    <option value="Période d'essai">Période d'essai</option>
-    <option value="Facturé">Facturé</option>
-  </Input>
-</FormGroup>
-</Col>
-</Row>
+                <FormGroup>
+                  <Label for="dateFacture">Date de la Facture</Label>
+                  <Input
+                    type="date"
+                    name="dateFacture"
+                    id="dateFacture"
+                    value={facture.dateFacture}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <FormGroup>
+                  <Label for="heureCreation">Heure de Création</Label>
+                  <Input
+                    type="time"
+                    name="heureCreation"
+                    id="heureCreation"
+                    value={facture.heureCreation}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <FormGroup>
+                  <Label for="totalGeneral">Total Général</Label>
+                  <Input
+                    type="number"
+                    name="totalGeneral"
+                    id="totalGeneral"
+                    value={facture.totalGeneral}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+              </Col>
+              </Row>
+              <Row>
+              <Col md={12}>
+                <FormGroup>
+                  <Label for="statut">Statut</Label>
+                  <Input
+                    type="select"
+                    name="statut"
+                    id="statut"
+                    value={facture.statut}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Sélectionner un statut</option>
+                    <option value="Envoyée">Envoyée</option>
+                    <option value="Payée">Payée</option>
+                    <option value="Annulée">Annulée</option>
+                    <option value="Créée">Créée</option>
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Row>
               <Row form>
                 <Col md={6}>
                   <FormGroup>

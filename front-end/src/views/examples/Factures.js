@@ -149,7 +149,7 @@ const FacturesPDF = () => {
     console.log(`Navigation to facture details for ID: ${facture._id}`);
     setSelectedFactureId(facture._id);
     history.push({
-      pathname: `/admin/nouveauFacture`, // Assurez-vous que le chemin est correct
+      pathname: `/admin/nouvelleFacture`, // Assurez-vous que le chemin est correct
       state: { facture: facture }
     });
   };
@@ -230,7 +230,7 @@ const FacturesPDF = () => {
   const handleEditFacture = (e, facture) => {
     e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
     history.push({
-      pathname: '/admin/nouveauFacture',
+      pathname: '/admin/nouvelleFacture',
       state: { facture: facture }
     });
   };

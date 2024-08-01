@@ -272,100 +272,79 @@ const FacturesPDF = () => {
   const columns = [
     { dataField: "_id", text: "ID", hidden: true },
     {
-      dataField: "nom",
-      text: "Nom",
+      dataField: "objet",
+      text: "Objet",
       sort: true,
       classes: 'col-lg-2',
       headerClasses: 'col-lg-2'
     },
     {
-      dataField: "prenom",
-      text: "Prénom",
+      dataField: "heureCreation",
+      text: "Heure de Création",
       sort: true,
       classes: 'col-lg-2',
       headerClasses: 'col-lg-2'
     },
-  {
-    dataField: "email",
-    text: "Email",
-    sort: true,
-    classes: 'col-md-3 col-lg-3 text-truncate', // Utilisation de text-truncate pour ajouter ellipsis
-    headerClasses: 'col-md-3 col-lg-3',
-    formatter: (cellContent, row) => {
-      return (
-        <div className="text-truncate" style={{ maxWidth: '200px' }}>
-          {cellContent}
-        </div>
-      );
-    }
-  }, // Colonne Email
-  {
-    dataField: "telephonePortable",
-    text: "Tel",
-    sort: true,
-    classes: 'd-none d-md-table-cell col-md-2 col-lg-2',
-    headerClasses: 'd-none d-md-table-cell col-md-2 col-lg-2'
-  },// Colonne Tel
-  {
-    dataField: "ville",
-    text: "Ville",
-    sort: true,
-    classes: 'd-none d-lg-table-cell col-lg-2',
-    headerClasses: 'd-none d-lg-table-cell col-lg-2'
-  },
-  {
-    dataField: "statut",
-    text: "Statut",
-    classes: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Cache cette colonne sur les écrans plus petits que 'lg'
-    headerClasses: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
-    formatter: (cell, row) => {
-      return (
+    {
+      dataField: "dateFacture",
+      text: "Date de la Facture",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2',
+      formatter: (cellContent) => cellContent.toLocaleDateString("fr-FR") // Afficher la date dans un format lisible
+    },
+    {
+      dataField: "nomClient",
+      text: "Nom du Client",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
+    },
+    {
+      dataField: "totalGeneral",
+      text: "Total Général",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2',
+      formatter: (cellContent) => `${cellContent.toFixed(2)} €` // Formate le total en euros
+    },
+    {
+      dataField: "statut",
+      text: "Statut",
+      classes: 'col-md-4 col-lg-3',
+      headerClasses: 'd-none d-lg-table-cell col-md-4 col-lg-3',
+      formatter: (cell, row) => (
         <select
           defaultValue={row.statut}
-          onClick={(e) => e.stopPropagation()}
           onChange={(e) => handleStatusChange(row._id, e.target.value)}
           className="form-control"
-          style={{ minWidth: "150px" }} // Assure que le sélecteur est suffisamment large
+          style={{ minWidth: "150px" }}
         >
-          <option value="none"></option>
-          <option value="Rdv fixé">Rdv fixé</option>
-          <option value="Rdv Annulé">Rdv Annulé</option>
-          <option value="Appareillé">Appareillé</option>
-          <option value="Appareillé">En Livraison</option>
-          <option value="Période d'essai">Période d'essai</option>
-          <option value="Facturé">Facturé</option>
+          <option value="Envoyée">Envoyée</option>
+          <option value="Payée">Payée</option>
+          <option value="Annulée">Annulée</option>
+          <option value="Créée">Créée</option>
         </select>
-      );
+      )
     },
-    editor: {
-      type: 'select',
-      options: [
-        { value: 'Rdv fixé', label: 'Rdv fixé' },
-        { value: 'Rdv Annulé', label: 'Rdv Annulé' },
-        { value: 'Appareillé', label: 'Appareillé' },
-        { value: "Période d'essai", label: "Période d'essai" },
-        { value: 'Facturé', label: 'Facturé' }
-      ]
+    {
+      dataField: 'actions',
+      text: 'Actions',
+      classes: 'col-md-2 col-lg-2 text-center',
+      headerClasses: 'col-md-2 col-lg-2 text-center',
+      formatter: (cell, row) => (
+        <div>
+          <Button color="primary" size="sm" onClick={(e) => handleEditFacture(e, row)}>
+            <i className="fas fa-pencil-alt"></i>
+          </Button>
+          <Button color="danger" size="sm" onClick={(e) => handleDeleteFacture(e, row._id)}>
+            <i className="fas fa-trash"></i>
+          </Button>
+        </div>
+      )
     }
-  },
-  
-  {
-    dataField: 'actions',
-    text: 'Actions',
-    classes: 'col-md-2 col-lg-2 text-center',
-    headerClasses: 'col-md-2 col-lg-2 text-center',
-    formatter: (cell, row) => (
-      <div>
-        <Button color="primary" size="sm" onClick={(e) => handleEditFacture(e, row)}>
-          <i className="fas fa-pencil-alt"></i>
-        </Button>
-        <Button color="danger" size="sm" onClick={(e) => handleDeleteFacture(e, row._id)}>
-          <i className="fas fa-trash"></i>
-        </Button>
-      </div>
-    )
-  }
   ];
+  
   
   useEffect(() => {
     const uniqueStatuses = [...new Set(factures.map(facture => facture.statut))];
@@ -490,8 +469,9 @@ const FacturesPDF = () => {
             <Card className="shadow">
               <CardHeader className="border-0 d-flex align-items-center justify-content-between">
                 <h3 className="mb-0">Factures PDF</h3>
-                <Button color="primary" onClick={handleAddFacture} style={{ marginRight: '10px' }}>Ajouter Facture</Button>
-                <Button onClick={toggleModal} style={{ background: 'linear-gradient(87deg, #003D33 0%, #007D70 100%)',  color: 'white' }}>Importer Factures</Button>
+                {/* <Button color="primary" onClick={handleAddFacture} style={{ marginRight: '10px' }}>Ajouter Facture</Button> */}
+                {/* <Button onClick={toggleModal} style={{ background: 'linear-gradient(87deg, #003D33 0%, #007D70 100%)',  color: 'white' }}>Importer Factures</Button> */}
+                <Button onClick={handleAddFacture} style={{ background: 'linear-gradient(87deg, #003D33 0%, #007D70 100%)',  color: 'white' }}>Ajouter Facture</Button>
               </CardHeader>
               <CardBody>
                 <ToolkitProvider keyField="id" data={factures} columns={columns} search>

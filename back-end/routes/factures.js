@@ -184,8 +184,8 @@ router.post('/add', reqAuth, async (req, res) => {
     const existingFacture = await Facture.findOne({ $or: [query].filter(q => Object.keys(q).length > 1) });
 
     if (existingFacture) {
-      console.log('Facture existant trouvé:', existingFacture);
-      return res.status(409).json({ success: false, message: 'Impossible d\'enregistrer, il existe déjà un facture avec le même tel ou le même mail.' });
+      console.log('Facture existante trouvée:', existingFacture);
+      return res.status(409).json({ success: false, message: 'Impossible d\'enregistrer, il existe déjà une facture avec le même tel ou le même mail.' });
     }
 
     const newFacture = new Facture({
@@ -194,10 +194,10 @@ router.post('/add', reqAuth, async (req, res) => {
     });
 
     await newFacture.save();
-    console.log('Nouveau facture enregistré:', newFacture);
+    console.log('Nouvelle facture enregistrée:', newFacture);
     res.status(201).json(newFacture);
   } catch (err) {
-    console.error('Erreur lors de l\'enregistrement du facture:', err);
+    console.error('Erreur lors de l\'enregistrement de la facture:', err);
     res.status(400).json({ error: err.message });
   }
 });

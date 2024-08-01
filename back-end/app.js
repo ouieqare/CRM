@@ -160,7 +160,7 @@ app.use(bodyParser.json());
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));
 app.use('/api/clients', require('./routes/clients'));
-
+app.use('/api/factures', require('./routes/factures'));
 
 // Configuration des types MIME pour les fichiers de police
 express.static.mime.define({'font/woff2': ['woff2']});

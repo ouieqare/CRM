@@ -291,7 +291,7 @@ const FacturesPDF = () => {
       sort: true,
       classes: 'col-lg-2',
       headerClasses: 'col-lg-2',
-      formatter: (cellContent) => cellContent.toLocaleDateString("fr-FR") // Afficher la date dans un format lisible
+      formatter: (cellContent) => cellContent ? cellContent.toLocaleDateString("fr-FR") : 'Non spécifiée' // Afficher la date dans un format lisible
     },
     {
       dataField: "nomClient",
@@ -306,7 +306,7 @@ const FacturesPDF = () => {
       sort: true,
       classes: 'col-lg-2',
       headerClasses: 'col-lg-2',
-      formatter: (cellContent) => `${cellContent.toFixed(2)} €` // Formate le total en euros
+      formatter: (cellContent) => typeof cellContent === 'number' ? `${cellContent.toFixed(2)} €` : 'Non spécifié' // Formate le total en euros
     },
     {
       dataField: "statut",

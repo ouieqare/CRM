@@ -3,12 +3,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaArrowLeft } from 'react-icons/fa'; 
-
 import {
   Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Container, Row, Col, UncontrolledAlert,
   Nav, NavItem, NavLink, TabContent, TabPane
 } from "reactstrap";
 import classnames from 'classnames';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -136,51 +138,30 @@ const saveFactures = async (factureData) => {
       saveFactures(facture);
     }
   };
-  const handleSubmitAudiogramme = async (e) => {
-    e.preventDefault();
-    const audiogrammeData = {
-      ...facture,
-      audiogramme: facture.audiogramme
-    };
-  
-    const url = facture._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${facture._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/add';
-    const method = facture._id ? 'PUT' : 'POST';
-  
-    try {
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('token')
-        },
-        body: JSON.stringify(audiogrammeData)
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP status ${response.status}: ${errorText}`);
-      }
-  
-      const data = await response.json();
-      console.log('Opération réussie:', data);
-      // setAudiogrammeSuccessMessage("Le bilan auditif a été enregistré avec succès.");
-      setTimeout(() => {
-        //setAudiogrammeSuccessMessage("");
-        history.push('/admin/factures'); // Redirection après l'affichage du message de succès
-      }, 3000); // Affichage du message pendant 3 secondes
-  
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement du bilan auditif:", error);
-      setErrors({ form: "Erreur lors de l'opération sur le bilan auditif." });
-    }
-  };
+
   const handleBack = () => {
     history.goBack();
   };
 
+  const generatePDF = () => {
+    const input = document.getElementById('facture-content'); // Assurez-vous que l'ID correspond à votre div contenant la facture
+    html2canvas(input, { scale: 2 }) // Utilisez une échelle pour améliorer la qualité de l'image
+        .then((canvas) => {
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'px',
+                format: [canvas.width, canvas.height]
+            });
+            pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+            pdf.save("facture.pdf");
+        });
+};
+
+
   return (
       //  <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)' }}>
-      <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
+      <div id="facture-content" style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
     <Container className="mt-5">
       <Card>
       <ToastContainer position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />          
@@ -192,6 +173,7 @@ const saveFactures = async (factureData) => {
   <div style={{ float: 'right' }}>
     {facture._id && (
       <>
+      <Button color="info" onClick={generatePDF}>Générer PDF</Button>
         <Button color="info" onClick={() => setIsEditable(true)} disabled={isEditable}>Modifier</Button>
         <Button color="primary" onClick={() => {
           if (validateForm()) {
@@ -370,22 +352,6 @@ const saveFactures = async (factureData) => {
                 <Button type="button" color="secondary" onClick={() => history.push('/admin/factures')}>Annuler</Button>
               </Form>
             </TabPane>
-            <TabPane tabId="2">
-  {/* {audiogrammeSuccessMessage && (
-    <UncontrolledAlert color="success" className="fixed-alert" fade={false}>
-      <span className="alert-inner--icon"><i className="ni ni-like-2" /></span>
-      <span className="alert-inner--text"><strong>Succès!</strong> {audiogrammeSuccessMessage}</span>
-    </UncontrolledAlert>
-  )} */}
-  <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
-    <FormGroup>
-      <Label for="audiogramme">Audiogramme</Label>
-      <Input type="text" name="audiogramme" id="audiogramme" value={facture.audiogramme} onChange={handleInputChange} />
-    </FormGroup>
-    {/* Ajoutez plus de champs selon vos besoins ici */}
-    <Button type="submit" color="primary">Enregistrer Bilan</Button>
-  </Form>
-</TabPane>
 
           </TabContent>
         </CardBody>

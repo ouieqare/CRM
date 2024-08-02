@@ -9,7 +9,8 @@ import {
 } from "reactstrap";
 import classnames from 'classnames';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import autoTable from 'jspdf-autotable'; // Importez autoTable si vous comptez l'utiliser
+
 
 
 function formatDate(dateString) {
@@ -144,18 +145,41 @@ const saveFactures = async (factureData) => {
   };
 
   const generatePDF = () => {
-    const input = document.getElementById('facture-content'); // Assurez-vous que l'ID correspond à votre div contenant la facture
-    html2canvas(input, { scale: 2 }) // Utilisez une échelle pour améliorer la qualité de l'image
-        .then((canvas) => {
-            const imgData = canvas.toDataURL('image/jpeg', 1.0);
-            const pdf = new jsPDF({
-                orientation: 'p',
-                unit: 'px',
-                format: [canvas.width, canvas.height]
-            });
-            pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
-            pdf.save("facture.pdf");
-        });
+    const doc = new jsPDF();
+
+    // En-tête de la facture
+    doc.setFontSize(18);
+    doc.text('Facture', 105, 25, null, null, 'center');
+    doc.setFontSize(11);
+    doc.text(`Date: ${facture.dateFacture}`, 200, 30, null, null, 'right');
+
+    // Informations du client
+    doc.text(`Nom du Client: ${facture.nomClient}`, 20, 50);
+    doc.text(`Email: ${facture.email}`, 20, 65);
+    // Plus d'infos
+    doc.text(`Objet: ${facture.objet}`, 20, 80);
+
+    // Vous pouvez ajouter ici un AutoTable si vous avez des listes d'éléments
+    autoTable(doc, {
+        head: [['Description', 'Quantité', 'Prix Unitaire', 'Total']],
+        body: [
+            // Supposons que vous avez un état qui contient ces informations
+            // Chaque ligne représenterait un item de la facture
+            ['Service 1', '1', '50.00 €', '50.00 €'],
+            ['Service 2', '2', '30.00 €', '60.00 €'],
+            // Ajoutez ici les lignes selon les données de votre application
+        ],
+        startY: 95
+    });
+
+    // Total général
+    doc.text(`Total Général: ${facture.totalGeneral} €`, 20, doc.lastAutoTable.finalY + 20);
+
+    // Statut de la facture
+    doc.text(`Statut: ${facture.statut}`, 20, doc.lastAutoTable.finalY + 35);
+
+    // Sauvegarder le PDF
+    doc.save('facture.pdf');
 };
 
 

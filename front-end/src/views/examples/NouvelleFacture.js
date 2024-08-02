@@ -255,6 +255,7 @@ const saveFactures = async (factureData) => {
                     id="objet"
                     value={facture.objet}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                     required
                   />
                 </FormGroup>
@@ -268,6 +269,7 @@ const saveFactures = async (factureData) => {
                     id="nomClient"
                     value={facture.nomClient}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                     required
                   />
                 </FormGroup>
@@ -283,6 +285,7 @@ const saveFactures = async (factureData) => {
                     id="dateFacture"
                     value={facture.dateFacture}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                   />
                 </FormGroup>
               </Col>
@@ -295,6 +298,7 @@ const saveFactures = async (factureData) => {
                     id="heureCreation"
                     value={facture.heureCreation}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                   />
                 </FormGroup>
               </Col>
@@ -307,6 +311,7 @@ const saveFactures = async (factureData) => {
                     id="totalGeneral"
                     value={facture.totalGeneral}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                   />
                 </FormGroup>
               </Col>
@@ -321,6 +326,7 @@ const saveFactures = async (factureData) => {
                     id="statut"
                     value={facture.statut}
                     onChange={handleInputChange}
+                    disabled={!isEditable}
                   >
                     <option value="">Sélectionner un statut</option>
                     <option value="Envoyée">Envoyée</option>

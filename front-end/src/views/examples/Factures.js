@@ -486,7 +486,7 @@ const FacturesPDF = () => {
                     <div>
                       <div className="row mb-2">
                         <div className="col-6 text-left">
-                          {/* Any additional buttons or info can go here */}
+                        {deleteButton}
                         </div>
                         <div className="col-6 text-right">
                           <SearchBar {...props.searchProps} className="form-control-sm" placeholder="Rechercher" />

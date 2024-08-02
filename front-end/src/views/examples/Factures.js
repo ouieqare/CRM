@@ -323,6 +323,7 @@ const FacturesPDF = () => {
       formatter: (cell, row) => (
         <select
           defaultValue={row.statut}
+          onClick={(e) => e.stopPropagation()}
           onChange={(e) => handleStatusChange(row._id, e.target.value)}
           className="form-control"
           style={{ minWidth: "150px" }}

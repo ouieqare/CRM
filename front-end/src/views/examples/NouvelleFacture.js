@@ -165,8 +165,8 @@ const saveFactures = async (factureData) => {
         body: [
             // Supposons que vous avez un état qui contient ces informations
             // Chaque ligne représenterait un item de la facture
-            ['Service 1', '1', '50.00 €', '50.00 €'],
-            ['Service 2', '2', '30.00 €', '60.00 €'],
+            ['Appareillage 1', '1', '550.00 €', '550.00 €'],
+            // ['Service 2', '2', '30.00 €', '60.00 €'],
             // Ajoutez ici les lignes selon les données de votre application
         ],
         startY: 95
@@ -176,7 +176,7 @@ const saveFactures = async (factureData) => {
     doc.text(`Total Général: ${facture.totalGeneral} €`, 20, doc.lastAutoTable.finalY + 20);
 
     // Statut de la facture
-    doc.text(`Statut: ${facture.statut}`, 20, doc.lastAutoTable.finalY + 35);
+    // doc.text(`Statut: ${facture.statut}`, 20, doc.lastAutoTable.finalY + 35);
 
     // Sauvegarder le PDF
     doc.save('facture.pdf');

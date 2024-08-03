@@ -413,21 +413,21 @@ const saveClient = async (clientData) => {
   <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
     <FormGroup>
       <Label for="marqueAppareil">Marque de l'appareil</Label>
-      <Input type="text" name="marqueAppareil" id="marqueAppareil" value={client.appareillage.marqueAppareil} onChange={handleInputChange} />
+      <Input type="text" name="marqueAppareil" id="marqueAppareil" value={client.marqueAppareil} onChange={handleInputChange} />
     </FormGroup>
     <FormGroup>
       <Label for="montantAppareil">Montant de l'appareil</Label>
-      <Input type="text" name="montantAppareil" id="montantAppareil" value={client.appareillage.montantAppareil} onChange={handleInputChange} />
+      <Input type="text" name="montantAppareil" id="montantAppareil" value={client.montantAppareil} onChange={handleInputChange} />
     </FormGroup>
     <FormGroup check>
       <Label check>
-        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.appareillage.monoAppareil || false} onChange={handleCheckboxChange} />
+        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.monoAppareil || false} onChange={handleCheckboxChange} />
         Mono Appareil
       </Label>
     </FormGroup>
     <FormGroup>
       <Label for="observations">Observations</Label>
-      <Input type="textarea" name="observations" id="observations" value={client.appareillage.observations} onChange={handleInputChange} />
+      <Input type="textarea" name="Appobservations" id="Appobservations" value={client.Appobservations} onChange={handleInputChange} />
     </FormGroup>
     <Button type="submit" color="primary">Enregistrer Appareillage</Button>
   </Form>

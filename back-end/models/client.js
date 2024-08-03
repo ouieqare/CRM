@@ -36,7 +36,7 @@ const ClientSchema = new mongoose.Schema({
 marqueAppareil: { type: String, required: false },
     montantAppareil: { type: String, required: false },
     monoAppareil: { type: Boolean, required: false },
-    observations: { type: String, required: false }
+    Appobservations: { type: String, required: false }
 });
 
 ClientSchema.index(

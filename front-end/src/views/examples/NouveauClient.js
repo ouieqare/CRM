@@ -398,7 +398,8 @@ const saveClient = async (clientData) => {
     </FormGroup>
     <FormGroup check>
       <Label check>
-        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.appareillage.monoAppareil || false} onChange={handleCheckboxChange} />
+        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.appareillage.monoAppareil || false} /> 
+        {/* onChange={handleCheckboxChange}  */}
         Mono Appareil
       </Label>
     </FormGroup>

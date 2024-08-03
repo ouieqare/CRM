@@ -186,6 +186,29 @@ const saveClient = async (clientData) => {
     history.goBack();
   };
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setClient({
+  //     ...client,
+  //     appareillage: {
+  //       ...client.appareillage,
+  //       [name]: value
+  //     }
+  //   });
+  // };
+  
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setClient({
+      ...client,
+      appareillage: {
+        ...client.appareillage,
+        [name]: checked
+      }
+    });
+  };
+  
+
   return (
       //  <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #11cdef 0, #1171ef 100%)' }}>
       <div style={{ paddingTop: '50px', background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)' }}>
@@ -390,16 +413,15 @@ const saveClient = async (clientData) => {
   <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
     <FormGroup>
       <Label for="marqueAppareil">Marque de l'appareil</Label>
-      <Input type="text" name="marqueAppareil" id="marqueAppareil" value={client.Appareillage.marqueAppareil} onChange={handleInputChange} />
+      <Input type="text" name="marqueAppareil" id="marqueAppareil" value={client.appareillage.marqueAppareil} onChange={handleInputChange} />
     </FormGroup>
     <FormGroup>
       <Label for="montantAppareil">Montant de l'appareil</Label>
-      <Input type="text" name="montantAppareil" id="montantAppareil" value={client.Appareillage.montantAppareil} onChange={handleInputChange} />
+      <Input type="text" name="montantAppareil" id="montantAppareil" value={client.appareillage.montantAppareil} onChange={handleInputChange} />
     </FormGroup>
     <FormGroup check>
       <Label check>
-        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.Appareillage.monoAppareil || false} /> 
-        {/* onChange={handleCheckboxChange}  */}
+        <Input type="checkbox" name="monoAppareil" id="monoAppareil" checked={client.appareillage.monoAppareil || false} onChange={handleCheckboxChange} />
         Mono Appareil
       </Label>
     </FormGroup>

@@ -26,7 +26,13 @@ const ClientSchema = new mongoose.Schema({
     niveauPerte: { type: String, required: false },
     observations: { type: String, required: false },
     recommandations: { type: String, required: false }
-  }
+  },
+  Appareillage: {
+    marqueAppareil: { type: String, required: false },
+    montantAppareil: { type: String, required: false },
+    monoAppareil: { type: Boolean, required: false },
+    observations: { type: String, required: false }
+}
 });
 
 ClientSchema.index(

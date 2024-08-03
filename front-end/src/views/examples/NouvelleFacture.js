@@ -82,7 +82,7 @@ useEffect(() => {
   };
 
 
-const saveFactures = async (factureData) => {
+const saveFacture = async (factureData) => {
   const url = factureData._id ? `https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureData._id}` : 'https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/add';
   const method = factureData._id ? 'PUT' : 'POST';
 
@@ -136,7 +136,7 @@ const saveFactures = async (factureData) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      saveFactures(facture);
+      saveFacture(facture);
     }
   };
 
@@ -201,7 +201,7 @@ const saveFactures = async (factureData) => {
         <Button color="info" onClick={() => setIsEditable(true)} disabled={isEditable}>Modifier</Button>
         <Button color="primary" onClick={() => {
           if (validateForm()) {
-            saveFactures(facture);
+            saveFacture(facture);
           }
         }} disabled={!isEditable} style={{ marginLeft: '10px' }}>Enregistrer Modifications</Button>
       </>

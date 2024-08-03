@@ -235,38 +235,38 @@ const FacturesPDF = () => {
     });
   };
   
-  const handleDeleteFacture = (e, factureId) => {
-    e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce facture ?")) {
-      fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to delete facture, status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          const newFactures = factures.filter(facture => facture._id !== factureId);
-          setSelected(selected.filter(id => id !== factureId)); // Nettoyer aussi les sélections
-          setTotalFactures(prevTotal => prevTotal - 1);
-          toast.success("Facture supprimé avec succès!");
-          setFactures(newFactures);
-        } else {
-          throw new Error(data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        toast.error(`Error: ${error.message}`);
-      });
-    }
-  };
+  // const handleDeleteFacture = (e, factureId) => {
+  //   e.stopPropagation(); // Empêche l'événement de se propager à d'autres éléments
+  //   if (window.confirm("Êtes-vous sûr de vouloir supprimer ce facture ?")) {
+  //     fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/${factureId}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
+  //       }
+  //     })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error(`Failed to delete facture, status: ${response.status}`);
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       if (data.success) {
+  //         const newFactures = factures.filter(facture => facture._id !== factureId);
+  //         setSelected(selected.filter(id => id !== factureId)); // Nettoyer aussi les sélections
+  //         setTotalFactures(prevTotal => prevTotal - 1);
+  //         toast.success("Facture supprimé avec succès!");
+  //         setFactures(newFactures);
+  //       } else {
+  //         throw new Error(data.message);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error:', error);
+  //       toast.error(`Error: ${error.message}`);
+  //     });
+  //   }
+  // };
   
   
   const columns = [
@@ -334,23 +334,23 @@ const FacturesPDF = () => {
           <option value="Créée">Créée</option>
         </select>
       )
-    },
-    {
-      dataField: 'actions',
-      text: 'Actions',
-      classes: 'col-md-2 col-lg-2 text-center',
-      headerClasses: 'col-md-2 col-lg-2 text-center',
-      formatter: (cell, row) => (
-        <div>
-          <Button color="primary" size="sm" onClick={(e) => handleEditFacture(e, row)}>
-            <i className="fas fa-pencil-alt"></i>
-          </Button>
-          <Button color="danger" size="sm" onClick={(e) => handleDeleteFacture(e, row._id)}>
-            <i className="fas fa-trash"></i>
-          </Button>
-        </div>
-      )
     }
+    // {
+    //   dataField: 'actions',
+    //   text: 'Actions',
+    //   classes: 'col-md-2 col-lg-2 text-center',
+    //   headerClasses: 'col-md-2 col-lg-2 text-center',
+    //   formatter: (cell, row) => (
+    //     <div>
+    //       <Button color="primary" size="sm" onClick={(e) => handleEditFacture(e, row)}>
+    //         <i className="fas fa-pencil-alt"></i>
+    //       </Button>
+    //       <Button color="danger" size="sm" onClick={(e) => handleDeleteFacture(e, row._id)}>
+    //         <i className="fas fa-trash"></i>
+    //       </Button>
+    //     </div>
+    //   )
+    // }
   ];
   
   

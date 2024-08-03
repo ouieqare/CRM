@@ -41,7 +41,7 @@ const NouvelleFacture = () => {
     if (location.state && location.state.facture) {
       const formattedFactures = {
         ...location.state.facture,
-        dateNaissance: formatDate(location.state.facture.dateNaissance)
+        dateFacture: formatDate(location.state.facture.dateFacture)
       };
       setFacture(formattedFactures);
     }

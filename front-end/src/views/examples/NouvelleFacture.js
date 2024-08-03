@@ -149,7 +149,7 @@ const saveFacture = async (factureData) => {
 
     // En-tête de la facture
     doc.setFontSize(18);
-    doc.text('Facture', 105, 25, null, null, 'center');
+    doc.text(`${facture.objet}`, 105, 25, null, null, 'center');
     doc.setFontSize(11);
     doc.text(`Date: ${facture.dateFacture}`, 200, 30, null, null, 'right');
 
@@ -157,7 +157,7 @@ const saveFacture = async (factureData) => {
     doc.text(`Nom du Client: ${facture.nomClient}`, 20, 50);
     doc.text(`Email: ${facture.email}`, 20, 65);
     // Plus d'infos
-    doc.text(`Objet: ${facture.objet}`, 20, 80);
+    // doc.text(`Objet: ${facture.objet}`, 20, 80);
 
     // Vous pouvez ajouter ici un AutoTable si vous avez des listes d'éléments
     autoTable(doc, {

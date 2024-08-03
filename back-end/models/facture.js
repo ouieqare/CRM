@@ -8,6 +8,13 @@ const FactureSchema = new mongoose.Schema({
   totalGeneral: { type: Number, required: true },
   statut: { type: String, required: true }, // Assurez-vous que ce champ est configuré comme nécessaire
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  email: { type: String, required: false },
+  telephoneFixe: { type: String, required: false},
+  telephonePortable: { type: String, required: false },
+  adresse: { type: String, required: false },
+  codePostal: { type: String, required: false },
+  ville: { type: String, required: false },
+  note: { type: String, required: false },
   isDeleted: { type: Boolean, default: false }
 });
 

@@ -109,7 +109,7 @@ const saveFacture = async (factureData) => {
 
       const data = await response.json();
       console.log('Réponse du serveur:', data);  // Log de la réponse
-      toast.success("Le facture a été ajouté/modifié avec succès !");
+      toast.success("Le facture a été ajoutée/modifiée avec succès !");
       setIsEditable(false);
       // setTimeout(() => {
       //     history.push('/admin/factures');
@@ -378,8 +378,8 @@ const saveFacture = async (factureData) => {
                 <Label for="note">Note</Label>
                 <Input type="textarea" name="note" id="note" value={facture.note} onChange={handleInputChange} disabled={!isEditable} style={{ minHeight: '100px', maxHeight: '300px' }}/>
               </FormGroup>
-                <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
-                <Button type="button" color="secondary" onClick={() => history.push('/admin/factures')}>Annuler</Button>
+                {/* <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
+                <Button type="button" color="secondary" onClick={() => history.push('/admin/factures')}>Annuler</Button> */}
               </Form>
             </TabPane>
 

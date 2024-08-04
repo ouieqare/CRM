@@ -279,6 +279,13 @@ const FacturesPDF = () => {
       headerClasses: 'col-lg-2'
     },
     {
+      dataField: "numeroFacture",
+      text: "Numero de Facture",
+      sort: true,
+      classes: 'col-lg-2',
+      headerClasses: 'col-lg-2'
+    },
+    {
       dataField: "heureCreation",
       text: "Heure de Création",
       sort: true,

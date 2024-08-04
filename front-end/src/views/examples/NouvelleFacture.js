@@ -30,18 +30,20 @@ const NouvelleFacture = () => {
     heureCreation: "",
     nomClient: "",
     totalGeneral: "",
-    statut: "" 
+    statut: "Créée" 
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.facture);
   const [activeTab, setActiveTab] = useState('1');
   //const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     // Si un facture est passé dans l'état, utilisez ses valeurs pour initialiser le formulaire
     if (location.state && location.state.facture) {
       const formattedFactures = {
         ...location.state.facture,
-        dateFacture: formatDate(location.state.facture.dateFacture)
+        dateFacture: formatDate(location.state.facture.dateFacture),
+        statut: location.state.facture.statut || "Créée"
       };
       setFacture(formattedFactures);
     }
@@ -121,7 +123,24 @@ const saveFacture = async (factureData) => {
 };
 
 
-
+// Fetch clients from API
+useEffect(() => {
+  fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      toast.error('Failed to fetch clients');
+      return;
+    }
+    setClients(data); // Store client data in state
+  })
+  .catch(error => {
+    console.error('Error fetching clients:', error);
+    toast.error('Error fetching clients');
+  });
+}, []);
 
 
 
@@ -278,14 +297,17 @@ const saveFacture = async (factureData) => {
                 <FormGroup>
                   <Label for="nomClient">Nom du Client</Label>
                   <Input
-                    type="text"
+                    type="select"
                     name="nomClient"
                     id="nomClient"
                     value={facture.nomClient}
                     onChange={handleInputChange}
-                    disabled={!isEditable}
-                    required
-                  />
+                  >
+                    <option value="">Select a client</option>
+                    {clients.map(client => (
+                      <option key={client._id} value={client.nom}>{client.nom}</option>
+                    ))}
+                  </Input>
                 </FormGroup>
               </Col>
               </Row>
@@ -392,8 +414,8 @@ const saveFacture = async (factureData) => {
                 <Label for="note">Note</Label>
                 <Input type="textarea" name="note" id="note" value={facture.note} onChange={handleInputChange} disabled={!isEditable} style={{ minHeight: '100px', maxHeight: '300px' }}/>
               </FormGroup>
-                {/* <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
-                <Button type="button" color="secondary" onClick={() => history.push('/admin/factures')}>Annuler</Button> */}
+                <Button type="submit" color="primary" disabled={!isEditable}>Enregistrer</Button>
+                <Button type="button" color="secondary" onClick={() => history.push('/admin/factures')}>Annuler</Button>
               </Form>
             </TabPane>
 

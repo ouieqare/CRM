@@ -179,7 +179,8 @@ const saveFacture = async (factureData) => {
     // doc.text(`Statut: ${facture.statut}`, 20, doc.lastAutoTable.finalY + 35);
 
     // Sauvegarder le PDF
-    doc.save('facture.pdf');
+    doc.save(`${facture.objet}.pdf`);
+
 };
 
 

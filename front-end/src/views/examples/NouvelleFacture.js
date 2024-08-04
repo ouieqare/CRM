@@ -123,28 +123,6 @@ const saveFacture = async (factureData) => {
 };
 
 
-// Fetch clients from API
-fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
-  headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-})
-.then(response => response.json())
-.then(data => {
-  console.log(data);  // Log the data here
-  if (data.error) {
-    toast.error('Failed to fetch clients');
-    return;
-  }
-  setClients(data); // Store client data in state
-})
-.catch(error => {
-  console.error('Error fetching clients:', error);
-  toast.error('Error fetching clients');
-});
-
-
-
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFacture({ ...facture, [name]: value });
@@ -297,17 +275,14 @@ fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
                 <FormGroup>
                   <Label for="nomClient">Nom du Client</Label>
                   <Input
-                    type="select"
+                    type="text"
                     name="nomClient"
                     id="nomClient"
                     value={facture.nomClient}
                     onChange={handleInputChange}
-                  >
-                    <option value="">Select a client</option>
-                    {clients && clients.length > 0 && clients.map(client => (
-                      <option key={client._id} value={client.nom}>{client.nom}</option>
-                    ))}
-                  </Input>
+                    disabled={!isEditable}
+                    required
+                  />
                 </FormGroup>
               </Col>
               </Row>

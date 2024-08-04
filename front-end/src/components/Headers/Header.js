@@ -5,11 +5,36 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalClients: localStorage.getItem('totalClients') || 0
+      totalClients: localStorage.getItem('totalClients') || 0,
+      totalAppareilles: 0,
+      totalFactures: 0
     };
   }
 
+  componentDidMount() {
+    this.fetchCounts();
+  }
+
+  fetchCounts = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assurez-vous que le token est stocké dans localStorage
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+      const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/count-by-status`, { headers });
+      if (!response.ok) throw new Error('Failed to fetch counts');
+      const data = await response.json();
+      this.setState({
+        totalAppareilles: data.totalAppareilles,
+        totalFactures: data.totalFactures
+      });
+    } catch (error) {
+      console.error('Error fetching counts:', error);
+    }
+  }
+
   render() {
+    const { totalAppareilles, totalFactures } = this.state;
     return (
       <>
         <div className="header pb-8 pt-5 pt-md-8" style={{ background: 'linear-gradient(87deg, #003D33 0, #007D70 100%)'}}>
@@ -118,7 +143,7 @@ class Header extends React.Component {
                           >
                             Appareillés
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">{totalAppareilles}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -146,7 +171,7 @@ class Header extends React.Component {
                           >
                             Facturés
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">{totalFactures}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">

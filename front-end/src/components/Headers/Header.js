@@ -16,29 +16,33 @@ class Header extends React.Component {
   }
 
   fetchCounts = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+  
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('Token not found');
-        return;
-      }
       const headers = {
-        Authorization: `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       };
+  
       const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts`, { headers });
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to fetch counts: ${response.status} - ${errorText}`);
       }
+  
       const data = await response.json();
       this.setState({
-        totalAppareilles: data.totalAppareilles,
-        totalFactures: data.totalFactures
+        totalAppareilles: data.totalAppareilles || 0,
+        totalFactures: data.totalFactures || 0
       });
     } catch (error) {
       console.error('Error fetching counts:', error);
     }
   }
+  
   
 
   render() {

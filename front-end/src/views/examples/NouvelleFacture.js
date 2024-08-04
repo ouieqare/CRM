@@ -262,6 +262,19 @@ const saveFacture = async (factureData) => {
                 </FormGroup>
               </Col>
               <Col md={6}>
+              <FormGroup>
+  <Label for="numeroFacture">Numéro de la Facture</Label>
+  <Input
+    type="text"
+    name="numeroFacture"
+    id="numeroFacture"
+    value={facture.numeroFacture}
+    readOnly // Rendre le champ en lecture seule
+  />
+</FormGroup>
+
+              </Col>
+              <Col md={6}>
                 <FormGroup>
                   <Label for="nomClient">Nom du Client</Label>
                   <Input

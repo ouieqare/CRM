@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrementFactory = require('mongoose-sequence');
 
 const FactureSchema = new mongoose.Schema({
   objet: { type: String, required: true },
@@ -21,5 +22,6 @@ const FactureSchema = new mongoose.Schema({
 // Index pour potentiellement améliorer les performances des requêtes
 FactureSchema.index({ dateFacture: 1 });
 
+FactureSchema.plugin(AutoIncrement, {inc_field: 'numeroFacture'});
 const Facture = mongoose.model('Facture', FactureSchema);
 module.exports = Facture;

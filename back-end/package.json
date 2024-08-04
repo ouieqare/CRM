@@ -27,6 +27,7 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^7.4.1",
     "mongoose": "^8.4.4",
+    "mongoose-sequence": "^6.0.1",
     "mongoose-title-case": "0.0.4",
     "mongoose-unique-validator": "^5.0.1",
     "mongoose-validator": "^1.3.2",

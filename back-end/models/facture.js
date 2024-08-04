@@ -16,7 +16,8 @@ const FactureSchema = new mongoose.Schema({
   codePostal: { type: String, required: false },
   ville: { type: String, required: false },
   note: { type: String, required: false },
-  isDeleted: { type: Boolean, default: false }
+  isDeleted: { type: Boolean, default: false },
+  numeroFacture: { type: String, default: false }
 });
 
 // Index pour potentiellement améliorer les performances des requêtes

@@ -124,23 +124,23 @@ const saveFacture = async (factureData) => {
 
 
 // Fetch clients from API
-useEffect(() => {
-  fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
-    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.error) {
-      toast.error('Failed to fetch clients');
-      return;
-    }
-    setClients(data); // Store client data in state
-  })
-  .catch(error => {
-    console.error('Error fetching clients:', error);
-    toast.error('Error fetching clients');
-  });
-}, []);
+fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients', {
+  headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+})
+.then(response => response.json())
+.then(data => {
+  console.log(data);  // Log the data here
+  if (data.error) {
+    toast.error('Failed to fetch clients');
+    return;
+  }
+  setClients(data); // Store client data in state
+})
+.catch(error => {
+  console.error('Error fetching clients:', error);
+  toast.error('Error fetching clients');
+});
+
 
 
 
@@ -304,7 +304,7 @@ useEffect(() => {
                     onChange={handleInputChange}
                   >
                     <option value="">Select a client</option>
-                    {clients.map(client => (
+                    {clients && clients.length > 0 && clients.map(client => (
                       <option key={client._id} value={client.nom}>{client.nom}</option>
                     ))}
                   </Input>

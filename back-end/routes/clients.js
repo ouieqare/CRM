@@ -253,9 +253,23 @@ router.get('/count-by-status', reqAuth, async (req, res) => {
   }
 });
 
+// router.get('/counts', reqAuth, async (req, res) => {
+//   try {
+//     const totalClients = await Client.countDocuments({ userId: req.user.id });
+//     const totalAppareilles = await Client.countDocuments({ userId: req.user.id, statut: 'Appareillé' });
+//     const totalFactures = await Client.countDocuments({ userId: req.user.id, statut: 'Facturé' });
+
+//     res.json({ totalClients, totalAppareilles, totalFactures });
+//   } catch (err) {
+//     console.error('Error fetching counts:', err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
+// Assurez-vous que le middleware 'reqAuth' valide correctement le token
 router.get('/counts', reqAuth, async (req, res) => {
   try {
-    const totalClients = await Client.countDocuments({ userId: req.user.id });
+    // const totalClients = await Client.countDocuments({ userId: req.user.id });
     const totalAppareilles = await Client.countDocuments({ userId: req.user.id, statut: 'Appareillé' });
     const totalFactures = await Client.countDocuments({ userId: req.user.id, statut: 'Facturé' });
 
@@ -265,5 +279,6 @@ router.get('/counts', reqAuth, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 module.exports = router;

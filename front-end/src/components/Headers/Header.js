@@ -2,9 +2,11 @@ import React from "react";
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class Header extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
+      
       totalClients: localStorage.getItem('totalClients') || 0,
       totalAppareilles: 0,
       totalFactures: 0
@@ -24,7 +26,7 @@ class Header extends React.Component {
   
     try {
       const headers = {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token.trim()}`
       };
   
       const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts`, { headers });
@@ -42,6 +44,7 @@ class Header extends React.Component {
       console.error('Error fetching counts:', error);
     }
   }
+  
   
   
 

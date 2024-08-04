@@ -17,12 +17,19 @@ class Header extends React.Component {
 
   fetchCounts = async () => {
     try {
-      const token = localStorage.getItem('token'); // Assurez-vous que le token est stocké dans localStorage
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token not found');
+        return;
+      }
       const headers = {
         Authorization: `Bearer ${token}`
       };
-      const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/count-by-status`, { headers });
-      if (!response.ok) throw new Error('Failed to fetch counts');
+      const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts`, { headers });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch counts: ${response.status} - ${errorText}`);
+      }
       const data = await response.json();
       this.setState({
         totalAppareilles: data.totalAppareilles,
@@ -32,6 +39,7 @@ class Header extends React.Component {
       console.error('Error fetching counts:', error);
     }
   }
+  
 
   render() {
     const { totalAppareilles, totalFactures } = this.state;

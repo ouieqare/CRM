@@ -361,43 +361,6 @@ const Tables = () => {
       ]
     }
   },
-
-  {
-    dataField: "origine",
-    text: "Origine",
-    classes: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Cache cette colonne sur les écrans plus petits que 'lg'
-    headerClasses: 'd-none d-lg-table-cell col-md-4 col-lg-3', // Ajusté pour correspondre aux classes de données
-    formatter: (cell, row) => {
-      return (
-        <select
-          defaultValue={row.origine}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => handleStatusChange(row._id, e.target.value)}
-          className="form-control"
-          style={{ minWidth: "150px" }} // Assure que le sélecteur est suffisamment large
-        >
-          <option value="none"></option>
-          <option value="Site">Site</option>
-          <option value="Facebook">Facebook</option>
-          <option value="Ouieqare">Ouieqare</option>
-          <option value="Audibene">Audibene</option>
-          <option value="Directe">Directe</option>
-          <option value="Google">Google</option>
-        </select>
-      );
-    },
-    editor: {
-      type: 'select',
-      options: [
-        { value: 'Site', label: 'Site' },
-        { value: 'Facebook', label: 'Facebook' },
-        { value: 'Ouieqare', label: 'Ouieqare' },
-        { value: "Audibene", label: "Audibene" },
-        { value: 'Directe', label: 'Directe' },
-        { value: 'Google', label: 'Google' }
-      ]
-    }
-  },
   
   {
     dataField: 'actions',

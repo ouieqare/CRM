@@ -3,6 +3,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaArrowLeft } from 'react-icons/fa'; 
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 import {
   Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label, Container, Row, Col, UncontrolledAlert,
@@ -35,7 +37,8 @@ const NouveauClient = () => {
     ville: "",
     note: "",
     audiogramme: "",
-    statut: "" 
+    statut: "",
+    origine: "" 
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.client);
   const [activeTab, setActiveTab] = useState('1');
@@ -207,6 +210,41 @@ const saveClient = async (clientData) => {
       }
     });
   };
+
+  const generatePDF = (facture) => {
+    const doc = new jsPDF();
+  
+    // Set font and add a header
+    doc.setFontSize(18);
+    doc.text('Devis pour Appareillage Auditif', 105, 25, null, null, 'center');
+    doc.setFontSize(11);
+    doc.text(`Date: ${facture.dateFacture}`, 200, 30, null, null, 'right');
+  
+    // Client Information
+    doc.setFontSize(13);
+    doc.text(`Nom du Client: ${facture.nomClient}`, 20, 50);
+    doc.text(`Email: ${facture.email}`, 20, 65);
+  
+    // Optional further details
+    doc.setFontSize(11);
+    doc.text(`Adresse: ${facture.adresse}`, 20, 80);
+    doc.text(`Téléphone: ${facture.telephone}`, 20, 95);
+  
+    // Adding an AutoTable for itemized details
+    autoTable(doc, {
+      theme: 'grid',
+      head: [['Article', 'Quantité', 'Prix Unitaire', 'Total']],
+      body: facture.articles.map(article => [article.description, article.quantite, `${article.prixUnitaire} €`, `${article.total} €`]),
+      startY: 110
+    });
+  
+    // Displaying total
+    doc.setFontSize(13);
+    doc.text(`Total Général: ${facture.totalGeneral} €`, 20, doc.lastAutoTable.finalY + 20);
+  
+    // Saving the PDF
+    doc.save(`Devis_${facture.nomClient}.pdf`);
+  };
   
 
   return (
@@ -280,6 +318,15 @@ const saveClient = async (clientData) => {
                   onClick={() => { toggleTab('3'); }}
                   style={{ cursor: 'pointer' }}
                 >
+                  Devis
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: activeTab === '4' })}
+                  onClick={() => { toggleTab('4'); }}
+                  style={{ cursor: 'pointer' }}
+                >
                   Appareillage
                 </NavLink>
               </NavItem>
@@ -347,6 +394,21 @@ const saveClient = async (clientData) => {
   </Input>
 </FormGroup>
 </Col>
+<Col md={4}>
+              <FormGroup>
+  <Label for="origine">Origine</Label>
+  <Input type="select" name="statut" id="origine" value={client.origine} onChange={handleInputChange} disabled={!isEditable}>
+    <option value="">Sélectionner une origine</option>
+    <option value="Site">Site</option>
+    <option value="Facebook">Facebook</option>
+    <option value="Ouieqare">Ouieqare</option>
+    <option value="Audibene">Audibene</option>
+    <option value="Direct">Direct</option>
+    <option value="Google">Google</option>
+    <option value="Doctolib">Doctolib</option>
+  </Input>
+</FormGroup>
+</Col>
 </Row>
               <Row form>
                 <Col md={6}>
@@ -410,6 +472,41 @@ const saveClient = async (clientData) => {
   </Form>
 </TabPane>
 <TabPane tabId="3">
+  <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
+    <FormGroup>
+      <Label for="typeAppareil">Type d'Appareil</Label>
+      <Input type="text" name="typeAppareil" id="typeAppareil" value={client.typeAppareil} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="modeleAppareil">Modèle de l'Appareil</Label>
+      <Input type="text" name="modeleAppareil" id="modeleAppareil" value={client.modeleAppareil} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="numeroSerie">Numéro de Série</Label>
+      <Input type="text" name="numeroSerie" id="numeroSerie" value={client.numeroSerie} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="prix">Prix</Label>
+      <Input type="number" name="prix" id="prix" value={client.prix} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="garantie">Durée de la Garantie</Label>
+      <Input type="text" name="garantie" id="garantie" value={client.garantie} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="servicesInclus">Services Inclus</Label>
+      <Input type="text" name="servicesInclus" id="servicesInclus" value={client.servicesInclus} onChange={handleInputChange} />
+    </FormGroup>
+    <FormGroup>
+      <Label for="acompte">Acompte Requis</Label>
+      <Input type="number" name="acompte" id="acompte" value={client.acompte} onChange={handleInputChange} />
+    </FormGroup>
+    <Button color="secondary" onClick={generatePDF}>Générer Devis PDF</Button>
+    <Button type="submit" color="primary">Enregistrer Devis</Button>
+  </Form>
+</TabPane>
+
+<TabPane tabId="4">
   <Form onSubmit={handleSubmitAudiogramme} style={{ paddingTop: '50px' }}>
     <FormGroup>
       <Label for="marqueAppareil">Marque de l'appareil</Label>

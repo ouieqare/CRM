@@ -37,7 +37,14 @@ const ClientSchema = new mongoose.Schema({
 marqueAppareil: { type: String, required: false },
     montantAppareil: { type: String, required: false },
     monoAppareil: { type: Boolean, required: false },
-    Appobservations: { type: String, required: false }
+    Appobservations: { type: String, required: false },
+    typeAppareil: { type: String, required: false },
+  modeleAppareil: { type: String, required: false },
+  numeroSerie: { type: String, required: false },
+  prix: { type: Number, required: false },
+  garantie: { type: String, required: false },
+  servicesInclus: { type: String, required: false },
+  acompte: { type: Number, required: false }
 });
 
 ClientSchema.index(

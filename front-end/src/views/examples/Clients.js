@@ -472,19 +472,19 @@ const Tables = () => {
     }
   });
 
-  const sendEmailsToSelected = () => {
-    const selectedClients = clients.filter(client => selected.includes(client.id));
-    console.log("Sending emails to:", selectedClients.map(c => c.email));
-    // Logique pour envoyer des emails
-  };
+  // const sendEmailsToSelected = () => {
+  //   const selectedClients = clients.filter(client => selected.includes(client.id));
+  //   console.log("Sending emails to:", selectedClients.map(c => c.email));
+  //   // Logique pour envoyer des emails
+  // };
 
-  const handleSelectAllClick = () => {
-    if (selected.length < clients.length) {
-      setSelected(clients.map(x => x.id)); // Sélectionner tous les ID
-    } else {
-      setSelected([]); // Désélectionner tous
-    }
-  };
+  // const handleSelectAllClick = () => {
+  //   if (selected.length < clients.length) {
+  //     setSelected(clients.map(x => x.id)); // Sélectionner tous les ID
+  //   } else {
+  //     setSelected([]); // Désélectionner tous
+  //   }
+  // };
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
       if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && e.target.type !== 'checkbox') {

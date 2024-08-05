@@ -15,7 +15,7 @@ const ClientStatusPage = () => {
   const { status } = useParams(); // Récupérer le statut de l'URL
   const [clients, setClients] = useState([]); // État pour stocker les clients
   
-  const history = useHistory();
+  //const history = useHistory();
   // const totalClients = clients.length; // Nombre total de clients affichés
   const [totalClientsStatus, setTotalClients] = useState(0);
 

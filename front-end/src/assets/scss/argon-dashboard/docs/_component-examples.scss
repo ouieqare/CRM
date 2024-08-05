@@ -131,7 +131,8 @@
 
 .ct-example {
   position: relative;
-  margin: 1rem (-$grid-gutter-width / 2) 0;
+  //margin: 1rem (-$grid-gutter-width / 2) 0;
+  margin: 1rem (calc(-1 * $grid-gutter-width / 2)) 0;
   @include clearfix();
 
   @include media-breakpoint-up(sm) {

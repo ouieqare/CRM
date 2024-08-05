@@ -26,7 +26,7 @@ fetchCounts = async () => {
 
     try {
       const headers = {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${localStorage.getItem('token').trim().replace('JWT ', '')}`
       };
 
       console.log("Sending request to fetch counts with token:", token);
@@ -44,7 +44,15 @@ fetchCounts = async () => {
         throw new Error(`Failed to fetch counts: ${errors.join(', ')}`);
       }
 
-      const data = await Promise.all(responses.map(res => res.json()));
+      const data = await Promise.all(responses.map(res => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch counts: ${res.status} - ${res.statusText}`);
+        }
+        return res.json();
+      }));
+
+      console.log("Counts data:", data);
+
 
       this.setState({
         totalClients: data[0].totalClients || 0,

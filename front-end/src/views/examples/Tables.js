@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 // reactstrap components
 import {
-  Badge,
   Card,
   CardHeader,
   CardFooter,
@@ -18,15 +17,14 @@ import {
   Progress,
   Table,
   Container,
-  Row,
-  UncontrolledTooltip
+  Row
 } from "reactstrap";
 // core components
 import { useHistory } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 import bootstrapImg from '../../assets/img/theme/bootstrap.jpg';
-import angularImg from '../../assets/img/theme/angular.jpg';
-import team1Img from '../../assets/img/theme/team-1-800x800.jpg'; // Et ainsi de suite pour les autres images
+//import angularImg from '../../assets/img/theme/angular.jpg';
+//import team1Img from '../../assets/img/theme/team-1-800x800.jpg'; // Et ainsi de suite pour les autres images
 
 
 const Tables = () => {

@@ -5,8 +5,10 @@ const { reqAuth } = require('../config/safeRoutes');  // Ajustez le chemin selon
 
 // Route pour obtenir le nombre total de clients
 router.get('/total', reqAuth, async (req, res) => {
+    console.log(`Fetching total clients for user: ${req.user.id}`);
     try {
         const count = await Client.countDocuments({ userId: req.user.id });
+        console.log(`Total clients: ${count}`);
         res.json({ totalClients: count });
     } catch (err) {
         console.error('Error fetching total clients:', err);
@@ -16,8 +18,10 @@ router.get('/total', reqAuth, async (req, res) => {
 
 // Route pour obtenir le nombre de clients appareillés
 router.get('/appareilles', reqAuth, async (req, res) => {
+    console.log(`Fetching appareilled clients for user: ${req.user.id}`);
     try {
         const count = await Client.countDocuments({ userId: req.user.id, statut: 'Appareillé' });
+        console.log(`Total appareilled clients: ${count}`);
         res.json({ totalAppareilles: count });
     } catch (err) {
         console.error('Error fetching appareilled clients:', err);
@@ -27,8 +31,10 @@ router.get('/appareilles', reqAuth, async (req, res) => {
 
 // Route pour obtenir le nombre de clients facturés
 router.get('/factures', reqAuth, async (req, res) => {
+    console.log(`Fetching billed clients for user: ${req.user.id}`);
     try {
         const count = await Client.countDocuments({ userId: req.user.id, statut: 'Facturé' });
+        console.log(`Total billed clients: ${count}`);
         res.json({ totalFactures: count });
     } catch (err) {
         console.error('Error fetching billed clients:', err);

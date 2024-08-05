@@ -32,9 +32,9 @@ fetchCounts = async () => {
       console.log("Sending request to fetch counts with token:", token);
 
       const responses = await Promise.all([
-        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts/total', { headers }),
-        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts/appareilles', { headers }),
-        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/counts/factures', { headers })
+        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/counts/total', { headers }),
+        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/counts/appareilles', { headers }),
+        fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/counts/factures', { headers })
       ]);
 
       console.log("Responses received:", responses);

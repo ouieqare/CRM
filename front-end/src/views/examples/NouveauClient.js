@@ -212,6 +212,11 @@ const saveClient = async (clientData) => {
   };
 
   const generatePDF = (facture) => {
+    console.log("Facture data:", facture);
+  if (!facture || !facture.articles) {
+    console.error("Facture data is incomplete or not loaded.");
+    return;  // Exit the function if data is not ready
+  }
     const doc = new jsPDF();
   
     // Set font and add a header
@@ -234,7 +239,13 @@ const saveClient = async (clientData) => {
     autoTable(doc, {
       theme: 'grid',
       head: [['Article', 'Quantité', 'Prix Unitaire', 'Total']],
-      body: facture.articles.map(article => [article.description, article.quantite, `${article.prixUnitaire} €`, `${article.total} €`]),
+      body: facture.articles ? facture.articles.map(article => [
+        article.description, 
+        article.quantite, 
+        `${article.prixUnitaire} €`, 
+        `${article.total} €`
+    ]) : [],
+    
       startY: 110
     });
   

@@ -161,6 +161,7 @@ app.use(bodyParser.json());
 app.use('/api/users', require('./routes/users'));
 app.use('/api/clients', require('./routes/clients'));
 app.use('/api/factures', require('./routes/factures'));
+app.use('/api/counts', require('./routes/counts'));
 
 // Configuration des types MIME pour les fichiers de police
 express.static.mime.define({'font/woff2': ['woff2']});

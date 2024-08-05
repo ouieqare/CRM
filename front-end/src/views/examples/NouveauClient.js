@@ -43,6 +43,8 @@ const NouveauClient = () => {
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.client);
   const [activeTab, setActiveTab] = useState('1');
   const [audiogrammeSuccessMessage, setAudiogrammeSuccessMessage] = useState("");
+  const [facture, setFacture] = useState({ articles: [] }); // Ensure articles is always an array
+
 
   useEffect(() => {
     // Si un client est passé dans l'état, utilisez ses valeurs pour initialiser le formulaire
@@ -211,51 +213,43 @@ const saveClient = async (clientData) => {
     });
   };
 
-  const generatePDF = (facture) => {
-    console.log("Facture data:", facture);
-  if (!facture || !facture.articles) {
-    console.error("Facture data is incomplete or not loaded.");
-    return;  // Exit the function if data is not ready
-  }
+  const generatePDF = () => {
+    const devis = client; // Utilisation de l'état client existant pour générer le devis
     const doc = new jsPDF();
   
-    // Set font and add a header
+    // En-tête du devis
     doc.setFontSize(18);
     doc.text('Devis pour Appareillage Auditif', 105, 25, null, null, 'center');
     doc.setFontSize(11);
-    doc.text(`Date: ${facture.dateFacture}`, 200, 30, null, null, 'right');
+    doc.text(`Date: ${new Date().toISOString().split('T')[0]}`, 200, 30, null, null, 'right'); // Date actuelle formatée
   
-    // Client Information
+    // Informations du client
     doc.setFontSize(13);
-    doc.text(`Nom du Client: ${facture.nomClient}`, 20, 50);
-    doc.text(`Email: ${facture.email}`, 20, 65);
+    doc.text(`Nom du Client: ${devis.nom} ${devis.prenom}`, 20, 50);
+    doc.text(`Email: ${devis.email}`, 20, 65);
   
-    // Optional further details
-    doc.setFontSize(11);
-    doc.text(`Adresse: ${facture.adresse}`, 20, 80);
-    doc.text(`Téléphone: ${facture.telephone}`, 20, 95);
+    // Informations supplémentaires
+    doc.text(`Adresse: ${devis.adresse}, ${devis.codePostal} ${devis.ville}`, 20, 80);
+    doc.text(`Téléphone: ${devis.telephonePortable}`, 20, 95);
   
-    // Adding an AutoTable for itemized details
+    // Ajout d'une table pour les détails de l'appareillage (exemple statique)
     autoTable(doc, {
       theme: 'grid',
       head: [['Article', 'Quantité', 'Prix Unitaire', 'Total']],
-      body: facture.articles ? facture.articles.map(article => [
-        article.description, 
-        article.quantite, 
-        `${article.prixUnitaire} €`, 
-        `${article.total} €`
-    ]) : [],
-    
+      body: [
+        ['Appareil Auditif', '1', '1200.00 €', '1200.00 €']
+        // Vous pouvez ajouter plus de lignes ici selon les données de l'état `client`
+      ],
       startY: 110
     });
   
-    // Displaying total
-    doc.setFontSize(13);
-    doc.text(`Total Général: ${facture.totalGeneral} €`, 20, doc.lastAutoTable.finalY + 20);
+    // Affichage du total
+    doc.text('Total Général: 1200.00 €', 20, doc.lastAutoTable.finalY + 20);
   
-    // Saving the PDF
-    doc.save(`Devis_${facture.nomClient}.pdf`);
+    // Sauvegarde du PDF
+    doc.save('Devis.pdf');
   };
+
   
 
   return (

@@ -17,6 +17,7 @@ const ClientSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   isDeleted: { type: Boolean, default: false }, // Nouveau champ pour la suppression logique
   statut: { type: String, required: false },
+  origine: { type: String, required: false },
   dateRDV: { type: Date, required: false },
   heureRDV: { type: String, required: false },
   audiogramme: { type: String, required: false },

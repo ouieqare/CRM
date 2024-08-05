@@ -7,7 +7,7 @@ const { reqAuth } = require('../config/safeRoutes');  // Ajustez le chemin selon
 router.get('/total', reqAuth, async (req, res) => {
     console.log(`Fetching total clients for user: ${req.user.id}`);
     try {
-        const count = await Client.countDocuments({ userId: req.user.id });
+        const count = await Client.countDocuments({ userId: req.user.id, isDeleted: false });
         console.log(`Total clients: ${count}`);
         res.json({ totalClients: count });
     } catch (err) {
@@ -20,7 +20,7 @@ router.get('/total', reqAuth, async (req, res) => {
 router.get('/appareilles', reqAuth, async (req, res) => {
     console.log(`Fetching appareilled clients for user: ${req.user.id}`);
     try {
-        const count = await Client.countDocuments({ userId: req.user.id, statut: 'Appareillé' });
+        const count = await Client.countDocuments({ userId: req.user.id, statut: 'Appareillé', isDeleted: false });
         console.log(`Total appareilled clients: ${count}`);
         res.json({ totalAppareilles: count });
     } catch (err) {
@@ -33,7 +33,7 @@ router.get('/appareilles', reqAuth, async (req, res) => {
 router.get('/factures', reqAuth, async (req, res) => {
     console.log(`Fetching billed clients for user: ${req.user.id}`);
     try {
-        const count = await Client.countDocuments({ userId: req.user.id, statut: 'Facturé' });
+        const count = await Client.countDocuments({ userId: req.user.id, statut: 'Facturé', isDeleted: false });
         console.log(`Total billed clients: ${count}`);
         res.json({ totalFactures: count });
     } catch (err) {

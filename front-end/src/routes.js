@@ -80,14 +80,6 @@ var routes = [
     api: false,
   },     
       {
-        path: "/corbeille",
-        name: "Corbeille",
-        icon: "ni ni-folder-17 text-red",
-        component: Corbeille,
-        layout: "/admin",
-        api: false,
-      },
-      {
         path: "/tables",
         name: "Statuts Clients",
         icon: "ni ni-bullet-list-67 text-red",
@@ -165,6 +157,14 @@ var routes = [
     layout: "/admin",
     api: true,
     hidden: true
+  },
+  {
+    path: "/corbeille",
+    name: "Corbeille",
+    icon: "ni ni-folder-17 text-red",
+    component: Corbeille,
+    layout: "/admin",
+    api: false,
   },
   {
     path: "/reset-password",

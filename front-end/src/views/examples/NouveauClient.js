@@ -38,7 +38,9 @@ const NouveauClient = () => {
     note: "",
     audiogramme: "",
     statut: "",
-    origine: "" 
+    origine: "",
+    dateAppareillage: "", // New field for appareillage date
+    dateFacturation: ""
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.client);
   const [activeTab, setActiveTab] = useState('1');
@@ -398,6 +400,18 @@ const saveClient = async (clientData) => {
     <option value="Facturé">Facturé</option>
   </Input>
 </FormGroup>
+{client.statut === "Appareillé" && (
+              <FormGroup>
+                <Label for="dateAppareillage">Date d'Appareillage</Label>
+                <Input type="date" name="dateAppareillage" value={client.dateAppareillage} onChange={handleInputChange} disabled={!isEditable} />
+              </FormGroup>
+            )}
+            {client.statut === "Facturé" && (
+              <FormGroup>
+                <Label for="dateFacturation">Date de Facturation</Label>
+                <Input type="date" name="dateFacturation" value={client.dateFacturation} onChange={handleInputChange} disabled={!isEditable} />
+              </FormGroup>
+            )}
 </Col>
 <Col md={4}>
               <FormGroup>

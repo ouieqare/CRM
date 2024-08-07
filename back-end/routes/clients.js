@@ -8,7 +8,6 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 const csvtojson = require('csvtojson');
 const XLSX = require('xlsx');
-const Facture = require('../models/facture');
 
 router.get('/', (req, res, next) => {
   console.log('API /api/clients called');
@@ -28,14 +27,8 @@ router.get('/', (req, res, next) => {
 // Récupération des clients supprimés uniquement
 router.get('/deleted', reqAuth, async (req, res) => {
   try {
-    const factures = await Facture.find({ userId: req.user.id, isDeleted: true });
     const clients = await Client.find({ userId: req.user.id, isDeleted: true });
-    const results = {
-      clients: clients,
-      invoices: factures
-    };
-
-    res.json(results);
+    res.json(clients);
   } catch (err) {
     console.error('Error fetching deleted clients:', err);
     res.status(500).json({ error: 'Internal server error' });

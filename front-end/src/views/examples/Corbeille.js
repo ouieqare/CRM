@@ -20,6 +20,8 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 const Corbeille = () => {
   const [clients, setClients] = useState([]);
   const [totalClients, setTotalClients] = useState(0);
+  const [invoices, setInvoices] = useState([]);
+  const [totalInvoices, setTotalInvoices] = useState(0);
   const { SearchBar } = Search;
   const [selected, setSelected] = useState([]);
 
@@ -143,7 +145,7 @@ const Corbeille = () => {
   
     console.log("Formatted Token from localStorage:", formattedToken);
   
-    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/deleted', {
+    fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/deleted', {
       headers: {
          'Authorization': `Bearer ${formattedToken}`
       }
@@ -155,9 +157,11 @@ const Corbeille = () => {
       return response.json();
     })
     .then(data => {
-      console.log('Deleted clients fetched:', data);
-      setClients(data); // Ceci met à jour l'état avec les données récupérées
+      console.log('Deleted clients and invoices fetched:', data);
+      setClients(data.clients); // Ceci met à jour l'état avec les données récupérées
+      setInvoices(data.invoices);
       setTotalClients(data.length);
+      setTotalInvoices(data.invoices.length);
     })
     .catch(err => {
       console.error('Error fetching clients:', err.message);

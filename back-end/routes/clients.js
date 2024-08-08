@@ -282,32 +282,22 @@ router.get('/counts', reqAuth, async (req, res) => {
   }
 });
 
-router.get('/generate-pdf', (req, res) => {
+router.post('/generate-pdf', (req, res) => {
+  const data = req.body; // contiendra toutes les données nécessaires pour remplir le PDF
   const doc = new PDFDocument();
   res.setHeader('Content-Type', 'application/pdf');
   doc.pipe(res);
-  
-  // Configurer le document pour qu'il ressemble à votre modèle officiel
-  doc.font('Helvetica'); // Choisissez une police appropriée
-  doc.fontSize(12); // Définissez la taille de la police
-  
-  // Ajouter un titre
-  doc.text('Titre du Document Officiel', {
-    align: 'center'
-  });
-  
-  // Ajouter du texte avec un placement précis
-  doc.text('Voici un exemple de texte positionné précisément.', 100, 100);
-  
-  // Dessiner une ligne ou un autre élément graphique
-  doc.moveTo(50, 150)
-    .lineTo(250, 150)
-    .stroke();
-  
-  // Vous pouvez continuer à ajouter d'autres éléments ici
-  
+
+  // Mettez ici le code pour ajouter du texte et des formes au PDF en utilisant les données de `data`
+  doc.font('Helvetica');
+  doc.fontSize(12);
+  doc.text(`Patient (prenom, nom): ${data.patientNom}, N° de securite sociale: ${data.numSecu}`, 100, 100);
+  doc.text(`Date de la prescription médicale préalable obligatoire: ${data.datePrescription}`, 100, 120);
+  // Continuez pour chaque champ...
+
   doc.end(); // Finalisez le document
 });
+
 
 
 

@@ -253,6 +253,12 @@ const saveClient = async (clientData) => {
   // };
 
   const downloadPDF = async () => {
+    const formData = {
+      patientNom: client.nom + " " + client.prenom,
+      numSecu: client.numeroSecu,
+      datePrescription: client.datePrescription,
+      // Ajoutez d'autres champs nécessaires ici
+  };
     try {
         const response = await fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/generate-pdf', {
             method: 'GET',

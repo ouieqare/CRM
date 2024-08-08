@@ -282,7 +282,7 @@ router.get('/counts', reqAuth, async (req, res) => {
   }
 });
 
-app.get('/generate-pdf', (req, res) => {
+router.get('/generate-pdf', (req, res) => {
   const doc = new PDFDocument();
   res.setHeader('Content-Type', 'application/pdf');
   doc.pipe(res);

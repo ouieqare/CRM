@@ -7,7 +7,7 @@ const FactureSchema = new mongoose.Schema({
     ref: 'Client',
     required: true
   },
-  objet: { type: String, required: true },
+  objet: { type: String, required: false },
   heureCreation: { type: String, required: true }, // Supposition que l'heure est stockée en format String
   dateFacture: { type: Date, required: true },
   nomClient: { type: String, required: true },

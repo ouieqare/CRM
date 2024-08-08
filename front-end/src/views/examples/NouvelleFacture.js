@@ -26,10 +26,10 @@ const NouvelleFacture = () => {
   const location = useLocation();
   const [facture, setFacture] = useState({
     objet: "test",
-    dateFacture: "",
-    heureCreation: "",
-    nomClient: "",
-    totalGeneral: "",
+    dateFacture: "01/01/2020",
+    heureCreation: "13:04",
+    nomClient: "test",
+    totalGeneral: "500",
     statut: "Créée" 
   });
   const [isEditable, setIsEditable] = useState(!location.state || !location.state.facture);

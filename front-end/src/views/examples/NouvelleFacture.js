@@ -25,7 +25,7 @@ const NouvelleFacture = () => {
   const history = useHistory();
   const location = useLocation();
   const [facture, setFacture] = useState({
-    objet: "",
+    objet: "test",
     dateFacture: "",
     heureCreation: "",
     nomClient: "",
@@ -69,15 +69,15 @@ useEffect(() => {
     let tempErrors = {};
     let formIsValid = true;
 
-    if (!facture.objet.trim()) {
-      formIsValid = false;
-      tempErrors["objet"] = "L'objet est requis.";
-    }
+    // if (!facture.objet.trim()) {
+    //   formIsValid = false;
+    //   tempErrors["objet"] = "L'objet est requis.";
+    // }
 
-    if (!facture.email.trim()) {
-      formIsValid = false;
-      tempErrors["email"] = "L'email est requis.";
-    }
+    // if (!facture.email.trim()) {
+    //   formIsValid = false;
+    //   tempErrors["email"] = "L'email est requis.";
+    // }
 
     setErrors(tempErrors);
     return formIsValid;

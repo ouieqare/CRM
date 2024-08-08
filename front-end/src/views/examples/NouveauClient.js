@@ -293,7 +293,10 @@ const generateInvoice = async (clientId) => {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('token')
-      }
+      },
+      body: JSON.stringify({
+        articles: [{ description: 'Appareil auditif', quantite: 1, prix: 1200 }] // Exemple d'article, à personnaliser
+      })
     });
 
     if (!response.ok) {

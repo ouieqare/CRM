@@ -234,7 +234,9 @@ router.post('/generate/:clientId', reqAuth, async (req, res) => {
       clientId: client._id,
       nomClient: `${client.prenom} ${client.nom}`,
       dateFacturation: new Date(),
-      articles: req.body.articles || []  // This should be populated with actual articles
+      heureCreation: new Date().toISOString().split('T')[1].split('.')[0], // Heure actuelle sans les millisecondes
+      objet: 'Facture pour les services rendus', // Vous pouvez personnaliser ceci selon vos besoins
+      articles: req.body.articles || [] // This should be populated with actual articles
     });
 
     await newFacture.save();

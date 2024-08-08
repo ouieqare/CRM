@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const AutoIncrementFactory = require('mongoose-sequence')(mongoose);
 
 const FactureSchema = new mongoose.Schema({
+  clientId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client',
+    required: true
+  },
   objet: { type: String, required: true },
   heureCreation: { type: String, required: true }, // Supposition que l'heure est stockée en format String
   dateFacture: { type: Date, required: true },
@@ -17,7 +22,11 @@ const FactureSchema = new mongoose.Schema({
   ville: { type: String, required: false },
   note: { type: String, required: false },
   isDeleted: { type: Boolean, default: false },
-  numeroFacture: { type: Number, default: 0}
+  numeroFacture: { type: Number, default: 0},
+  articles: [{
+    type: Object,
+    required: true
+  }]
 });
 
 // Index pour potentiellement améliorer les performances des requêtes

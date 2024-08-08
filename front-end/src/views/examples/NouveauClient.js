@@ -211,46 +211,75 @@ const saveClient = async (clientData) => {
       appareillage: {
         ...client.appareillage,
         [name]: checked
-      }
+      }  
     });
   };
 
-  const generatePDF = () => {
-    const devis = client; // Utilisation de l'état client existant pour générer le devis
-    const doc = new jsPDF();
+  // const generatePDF = () => {
+  //   const devis = client; // Utilisation de l'état client existant pour générer le devis
+  //   const doc = new jsPDF();
   
-    // En-tête du devis
-    doc.setFontSize(18);
-    doc.text('Devis pour Appareillage Auditif', 105, 25, null, null, 'center');
-    doc.setFontSize(11);
-    doc.text(`Date: ${new Date().toISOString().split('T')[0]}`, 200, 30, null, null, 'right'); // Date actuelle formatée
+  //   // En-tête du devis
+  //   doc.setFontSize(18);
+  //   doc.text('Devis pour Appareillage Auditif', 105, 25, null, null, 'center');
+  //   doc.setFontSize(11);
+  //   doc.text(`Date: ${new Date().toISOString().split('T')[0]}`, 200, 30, null, null, 'right'); // Date actuelle formatée
   
-    // Informations du client
-    doc.setFontSize(13);
-    doc.text(`Nom du Client: ${devis.nom} ${devis.prenom}`, 20, 50);
-    doc.text(`Email: ${devis.email}`, 20, 65);
+  //   // Informations du client
+  //   doc.setFontSize(13);
+  //   doc.text(`Nom du Client: ${devis.nom} ${devis.prenom}`, 20, 50);
+  //   doc.text(`Email: ${devis.email}`, 20, 65);
   
-    // Informations supplémentaires
-    doc.text(`Adresse: ${devis.adresse}, ${devis.codePostal} ${devis.ville}`, 20, 80);
-    doc.text(`Téléphone: ${devis.telephonePortable}`, 20, 95);
+  //   // Informations supplémentaires
+  //   doc.text(`Adresse: ${devis.adresse}, ${devis.codePostal} ${devis.ville}`, 20, 80);
+  //   doc.text(`Téléphone: ${devis.telephonePortable}`, 20, 95);
   
-    // Ajout d'une table pour les détails de l'appareillage (exemple statique)
-    autoTable(doc, {
-      theme: 'grid',
-      head: [['Article', 'Quantité', 'Prix Unitaire', 'Total']],
-      body: [
-        ['Appareil Auditif', '1', '1200.00 €', '1200.00 €']
-        // Vous pouvez ajouter plus de lignes ici selon les données de l'état `client`
-      ],
-      startY: 110
-    });
+  //   // Ajout d'une table pour les détails de l'appareillage (exemple statique)
+  //   autoTable(doc, {
+  //     theme: 'grid',
+  //     head: [['Article', 'Quantité', 'Prix Unitaire', 'Total']],
+  //     body: [
+  //       ['Appareil Auditif', '1', '1200.00 €', '1200.00 €']
+  //       // Vous pouvez ajouter plus de lignes ici selon les données de l'état `client`
+  //     ],
+  //     startY: 110
+  //   });
   
-    // Affichage du total
-    doc.text('Total Général: 1200.00 €', 20, doc.lastAutoTable.finalY + 20);
+  //   // Affichage du total
+  //   doc.text('Total Général: 1200.00 €', 20, doc.lastAutoTable.finalY + 20);
   
-    // Sauvegarde du PDF
-    doc.save('Devis.pdf');
-  };
+  //   // Sauvegarde du PDF
+  //   doc.save('Devis.pdf');
+  // };
+
+  const downloadPDF = async () => {
+    try {
+        const response = await fetch('https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/clients/generate-pdf', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/pdf',
+            },
+        });
+        if (response.ok) {
+            // Crée une URL Blob et ouvre un nouvel onglet pour télécharger le PDF
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.setAttribute('download', 'devis.pdf'); // Nom du fichier à télécharger
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            toast.success("Le PDF a été téléchargé avec succès !");
+        } else {
+            throw new Error('Problème lors du téléchargement du PDF');
+        }
+    } catch (error) {
+        console.error('Erreur lors du téléchargement du PDF:', error);
+        toast.error("Erreur lors du téléchargement du PDF");
+    }
+};
+
 
   
 
@@ -520,7 +549,7 @@ const saveClient = async (clientData) => {
       <Label for="acompte">Acompte Requis</Label>
       <Input type="number" name="acompte" id="acompte" value={client.acompte} onChange={handleInputChange} />
     </FormGroup>
-    <Button color="secondary" onClick={generatePDF}>Générer Devis PDF</Button>
+    <Button color="secondary" onClick={downloadPDF}>Générer Devis PDF</Button>
     <Button type="submit" color="primary">Enregistrer Devis</Button>
   </Form>
 </TabPane>

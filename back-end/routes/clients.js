@@ -8,6 +8,8 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 const csvtojson = require('csvtojson');
 const XLSX = require('xlsx');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 
 router.get('/', (req, res, next) => {
   console.log('API /api/clients called');
@@ -279,6 +281,34 @@ router.get('/counts', reqAuth, async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.get('/generate-pdf', (req, res) => {
+  const doc = new PDFDocument();
+  res.setHeader('Content-Type', 'application/pdf');
+  doc.pipe(res);
+  
+  // Configurer le document pour qu'il ressemble à votre modèle officiel
+  doc.font('Helvetica'); // Choisissez une police appropriée
+  doc.fontSize(12); // Définissez la taille de la police
+  
+  // Ajouter un titre
+  doc.text('Titre du Document Officiel', {
+    align: 'center'
+  });
+  
+  // Ajouter du texte avec un placement précis
+  doc.text('Voici un exemple de texte positionné précisément.', 100, 100);
+  
+  // Dessiner une ligne ou un autre élément graphique
+  doc.moveTo(50, 150)
+    .lineTo(250, 150)
+    .stroke();
+  
+  // Vous pouvez continuer à ajouter d'autres éléments ici
+  
+  doc.end(); // Finalisez le document
+});
+
 
 
 module.exports = router;

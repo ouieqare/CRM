@@ -1,7 +1,7 @@
 // routes/factures.js
 const express = require('express');
 const router = express.Router();
-const Facture = require('../models/client');
+const Client = require('../models/client');
 const Facture = require('../models/facture'); // Assurez-vous que le chemin est correct
 const { reqAuth } = require('../config/safeRoutes');  // Ajustez le chemin selon la structure de votre projet
 //const csvtojson = require('csvtojson');

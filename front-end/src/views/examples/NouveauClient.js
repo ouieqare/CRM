@@ -128,7 +128,8 @@ const saveClient = async (clientData) => {
       // }, 3000);
 
       if (clientData.statut === "Facturé") {
-        generateInvoice(data.client._id);
+        //generateInvoice(data.client._id);
+        generateInvoice(data._id || clientData._id);
       }
 
   } catch (error) {

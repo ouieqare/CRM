@@ -126,6 +126,11 @@ const saveClient = async (clientData) => {
       // setTimeout(() => {
       //     history.push('/admin/clients');
       // }, 3000);
+
+      if (clientData.statut === "Facturé") {
+        generateInvoice(data._id);
+      }
+
   } catch (error) {
       console.error('Erreur lors de l\'opération sur le client:', error);
       toast.error(`Erreur lors de l'opération sur le client: ${error.message}`);
@@ -280,6 +285,27 @@ const saveClient = async (clientData) => {
     }
 };
 
+const generateInvoice = async (clientId) => {
+  try {
+    const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/generate/${clientId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      toast.error(`Erreur lors de la génération de la facture: ${data.message}`);
+      return;
+    }
+
+    toast.success("Facture générée avec succès !");
+  } catch (error) {
+    toast.error(`Erreur lors de la génération de la facture: ${error.message}`);
+  }
+};
 
   
 

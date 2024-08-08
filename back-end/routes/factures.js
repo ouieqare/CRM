@@ -220,4 +220,27 @@ router.put('/:id/status', reqAuth, async (req, res) => {
   }
 });
 
+
+router.post('/generate/:clientId', reqAuth, async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.clientId);
+    if (!client) {
+      return res.status(404).json({ success: false, message: 'Client not found' });
+    }
+
+    // Create a new invoice
+    const newFacture = new Facture({
+      clientId: client._id,
+      nomClient: `${client.prenom} ${client.nom}`,
+      dateFacturation: new Date(),
+      articles: req.body.articles || []  // This should be populated with actual articles
+    });
+
+    await newFacture.save();
+    res.json({ success: true, message: 'Invoice generated successfully', facture: newFacture });
+  } catch (error) {
+    console.error("Error generating invoice:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 module.exports = router;

@@ -126,10 +126,12 @@ const saveClient = async (clientData) => {
       // setTimeout(() => {
       //     history.push('/admin/clients');
       // }, 3000);
-
       if (clientData.statut === "Facturé") {
-        //generateInvoice(data.client._id);
-        generateInvoice(data._id || clientData._id);
+        // Génération de la facture lorsque le client est facturé
+        generateInvoice(data._id || clientData._id, {
+          totalGeneral: clientData.prix || 0, // Assurez-vous que ce champ est bien rempli
+          articles: [{ description: 'Appareil auditif', quantite: 1, prix: clientData.prix || 1200 }] // Exemple
+        });
       }
 
   } catch (error) {
@@ -286,7 +288,7 @@ const saveClient = async (clientData) => {
     }
 };
 
-const generateInvoice = async (clientId) => {
+const generateInvoice = async (clientId, factureData) => {
   try {
     const response = await fetch(`https://ouieqare-crm-336f65ca3acc.herokuapp.com/api/factures/generate/${clientId}`, {
       method: 'POST',
@@ -294,9 +296,7 @@ const generateInvoice = async (clientId) => {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('token')
       },
-      body: JSON.stringify({
-        articles: [{ description: 'Appareil auditif', quantite: 1, prix: 1200 }] // Exemple d'article, à personnaliser
-      })
+      body: JSON.stringify(factureData)
     });
 
     if (!response.ok) {

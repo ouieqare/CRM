@@ -229,14 +229,17 @@ router.post('/generate/:clientId', reqAuth, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Client not found' });
     }
 
-    // Create a new invoice
     const newFacture = new Facture({
       clientId: client._id,
       nomClient: `${client.prenom} ${client.nom}`,
+      email: client.email,
+      adresse: client.adresse,
       dateFacturation: new Date(),
-      heureCreation: new Date().toISOString().split('T')[1].split('.')[0], // Heure actuelle sans les millisecondes
-      objet: 'Facture pour les services rendus', // Vous pouvez personnaliser ceci selon vos besoins
-      articles: req.body.articles || [] // This should be populated with actual articles
+      heureCreation: new Date().toISOString().split('T')[1].split('.')[0],
+      objet: 'Facture pour les services rendus', // Personnalisez selon vos besoins
+      totalGeneral: req.body.totalGeneral || 0,
+      statut: 'Créée',
+      articles: req.body.articles || []  // Assurez-vous de passer les articles si nécessaires
     });
 
     await newFacture.save();
@@ -246,4 +249,5 @@ router.post('/generate/:clientId', reqAuth, async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
 module.exports = router;

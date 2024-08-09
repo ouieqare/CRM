@@ -296,7 +296,10 @@ const generateInvoice = async (clientId, factureData) => {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('token')
       },
-      body: JSON.stringify(factureData)
+      body: JSON.stringify({
+        ...factureData,
+        dateFacture: factureData.dateFacture || new Date().toISOString().split('T')[0]  // Ajoutez la date actuelle si nécessaire
+      })
     });
 
     if (!response.ok) {

@@ -229,16 +229,19 @@ router.post('/generate/:clientId', reqAuth, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Client not found' });
     }
 
+    const currentDate = new Date();  // Obtenez la date actuelle
+
     const newFacture = new Facture({
       clientId: client._id,
       nomClient: `${client.prenom} ${client.nom}`,
       email: client.email,
       adresse: client.adresse,
-      dateFacturation: new Date(),
-      heureCreation: new Date().toISOString().split('T')[1].split('.')[0],
-      objet: 'Facture pour les services rendus', // Personnalisez selon vos besoins
+      dateFacture: req.body.dateFacture || currentDate,  // Utilisez la date fournie ou la date actuelle
+      heureCreation: currentDate.toISOString().split('T')[1].split('.')[0],  // Heure actuelle sans les millisecondes
+      objet: 'Facture pour les services rendus',
       totalGeneral: req.body.totalGeneral || 0,
       statut: 'Créée',
+      userId: req.user.id,  // Assurez-vous d'inclure l'ID de l'utilisateur
       articles: req.body.articles || []  // Assurez-vous de passer les articles si nécessaires
     });
 
@@ -249,5 +252,6 @@ router.post('/generate/:clientId', reqAuth, async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
 
 module.exports = router;
